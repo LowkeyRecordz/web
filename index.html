@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LOWKEY RECORDZ</title>
+<title>LOWKEY RECORDZ | 로우키레코즈</title>
+<meta name="description" content="로우키레코즈 공식 웹사이트. 카라신 주니어, 나이키 진, 세미의 음악과 활동 소식을 전합니다.">
+<link rel="canonical" href="https://lowkeyrecordz.github.io/web/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LOWKEY RECORDZ | 로우키레코즈">
+<meta property="og:description" content="카라신 주니어 · 나이키 진 · 세미. 음악과 활동 소식을 만나보세요.">
+<meta property="og:url" content="https://lowkeyrecordz.github.io/web/">
+<meta property="og:image" content="https://lowkeyrecordz.github.io/web/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LOWKEY RECORDZ | 로우키레코즈">
+<meta name="twitter:description" content="카라신 주니어 · 나이키 진 · 세미의 음악과 활동 소식">
+<meta name="twitter:image" content="https://lowkeyrecordz.github.io/web/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -384,6 +396,7 @@
     *{transition-duration:.01ms !important;}
   }
 .artist-socials{display:flex;gap:18px;margin-top:28px}.artist-socials a{color:var(--fg-muted);padding:5px}.artist-socials a:hover{color:var(--fg)}.artist-socials svg{width:20px;height:20px}.post-photo{max-width:100%;height:auto;margin:24px auto}.notice-detail-body a{text-decoration:underline;overflow-wrap:anywhere}.photo-preview{display:flex;gap:10px;flex-wrap:wrap}.photo-preview button img{width:90px;height:90px;object-fit:cover}.publish-settings{border:1px solid var(--line);padding:20px;margin-bottom:20px;font-size:12px}.publish-settings label{display:block;margin:12px 0}.publish-settings input{max-width:100%;background:var(--bg);color:var(--fg);border:1px solid var(--line);padding:8px}.publish-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-bottom:28px;font-size:12px}.publish-actions button{background:var(--fg);color:var(--bg);padding:12px 20px;border-radius:24px}
+.autosave-status{font-size:11px;color:var(--fg-muted);align-self:center}.form-actions{flex-wrap:wrap}.copy-post{font-size:12px;border:1px solid var(--line);border-radius:24px;padding:10px 18px;margin-top:24px;color:var(--fg-muted)}.post-preview-dialog{background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:8px;width:min(820px,92vw);max-height:85vh;padding:30px}.post-preview-dialog::backdrop{background:#000b}.preview-close{float:right;padding:6px}.post-preview-dialog h1{font-size:28px;overflow-wrap:anywhere}.post-preview-dialog .notice-detail-body{margin-top:20px;padding-top:20px}
 </style>
 </head>
 <body>
@@ -444,17 +457,7 @@
     </a>
   </section>
 
-  <footer class="site-footer">
-    <div class="footer-links">
-      <a href="#/artist">ARTIST</a>
-      <a href="#/notice">NOTICE</a>
-      <a href="#/news">NEWS</a>
-      <a href="mailto:LOWKEYRECORDZZZ@GMAIL.COM">LOWKEYRECORDZZZ@GMAIL.COM</a>
-      <button data-open-terms>사이트 이용 · 개인정보 안내</button>
-      <a href="#/admin" class="footer-admin-link">ADMIN</a>
-    </div>
-    <div class="footer-copy">© 2026 LOWKEY RECORDZ. ALL RIGHTS RESERVED.</div>
-  </footer>
+
 </section>
 
 <!-- ARTIST LIST -->
@@ -560,7 +563,7 @@
 <section class="view" id="view-notice-detail">
   <div class="notice-detail-wrap">
     <a href="#/notice" class="back-link">← NOTICE</a>
-    <div id="noticeDetailContent"></div>
+    <div id="noticeDetailContent"></div><button class="copy-post" data-copy-post>링크 복사</button>
   </div>
 </section>
 
@@ -580,7 +583,7 @@
 <section class="view" id="view-news-detail">
   <div class="notice-detail-wrap">
     <a href="#/news" class="back-link">← NEWS</a>
-    <div id="newsDetailContent"></div>
+    <div id="newsDetailContent"></div><button class="copy-post" data-copy-post>링크 복사</button>
   </div>
 </section>
 
@@ -609,9 +612,9 @@
 <label>브랜치 <input id="publishBranch" value="main"></label>
 <label>게시판 파일 경로 <input id="publishPath" value="posts.json"></label>
 <label>GitHub 토큰 <input id="publishToken" type="password" autocomplete="off" placeholder="선택한 저장소 Contents: Read and write"></label>
-<p>토큰은 현재 창에서만 사용하며 파일이나 브라우저 저장소에 저장하지 않습니다.</p>
+<p>토큰은 이 탭에서 기억하며 로그아웃 시 삭제됩니다. 공용 기기에서는 사용 후 로그아웃해 주세요.</p>
 </details>
-<div class="publish-actions"><button id="publishAll">전체 게시</button><span id="publishStatus" role="status" aria-live="polite">글 저장 후 전체 게시를 눌러 주세요.</span></div>
+<div class="publish-actions"><button id="publishAll">전체 게시</button><span id="publishStatus" role="status" aria-live="polite">공개 상태 확인 중…</span></div>
 <div class="admin-tabs">
       <button data-admin-tab="notice" class="active">공지 관리</button>
       <button data-admin-tab="news">뉴스 관리</button>
@@ -629,7 +632,7 @@
         <label>사진 추가 (최대 6장)<input type="file" id="noticeImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="noticePreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="noticeSubmitBtn">등록</button>
-          <button type="button" id="noticeCancelEdit" hidden>취소</button>
+          <button type="button" id="noticePreviewPost">미리보기</button><button type="button" id="noticeDiscardDraft">작성 내용 비우기</button><button type="button" id="noticeCancelEdit" hidden>취소</button><span id="noticeAutosave" class="autosave-status" role="status"></span>
         </div>
       </form>
       <ul class="admin-list" id="adminNoticeList"></ul>
@@ -644,7 +647,7 @@
         <label>사진 추가 (최대 6장)<input type="file" id="newsImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="newsPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="newsSubmitBtn">등록</button>
-          <button type="button" id="newsCancelEdit" hidden>취소</button>
+          <button type="button" id="newsPreviewPost">미리보기</button><button type="button" id="newsDiscardDraft">작성 내용 비우기</button><button type="button" id="newsCancelEdit" hidden>취소</button><span id="newsAutosave" class="autosave-status" role="status"></span>
         </div>
       </form>
       <ul class="admin-list" id="adminNewsList"></ul>
@@ -652,6 +655,18 @@
   </div>
 </section>
 
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="#/artist">ARTIST</a>
+      <a href="#/notice">NOTICE</a>
+      <a href="#/news">NEWS</a>
+      <a href="mailto:LOWKEYRECORDZZZ@GMAIL.COM">LOWKEYRECORDZZZ@GMAIL.COM</a>
+      <button data-open-terms>사이트 이용 · 개인정보 안내</button>
+      <a href="#/admin" class="footer-admin-link">ADMIN</a>
+    </div>
+    <div class="footer-copy">© 2026 LOWKEY RECORDZ. ALL RIGHTS RESERVED.</div>
+  </footer>
+<dialog id="postPreview" class="post-preview-dialog"><button id="closePostPreview" class="preview-close" aria-label="미리보기 닫기">닫기 ×</button><p class="muted">미리보기 · 아직 공개되지 않은 내용입니다</p><div id="postPreviewBody"></div></dialog>
 <!-- COOKIE BANNER -->
 <div class="cookie-banner" id="cookieBanner" hidden>
   <p>이 사이트는 안내 확인 상태와 게시판 편집 내용을 브라우저에 저장합니다. 자세한 내용은 사이트 이용 및 개인정보 안내에서 확인할 수 있습니다.</p>
@@ -676,7 +691,7 @@
       <h4>개인정보와 이메일 문의</h4>
       <p>이 사이트는 방문자를 위한 회원가입이나 개인정보 입력 양식을 운영하지 않습니다. 이메일로 문의하시면 보내주신 이메일 주소와 문의 내용을 확인하여 답변 및 관련 업무 연락에 이용합니다. 문의 시 불필요한 개인정보는 보내지 않으셔도 됩니다.</p>
       <h4>브라우저 저장 기능</h4>
-      <p>현재 사이트 코드에는 방문자 분석이나 광고 추적 도구가 포함되어 있지 않습니다. 안내 확인 여부와 게시판 초안은 사용 중인 브라우저에 저장되며, 관리자 로그인 상태는 세션 저장소에 저장됩니다. 관리자가 전체 게시를 실행하면 글과 사진이 GitHub 저장소에 전송되어 공개됩니다. GitHub 토큰은 게시 요청에만 사용하며 사이트 파일이나 브라우저 저장소에 저장하지 않습니다. 브라우저에 남은 데이터는 사이트 데이터 삭제 기능으로 지울 수 있습니다.</p>
+      <p>현재 사이트 코드에는 방문자 분석이나 광고 추적 도구가 포함되어 있지 않습니다. 안내 확인 여부와 게시판 초안은 사용 중인 브라우저에 저장되며, 관리자 로그인 상태는 세션 저장소에 저장됩니다. 관리자가 전체 게시를 실행하면 글과 사진이 GitHub 저장소에 전송되어 공개됩니다. GitHub 토큰은 현재 탭의 세션 저장소에 보관하며 로그아웃 시 삭제됩니다. 사이트 파일이나 GitHub 게시물에는 포함하지 않습니다. 브라우저에 남은 데이터는 사이트 데이터 삭제 기능으로 지울 수 있습니다.</p>
       <h4>외부 서비스</h4>
       <p>이 사이트는 GitHub Pages로 제공되며 Google Fonts에서 글꼴을 불러옵니다. 사이트 접속과 글꼴 로딩 과정에서 각 제공업체에 IP 주소 등 접속 정보가 전달될 수 있습니다. 외부 음원·영상 서비스로 이동하면 해당 서비스의 개인정보처리방침이 적용됩니다.</p>
       <h4>문의</h4>
@@ -720,12 +735,23 @@
     return fallback.slice();
   }
   function saveData(key, arr){
-    try{ localStorage.setItem(key, JSON.stringify(arr)); }catch(e){ alert('브라우저 저장 공간이 부족합니다. 현재 창을 닫기 전에 전체 게시를 눌러 주세요.'); }
+    try{ localStorage.setItem(key, JSON.stringify(arr)); updateStatus(); }catch(e){ autosaveFailed=true; alert('브라우저 저장 공간이 부족합니다. 현재 창을 닫기 전에 전체 게시를 눌러 주세요.'); }
   }
 
   var NOTICES = DEFAULT_NOTICES.slice();
   var NEWS = DEFAULT_NEWS.slice();
   var publicSha = null;
+  var publishedState=JSON.stringify({notices:DEFAULT_NOTICES,news:DEFAULT_NEWS});
+  var publicationPending=false;
+  var autosaveFailed=false;
+  var pendingTimer;
+  function boardState(){return JSON.stringify({notices:NOTICES,news:NEWS});}
+  function updateStatus(){
+    var msg=document.getElementById('publishStatus');
+    if(publicationPending){msg.textContent='GitHub 저장 완료 · 공개 반영 확인 중';return;}
+    msg.textContent=boardState()===publishedState ? '공개본과 동일 · 게시할 변경 없음' : '미게시 변경 있음 · 전체 게시를 눌러 주세요';
+  }
+
   var draftLoaded = false;
   var publicReady = Promise.resolve();
   function fmtDate(d){
@@ -1017,8 +1043,9 @@
   }
 
   function noticeResetForm(){
+    localStorage.removeItem('lk_editor_notice'); document.getElementById('noticeAutosave').textContent='';
     attached.notice=[]; previewPhotos('notice');
-    document.getElementById('noticeForm').reset();
+    document.getElementById('noticeForm').reset(); localStorage.removeItem('lk_editor_notice');
     document.getElementById('noticeEditId').value = '';
     document.getElementById('noticeSubmitBtn').textContent = '등록';
     document.getElementById('noticeCancelEdit').hidden = true;
@@ -1085,8 +1112,9 @@
   }
 
   function newsResetForm(){
+    localStorage.removeItem('lk_editor_news'); document.getElementById('newsAutosave').textContent='';
     attached.news=[]; previewPhotos('news');
-    document.getElementById('newsForm').reset();
+    document.getElementById('newsForm').reset(); localStorage.removeItem('lk_editor_news');
     document.getElementById('newsEditId').value = '';
     document.getElementById('newsSubmitBtn').textContent = '등록';
     document.getElementById('newsCancelEdit').hidden = true;
@@ -1116,6 +1144,7 @@
   function previewPhotos(kind){
     var box=document.getElementById(kind+'Preview');box.replaceChildren();
     attached[kind].forEach(function(src,i){var btn=document.createElement('button');btn.type='button';btn.title='사진 삭제';var im=document.createElement('img');im.src=src;im.alt='첨부 사진 '+(i+1);btn.appendChild(im);btn.onclick=function(){attached[kind].splice(i,1);previewPhotos(kind);};box.appendChild(btn);});
+    saveEditor(kind);
   }
   ['notice','news'].forEach(function(kind){
     document.getElementById(kind+'Images').addEventListener('change',async function(e){
@@ -1137,17 +1166,18 @@
     if(location.protocol==='file:') return;
     try{
       var response=await fetch('./posts.json?t='+Date.now(),{cache:'no-store'});
-      if(response.status===404)return;
+      if(response.status===404){updateStatus();return;}
       if(!response.ok)throw Error('게시글을 불러오지 못했습니다.');
       var raw=await response.text(), data=JSON.parse(raw);
       if(!Array.isArray(data.notices)||!Array.isArray(data.news))throw Error('게시판 파일 형식이 올바르지 않습니다.');
-      publicSha=await blobSha(raw);
-      if(!draftLoaded || (!localStorage.getItem(NOTICE_KEY) && !localStorage.getItem(NEWS_KEY))){NOTICES=data.notices;NEWS=data.news;route();}
+      publicSha=await blobSha(raw); publishedState=JSON.stringify({notices:data.notices,news:data.news});
+      if(!draftLoaded || (!localStorage.getItem(NOTICE_KEY) && !localStorage.getItem(NEWS_KEY))){NOTICES=data.notices;NEWS=data.news;route();} updateStatus();
     }catch(err){publicLoadFailed=true;document.getElementById('publishStatus').textContent='게시글 읽기 실패. 새로고침 후 다시 시도해 주세요.';}
   })();
   document.getElementById('publishAll').addEventListener('click',async function(){
     var button=this,status=document.getElementById('publishStatus'),tokenInput=document.getElementById('publishToken');
     var token=tokenInput.value.trim(),branch=document.getElementById('publishBranch').value.trim(),path=document.getElementById('publishPath').value.trim();
+    if(token){sessionStorage.setItem('lk_github_token',token);}
     if(!token){status.textContent='GitHub 게시 설정에서 토큰을 입력해 주세요.';return;}
     if(!branch||!/^([\w.-]+\/)*posts\.json$/.test(path)){status.textContent='브랜치와 posts.json 파일 경로를 확인해 주세요.';return;}
     button.disabled=true;status.textContent='게시 중…';
@@ -1167,11 +1197,59 @@
       var body={message:'Update LOWKEY RECORDZ posts',content:btoa(binary),branch:branch};if(meta)body.sha=meta.sha;
       response=await fetch(base,{method:'PUT',headers:Object.assign({},headers,{'Content-Type':'application/json'}),body:JSON.stringify(body)});
       var result=await response.json();if(!response.ok)throw Error('게시 실패 ('+response.status+'). 토큰의 Contents 쓰기 권한과 브랜치 설정을 확인해 주세요.');
-      publicSha=result.content.sha;localStorage.removeItem(NOTICE_KEY);localStorage.removeItem(NEWS_KEY);
+      publicSha=result.content.sha; publishedState=JSON.stringify({notices:JSON.parse(payload).notices,news:JSON.parse(payload).news}); if(boardState()===publishedState){localStorage.removeItem(NOTICE_KEY);localStorage.removeItem(NEWS_KEY);} publicationPending=true; watchPublication(publicSha);
       status.textContent='GitHub 저장 완료. Pages 배포가 끝나면 방문자에게 공개됩니다.';
-    }catch(err){status.textContent=err.message;}finally{button.disabled=false;tokenInput.value='';token='';}
+    }catch(err){status.textContent=err.message;}finally{button.disabled=false;token='';}
   });
-  document.getElementById('adminLogout').addEventListener('click',function(){document.getElementById('publishToken').value='';draftLoaded=false;location.reload();});
+  document.getElementById('adminLogout').addEventListener('click',function(){document.getElementById('publishToken').value='';sessionStorage.removeItem('lk_github_token');draftLoaded=false;location.reload();});
+
+  function saveEditor(kind){
+    if(!isAdminAuthed())return;
+    var draft={id:document.getElementById(kind+'EditId').value,date:document.getElementById(kind+'Date').value,title:document.getElementById(kind+'Title').value,body:document.getElementById(kind+'Body').value,images:attached[kind]};
+    var label=document.getElementById(kind+'Autosave');
+    try{localStorage.setItem('lk_editor_'+kind,JSON.stringify(draft));autosaveFailed=false;label.textContent='초안 자동 저장됨 · 미공개';}
+    catch(e){autosaveFailed=true;label.textContent='자동 저장 실패 · 창을 닫기 전에 등록·게시해 주세요';}
+  }
+  function restoreEditors(){
+    if(!isAdminAuthed())return;
+    ['notice','news'].forEach(function(kind){
+      try{var raw=localStorage.getItem('lk_editor_'+kind);if(!raw)return;var draft=JSON.parse(raw);
+        document.getElementById(kind+'EditId').value=draft.id||'';
+        document.getElementById(kind+'Date').value=draft.date||'';
+        document.getElementById(kind+'Title').value=draft.title||'';
+        document.getElementById(kind+'Body').value=draft.body||'';
+        attached[kind]=draft.images||[];previewPhotos(kind);
+        document.getElementById(kind+'SubmitBtn').textContent=draft.id?'수정 저장':'등록';
+        document.getElementById(kind+'CancelEdit').hidden=!draft.id;
+        document.getElementById(kind+'Autosave').textContent='작성 중이던 초안 복원됨 · 미공개';
+      }catch(e){}
+    });
+  }
+  ['notice','news'].forEach(function(kind){
+    document.getElementById(kind+'Form').addEventListener('input',function(){saveEditor(kind);});
+    document.getElementById(kind+'PreviewPost').addEventListener('click',function(){
+      var n={body:document.getElementById(kind+'Body').value,images:attached[kind]};
+      document.getElementById('postPreviewBody').innerHTML='<h1>'+escapeText(document.getElementById(kind+'Title').value||'제목 없음')+'</h1><p class="muted">'+escapeText(document.getElementById(kind+'Date').value)+'</p><div class="notice-detail-body">'+bodyToParagraphs(n.body)+postImages(n)+'</div>';
+      document.getElementById('postPreview').showModal();
+    });
+    document.getElementById(kind+'DiscardDraft').addEventListener('click',function(){if(confirm('작성 중인 내용과 첨부 사진을 비울까요? 등록된 게시물은 유지됩니다.')){if(kind==='notice')noticeResetForm();else newsResetForm();}});
+  });
+  document.getElementById('closePostPreview').addEventListener('click',function(){document.getElementById('postPreview').close();});
+  document.querySelectorAll('[data-copy-post]').forEach(function(btn){btn.addEventListener('click',async function(){
+    var url='https://lowkeyrecordz.github.io/web/'+location.hash;
+    try{await navigator.clipboard.writeText(url);btn.textContent='복사됨';setTimeout(function(){btn.textContent='링크 복사';},2000);}catch(e){prompt('아래 주소를 복사해 주세요.',url);}
+  });});
+  try{document.getElementById('publishToken').value=sessionStorage.getItem('lk_github_token')||'';}catch(e){}
+  document.getElementById('publishToken').addEventListener('input',function(e){try{if(e.target.value.trim())sessionStorage.setItem('lk_github_token',e.target.value.trim());else sessionStorage.removeItem('lk_github_token');}catch(err){}});
+  document.getElementById('adminLoginForm').addEventListener('submit',function(){if(isAdminAuthed()){restoreEditors();updateStatus();}});
+  restoreEditors();
+  window.addEventListener('beforeunload',function(e){if(autosaveFailed){e.preventDefault();e.returnValue='';}});
+  async function watchPublication(expectedSha,attempt){
+    attempt=attempt||0;clearTimeout(pendingTimer);
+    try{var response=await fetch('./posts.json?t='+Date.now(),{cache:'no-store'});if(response.ok&&await blobSha(await response.text())===expectedSha){publicationPending=false;updateStatus();if(boardState()===publishedState)document.getElementById('publishStatus').textContent='공개 반영 확인 완료';return;}}catch(e){}
+    if(attempt>=19){document.getElementById('publishStatus').textContent='GitHub 저장 완료 · 공개 반영 미확인. GitHub Actions에서 배포 상태를 확인해 주세요.';return;}
+    pendingTimer=setTimeout(function(){watchPublication(expectedSha,attempt+1);},15000);
+  }
 
 })();
 </script>
