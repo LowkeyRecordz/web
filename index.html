@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://lowkeyrecordz.github.io/web/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@400&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0c0c0e;
@@ -397,6 +397,12 @@
   }
 .artist-socials{display:flex;gap:18px;margin-top:28px}.artist-socials a{color:var(--fg-muted);padding:5px}.artist-socials a:hover{color:var(--fg)}.artist-socials svg{width:20px;height:20px}.post-photo{max-width:100%;height:auto;margin:24px auto}.notice-detail-body a{text-decoration:underline;overflow-wrap:anywhere}.photo-preview{display:flex;gap:10px;flex-wrap:wrap}.photo-preview button img{width:90px;height:90px;object-fit:cover}.publish-settings{border:1px solid var(--line);padding:20px;margin-bottom:20px;font-size:12px}.publish-settings label{display:block;margin:12px 0}.publish-settings input{max-width:100%;background:var(--bg);color:var(--fg);border:1px solid var(--line);padding:8px}.publish-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-bottom:28px;font-size:12px}.publish-actions button{background:var(--fg);color:var(--bg);padding:12px 20px;border-radius:24px}
 .autosave-status{font-size:11px;color:var(--fg-muted);align-self:center}.form-actions{flex-wrap:wrap}.copy-post{font-size:12px;border:1px solid var(--line);border-radius:24px;padding:10px 18px;margin-top:24px;color:var(--fg-muted)}.post-preview-dialog{background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:8px;width:min(820px,92vw);max-height:85vh;padding:30px}.post-preview-dialog::backdrop{background:#000b}.preview-close{float:right;padding:6px}.post-preview-dialog h1{font-size:28px;overflow-wrap:anywhere}.post-preview-dialog .notice-detail-body{margin-top:20px;padding-top:20px}
+
+.notice-detail-body{font-size:13px;line-height:1.75;letter-spacing:.015em;color:var(--fg-muted);margin-top:28px;padding-top:28px}
+.notice-detail-body p{margin:0 0 12px}.notice-detail-body p:last-child{margin-bottom:0}.notice-detail-title{font-size:clamp(22px,3vw,30px);line-height:1.35}
+.post-typography{font-size:var(--post-size,13px);line-height:1.75;overflow-wrap:anywhere}.post-font-sans{font-family:var(--font-body)}.post-font-serif{font-family:Georgia,'Noto Serif KR',serif}.post-font-mono{font-family:'Courier New',monospace}
+.post-media{margin:20px 0;width:var(--media-width,100%);max-width:100%}.post-media.align-center{margin-left:auto;margin-right:auto}.post-media.align-left{margin-right:auto}.post-media.align-right{margin-left:auto}.post-media img{width:100%;height:auto;display:block}.post-video{aspect-ratio:16/9;width:100%;border:0;display:block}.video-link{display:inline-block;padding:10px 16px;border:1px solid var(--line);border-radius:2px;text-decoration:none!important}.editor-tools{border:1px solid var(--line);padding:16px;display:grid;gap:12px}.editor-help{font-size:11px;line-height:1.7;margin:0;color:var(--fg-muted)}.editor-insert,.photo-item button{padding:7px 10px;border:1px solid var(--line);font-size:11px;border-radius:3px;align-self:end}.photo-item{display:flex;flex-direction:column;gap:6px;width:130px}.photo-item img{width:130px;height:100px;object-fit:cover}.photo-item small{font-size:11px}.photo-item-actions{display:flex;flex-wrap:wrap;gap:4px}
+@media(max-width:600px){.notice-detail-wrap{padding-top:115px}.post-typography{font-size:max(13px,var(--post-size,13px))}.editor-tools .form-row{gap:10px}}
 </style>
 </head>
 <body>
@@ -592,11 +598,11 @@
   <div class="admin-login-wrap">
     <h2>ADMIN LOGIN</h2>
     <form id="adminLoginForm">
-      <input type="password" id="adminPassword" placeholder="비밀번호" autocomplete="current-password" required>
+      <input type="password" id="adminPassword" placeholder="GitHub 액세스 토큰" autocomplete="off" spellcheck="false" required>
       <button type="submit" class="primary" style="border:1px solid var(--fg);border-radius:999px;padding:11px;background:var(--fg);color:var(--bg);font-weight:600;">로그인</button>
     </form>
-    <p class="admin-error" id="adminLoginError" hidden>비밀번호가 올바르지 않습니다.</p>
-    <p class="admin-hint">로그인 후 글과 사진을 저장하고 ‘전체 게시’를 누르면 공개 사이트에 반영됩니다.</p>
+    <p class="admin-error" id="adminLoginError" hidden>GitHub 토큰과 저장소 권한을 확인해 주세요.</p>
+    <p class="admin-hint">lowkeyrecordz/web에 접근할 수 있는 GitHub 토큰으로 로그인하세요. 게시에는 Contents: Read and write 권한이 필요합니다. 토큰은 현재 페이지 메모리에만 보관하며 새로고침·탭 닫기·로그아웃 시 지워집니다.</p>
   </div>
 </section>
 
@@ -611,8 +617,8 @@
 <p>저장소는 lowkeyrecordz/web입니다. GitHub Pages에서 사용하는 브랜치와 경로를 입력하세요.</p>
 <label>브랜치 <input id="publishBranch" value="main"></label>
 <label>게시판 파일 경로 <input id="publishPath" value="posts.json"></label>
-<label>GitHub 토큰 <input id="publishToken" type="password" autocomplete="off" placeholder="선택한 저장소 Contents: Read and write"></label>
-<p>토큰은 이 탭에서 기억하며 로그아웃 시 삭제됩니다. 공용 기기에서는 사용 후 로그아웃해 주세요.</p>
+<p>GitHub 인증 연결됨 · 로그인한 계정의 권한으로 게시합니다.</p>
+<p>로그아웃하거나 새로고침하면 다시 인증해야 합니다. 페이지를 열어둔 동안에는 반복 입력 없이 게시할 수 있습니다.</p>
 </details>
 <div class="publish-actions"><button id="publishAll">전체 게시</button><span id="publishStatus" role="status" aria-live="polite">공개 상태 확인 중…</span></div>
 <div class="admin-tabs">
@@ -628,7 +634,11 @@
           <input type="hidden" id="noticeTag" value="NOTICE">
         </div>
         <label>제목<input type="text" id="noticeTitle" required></label>
-        <label>본문 (줄바꿈으로 문단이 나뉩니다)<textarea id="noticeBody" rows="5" required></textarea></label>
+        <div class="editor-tools">
+<div class="form-row"><label>본문 서체<select id="noticeFont"><option value="sans">산세리프 · 기본</option><option value="serif">명조 · 에세이</option><option value="mono">고정폭 · 크레딧</option></select></label><label>글자 크기<select id="noticeSize"><option value="13">13px · 기본</option><option value="12">12px · 작게</option><option value="14">14px</option><option value="16">16px</option></select></label></div>
+<div class="form-row"><label>사진 기본 위치<select id="noticePlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="noticeWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="noticeAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
+<label>영상 주소<input type="url" id="noticeVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="noticeVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="notice">커서 위치에 영상 삽입</button></div>
+<p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="noticeBody" rows="5" required></textarea></label>
         <label>사진 추가 (최대 6장)<input type="file" id="noticeImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="noticePreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="noticeSubmitBtn">등록</button>
@@ -643,7 +653,11 @@
         <input type="hidden" id="newsEditId">
         <label>날짜<input type="date" id="newsDate" required></label>
         <label>제목<input type="text" id="newsTitle" required></label>
-        <label>본문 (줄바꿈으로 문단이 나뉩니다)<textarea id="newsBody" rows="5" required></textarea></label>
+        <div class="editor-tools">
+<div class="form-row"><label>본문 서체<select id="newsFont"><option value="sans">산세리프 · 기본</option><option value="serif">명조 · 에세이</option><option value="mono">고정폭 · 크레딧</option></select></label><label>글자 크기<select id="newsSize"><option value="13">13px · 기본</option><option value="12">12px · 작게</option><option value="14">14px</option><option value="16">16px</option></select></label></div>
+<div class="form-row"><label>사진 기본 위치<select id="newsPlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="newsWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="newsAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
+<label>영상 주소<input type="url" id="newsVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="newsVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="news">커서 위치에 영상 삽입</button></div>
+<p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="newsBody" rows="5" required></textarea></label>
         <label>사진 추가 (최대 6장)<input type="file" id="newsImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="newsPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="newsSubmitBtn">등록</button>
@@ -691,7 +705,7 @@
       <h4>개인정보와 이메일 문의</h4>
       <p>이 사이트는 방문자를 위한 회원가입이나 개인정보 입력 양식을 운영하지 않습니다. 이메일로 문의하시면 보내주신 이메일 주소와 문의 내용을 확인하여 답변 및 관련 업무 연락에 이용합니다. 문의 시 불필요한 개인정보는 보내지 않으셔도 됩니다.</p>
       <h4>브라우저 저장 기능</h4>
-      <p>현재 사이트 코드에는 방문자 분석이나 광고 추적 도구가 포함되어 있지 않습니다. 안내 확인 여부와 게시판 초안은 사용 중인 브라우저에 저장되며, 관리자 로그인 상태는 세션 저장소에 저장됩니다. 관리자가 전체 게시를 실행하면 글과 사진이 GitHub 저장소에 전송되어 공개됩니다. GitHub 토큰은 현재 탭의 세션 저장소에 보관하며 로그아웃 시 삭제됩니다. 사이트 파일이나 GitHub 게시물에는 포함하지 않습니다. 브라우저에 남은 데이터는 사이트 데이터 삭제 기능으로 지울 수 있습니다.</p>
+      <p>현재 사이트 코드에는 방문자 분석이나 광고 추적 도구가 포함되어 있지 않습니다. 안내 확인 여부와 게시판 초안은 사용 중인 브라우저에 저장되며, 관리자 로그인 상태는 세션 저장소에 저장됩니다. 관리자가 전체 게시를 실행하면 글과 사진이 GitHub 저장소에 전송되어 공개됩니다. GitHub 토큰은 현재 페이지 메모리에만 보관하며 새로고침·탭 닫기·로그아웃 시 지워집니다. 브라우저 저장소, 사이트 파일, 게시물에는 포함하지 않습니다. 브라우저에 남은 데이터는 사이트 데이터 삭제 기능으로 지울 수 있습니다.</p>
       <h4>외부 서비스</h4>
       <p>이 사이트는 GitHub Pages로 제공되며 Google Fonts에서 글꼴을 불러옵니다. 사이트 접속과 글꼴 로딩 과정에서 각 제공업체에 IP 주소 등 접속 정보가 전달될 수 있습니다. 외부 음원·영상 서비스로 이동하면 해당 서비스의 개인정보처리방침이 적용됩니다.</p>
       <h4>문의</h4>
@@ -703,6 +717,8 @@
 <script>
 (function(){
   "use strict";
+  var authToken="";
+  var authVerified=false;
 
   var TAG_LABELS = { NOTICE:'공지', DEMO:'데모 모집', COLLAB:'협업', RELEASE:'발매', VIDEO:'영상' };
 
@@ -758,10 +774,34 @@
     return (d||'').replace(/-/g,'.');
   }
   function escapeText(x){return String(x||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-  function bodyToParagraphs(body){
-    return (body||'').split('\n').filter(Boolean).map(function(p){return '<p>'+escapeText(p).replace(/https?:\/\/[^\s<]+/g,function(url){return '<a target="_blank" rel="noopener noreferrer" href="'+url+'">'+url+'</a>';})+'</p>';}).join('');
+  function safeUrl(value){try{var u=new URL(value);return u.protocol==='https:'||u.protocol==='http:'?u.href:'';}catch(e){return '';}}
+  function linkedText(text){return String(text||'').split(/(https?:\/\/[^\s<>]+)/g).map(function(part){var u=/^https?:\/\//.test(part)?safeUrl(part):'';return u?'<a target="_blank" rel="noopener noreferrer" href="'+escapeText(u)+'">'+escapeText(part)+'</a>':escapeText(part);}).join('');}
+  function bodyToParagraphs(body){return String(body||'').replace(/\r\n?/g,'\n').split(/\n[ \t]*\n+/).filter(Boolean).map(function(p){return '<p>'+p.split('\n').map(linkedText).join('<br>')+'</p>';}).join('');}
+  function readPresentation(k){return {font:document.getElementById(k+'Font').value,size:document.getElementById(k+'Size').value,placement:document.getElementById(k+'Placement').value,width:document.getElementById(k+'Width').value,align:document.getElementById(k+'Align').value,video:document.getElementById(k+'Video').value,videoMode:document.getElementById(k+'VideoMode').value};}
+  function applyPresentation(k,p){p=p||{};var defaults={Font:'sans',Size:'13',Placement:'after',Width:'100',Align:'center',Video:'',VideoMode:'embed'};Object.keys(defaults).forEach(function(name){var prop=name[0].toLowerCase()+name.slice(1);document.getElementById(k+name).value=p[prop]||defaults[name];});}
+  function normalizedPresentation(p){p=p||{};function pick(v,values,fallback){return values.includes(String(v))?String(v):fallback;}return {font:pick(p.font,['sans','serif','mono'],'sans'),size:pick(p.size,['12','13','14','16'],'13'),placement:pick(p.placement,['before','after','inline'],'after'),width:pick(p.width,['50','75','100'],'100'),align:pick(p.align,['left','center','right'],'center'),video:safeUrl(p.video),videoMode:pick(p.videoMode,['link','embed'],'embed')};}
+  function validImage(src){return typeof src==='string' && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=\r\n]+$/.test(src);}
+  function imageMarkup(src,p){return validImage(src)?'<figure class="post-media align-'+p.align+'" style="--media-width:'+p.width+'%"><img src="'+escapeText(src)+'" alt="게시물 사진" loading="lazy"></figure>':'';}
+  function postImages(n){var p=normalizedPresentation(n.presentation);return (n.images||[]).map(function(x){return imageMarkup(x,p);}).join('');}
+  function videoMarkup(p){if(!p.video)return '';var u=new URL(p.video),id='',embed='';
+    if(['youtube.com','www.youtube.com','m.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com'].includes(u.hostname)){id=u.searchParams.get('v')||u.pathname.match(/^\/(?:shorts|embed|live)\/([^/]+)/)?.[1]||'';}
+    else if(u.hostname==='youtu.be')id=u.pathname.slice(1);
+    if(/^[\w-]{11}$/.test(id))embed='https://www.youtube-nocookie.com/embed/'+id;
+    if(['vimeo.com','www.vimeo.com','player.vimeo.com'].includes(u.hostname)){var m=u.pathname.match(/^\/(?:video\/)?(\d+)\/?$/);if(m)embed='https://player.vimeo.com/video/'+m[1];}
+    if(p.videoMode==='embed'&&embed)return '<figure class="post-media align-center"><iframe class="post-video" src="'+embed+'" title="영상 재생" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe><a href="'+escapeText(p.video)+'" target="_blank" rel="noopener noreferrer">영상 원본 보기 ↗</a></figure>';
+    return '<p><a class="video-link" href="'+escapeText(p.video)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a></p>';
   }
-  function postImages(n){return (n.images||[]).filter(function(x){return /^data:image\/(jpeg|png|webp);base64,/.test(x);}).map(function(x){return '<img class="post-photo" src="'+x+'" alt="게시물 사진" loading="lazy">';}).join('');}
+  function renderPost(n){var p=normalizedPresentation(n.presentation),images=Array.isArray(n.images)?n.images:[],used=new Set(),videoUsed=false;
+    var parts=String(n.body||'').split(/(\[\[photo:\d+\]\]|\[\[video\]\])/g),content=parts.map(function(t){
+      var m=t.match(/^\[\[photo:(\d+)\]\]$/);if(m){var i=Number(m[1])-1;used.add(i);return imageMarkup(images[i],p);}
+      if(t==='[[video]]'){videoUsed=true;return videoMarkup(p);}return bodyToParagraphs(t);
+    }).join('');
+    var remaining=images.map(function(src,i){return used.has(i)?'':imageMarkup(src,p);}).join('');
+    content=p.placement==='before'?remaining+content:content+remaining;
+    if(!videoUsed)content+=videoMarkup(p);
+    return '<div class="post-typography post-font-'+p.font+'" style="--post-size:'+p.size+'px">'+content+'</div>';
+  }
+  function insertMarker(kind,marker){var area=document.getElementById(kind+'Body');var a=area.selectionStart||0,b=area.selectionEnd||a;area.value=area.value.slice(0,a)+'\n\n'+marker+'\n\n'+area.value.slice(b);area.focus();area.selectionStart=area.selectionEnd=a+marker.length+4;saveEditor(kind);}
   function uid(prefix){
     return prefix+'-'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   }
@@ -792,7 +832,7 @@
     items.forEach(function(n){
       var row = el('li','notice-row');
       row.innerHTML =
-        '<span class="n-date">'+fmtDate(n.date)+'</span>'+
+        '<span class="n-date">'+escapeText(fmtDate(n.date))+'</span>'+
         '<span class="n-title">'+escapeText(n.title)+'</span>'+
         '<span class="n-tag">'+'공지'+'</span>';
       row.addEventListener('click', function(){
@@ -810,9 +850,9 @@
       return;
     }
     wrap.innerHTML =
-      '<div class="notice-detail-meta"><span class="n-tag">'+'공지'+'</span><span class="n-date">'+fmtDate(n.date)+'</span></div>'+
+      '<div class="notice-detail-meta"><span class="n-tag">'+'공지'+'</span><span class="n-date">'+escapeText(fmtDate(n.date))+'</span></div>'+
       '<h1 class="notice-detail-title">'+escapeText(n.title)+'</h1>'+
-      '<div class="notice-detail-body">'+bodyToParagraphs(n.body)+postImages(n)+'</div>';
+      '<div class="notice-detail-body">'+renderPost(n)+'</div>';
   }
 
   function renderNewsList(){
@@ -825,7 +865,7 @@
     items.forEach(function(n){
       var row = el('li','notice-row');
       row.innerHTML =
-        '<span class="n-date">'+fmtDate(n.date)+'</span>'+
+        '<span class="n-date">'+escapeText(fmtDate(n.date))+'</span>'+
         '<span class="n-title">'+escapeText(n.title)+'</span>'+
         '<span class="n-tag"></span>';
       row.addEventListener('click', function(){
@@ -843,9 +883,9 @@
       return;
     }
     wrap.innerHTML =
-      '<div class="notice-detail-meta"><span class="n-date">'+fmtDate(n.date)+'</span></div>'+
+      '<div class="notice-detail-meta"><span class="n-date">'+escapeText(fmtDate(n.date))+'</span></div>'+
       '<h1 class="notice-detail-title">'+escapeText(n.title)+'</h1>'+
-      '<div class="notice-detail-body">'+bodyToParagraphs(n.body)+postImages(n)+'</div>';
+      '<div class="notice-detail-body">'+renderPost(n)+'</div>';
   }
 
   document.getElementById('noticeSearch').addEventListener('input', function(e){
@@ -953,37 +993,24 @@
   });
 
   /* ---------- ADMIN AUTH ---------- */
-  var ADMIN_PASSWORD = 'lowkey2026'; // 데모용 비밀번호 — 실서비스 전환 시 반드시 교체/서버 인증으로 대체하세요.
-  var ADMIN_SESSION_KEY = 'lk_admin_authed';
-
-  function isAdminAuthed(){
-    try{ return sessionStorage.getItem(ADMIN_SESSION_KEY)==='1'; }catch(e){ return false; }
-  }
-  function setAdminAuthed(v){
+  function isAdminAuthed(){return authVerified && !!authToken;}
+  try{sessionStorage.removeItem('lk_admin_authed');sessionStorage.removeItem('lk_github_token');}catch(e){}
+  document.getElementById('adminLoginForm').addEventListener('submit',async function(e){
+    e.preventDefault();var input=document.getElementById('adminPassword'),btn=this.querySelector('button'),err=document.getElementById('adminLoginError');
+    var candidate=input.value.trim();btn.disabled=true;err.hidden=true;
     try{
-      if(v) sessionStorage.setItem(ADMIN_SESSION_KEY,'1');
-      else sessionStorage.removeItem(ADMIN_SESSION_KEY);
-    }catch(e){}
-  }
-
-  document.getElementById('adminLoginForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    var val = document.getElementById('adminPassword').value;
-    var err = document.getElementById('adminLoginError');
-    if(val===ADMIN_PASSWORD){
-      setAdminAuthed(true);
-      document.getElementById('adminPassword').value='';
-      err.hidden = true;
-      enterAdminDashboard();
-      showView('view-admin');
-    }else{
-      err.hidden = false;
-    }
+      if(location.protocol!=='https:' && location.hostname!=='localhost')throw Error('배포된 HTTPS 사이트에서 로그인해 주세요.');
+      var r=await fetch('https://api.github.com/repos/lowkeyrecordz/web',{headers:{Authorization:'Bearer '+candidate,Accept:'application/vnd.github+json'},cache:'no-store'});
+      if(!r.ok)throw Error('GitHub 인증 실패. 토큰과 저장소 접근 권한을 확인해 주세요.');
+      var repo=await r.json();if(!repo.permissions || !repo.permissions.push)throw Error('이 저장소에 쓰기 권한이 있는 GitHub 계정으로 로그인해 주세요.');
+      await publicReady;if(publicLoadFailed)throw Error('공개 게시글을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.');
+      authToken=candidate;authVerified=true;input.value='';
+      enterAdminDashboard();showView('view-admin');location.hash='#/admin';restoreEditors();updateStatus();
+    }catch(ex){authToken='';authVerified=false;err.textContent=ex.message;err.hidden=false;input.value='';}
+    finally{candidate='';btn.disabled=false;}
   });
-
-  document.getElementById('adminLogout').addEventListener('click', function(){
-    setAdminAuthed(false);
-    location.hash = '#/';
+  document.getElementById('adminLogout').addEventListener('click',function(){
+    authToken='';authVerified=false;document.getElementById('adminPassword').value='';location.hash='#/';location.reload();
   });
 
   /* ---------- ADMIN TABS ---------- */
@@ -1014,7 +1041,7 @@
     NOTICES.slice().sort(function(a,b){return a.date<b.date?1:-1;}).forEach(function(n){
       var li = el('li');
       li.innerHTML =
-        '<span class="a-date">'+fmtDate(n.date)+'</span>'+
+        '<span class="a-date">'+escapeText(fmtDate(n.date))+'</span>'+
         '<span>'+escapeText(n.title)+'</span>'+
         '<span class="a-actions"><button data-edit>수정</button><button data-del>삭제</button></span>';
       li.querySelector('[data-edit]').addEventListener('click', function(){ noticeStartEdit(n.id); });
@@ -1036,6 +1063,7 @@
     document.getElementById('noticeDate').value = n.date;
     document.getElementById('noticeTag').value = 'NOTICE';
     document.getElementById('noticeTitle').value = n.title;
+    applyPresentation('notice',n.presentation);
     document.getElementById('noticeBody').value = n.body; attached.notice=(n.images||[]).slice(); previewPhotos('notice');
     document.getElementById('noticeSubmitBtn').textContent = '수정 저장';
     document.getElementById('noticeCancelEdit').hidden = false;
@@ -1053,6 +1081,7 @@
 
   document.getElementById('noticeForm').addEventListener('submit', function(e){
     e.preventDefault();
+    if(!isAdminAuthed())return;
     var id = document.getElementById('noticeEditId').value;
     var data = {
       id: id || uid('notice'),
@@ -1060,7 +1089,8 @@
       tag: document.getElementById('noticeTag').value,
       title: document.getElementById('noticeTitle').value.trim(),
       body: document.getElementById('noticeBody').value.trim(),
-      images: attached.notice.slice()
+      images: attached.notice.slice(),
+      presentation: readPresentation('notice')
     };
     if(id){
       NOTICES = NOTICES.map(function(n){ return n.id===id ? data : n; });
@@ -1084,7 +1114,7 @@
     NEWS.slice().sort(function(a,b){return a.date<b.date?1:-1;}).forEach(function(n){
       var li = el('li');
       li.innerHTML =
-        '<span class="a-date">'+fmtDate(n.date)+'</span>'+
+        '<span class="a-date">'+escapeText(fmtDate(n.date))+'</span>'+
         '<span>'+escapeText(n.title)+'</span>'+
         '<span class="a-actions"><button data-edit>수정</button><button data-del>삭제</button></span>';
       li.querySelector('[data-edit]').addEventListener('click', function(){ newsStartEdit(n.id); });
@@ -1105,6 +1135,7 @@
     document.getElementById('newsEditId').value = n.id;
     document.getElementById('newsDate').value = n.date;
     document.getElementById('newsTitle').value = n.title;
+    applyPresentation('news',n.presentation);
     document.getElementById('newsBody').value = n.body; attached.news=(n.images||[]).slice(); previewPhotos('news');
     document.getElementById('newsSubmitBtn').textContent = '수정 저장';
     document.getElementById('newsCancelEdit').hidden = false;
@@ -1122,13 +1153,15 @@
 
   document.getElementById('newsForm').addEventListener('submit', function(e){
     e.preventDefault();
+    if(!isAdminAuthed())return;
     var id = document.getElementById('newsEditId').value;
     var data = {
       id: id || uid('news'),
       date: document.getElementById('newsDate').value,
       title: document.getElementById('newsTitle').value.trim(),
       body: document.getElementById('newsBody').value.trim(),
-      images: attached.news.slice()
+      images: attached.news.slice(),
+      presentation: readPresentation('news')
     };
     if(id){
       NEWS = NEWS.map(function(n){ return n.id===id ? data : n; });
@@ -1143,8 +1176,12 @@
 
   function previewPhotos(kind){
     var box=document.getElementById(kind+'Preview');box.replaceChildren();
-    attached[kind].forEach(function(src,i){var btn=document.createElement('button');btn.type='button';btn.title='사진 삭제';var im=document.createElement('img');im.src=src;im.alt='첨부 사진 '+(i+1);btn.appendChild(im);btn.onclick=function(){attached[kind].splice(i,1);previewPhotos(kind);};box.appendChild(btn);});
-    saveEditor(kind);
+    attached[kind].forEach(function(src,i){var card=document.createElement('div');card.className='photo-item';var im=document.createElement('img');im.src=validImage(src)?src:'';im.alt='사진 '+(i+1);card.appendChild(im);var label=document.createElement('small');label.textContent='사진 '+(i+1);card.appendChild(label);var actions=document.createElement('div');actions.className='photo-item-actions';
+      function button(title,fn){var b=document.createElement('button');b.type='button';b.textContent=title;b.addEventListener('click',fn);actions.appendChild(b);}
+      button('본문에 삽입',function(){document.getElementById(kind+'Placement').value='inline';insertMarker(kind,'[[photo:'+(i+1)+']]');});
+      button('삭제',function(){attached[kind].splice(i,1);var area=document.getElementById(kind+'Body');area.value=area.value.replace(/\[\[photo:(\d+)\]\]/g,function(all,num){num=Number(num);return num===i+1?'':num>i+1?'[[photo:'+(num-1)+']]':all;});previewPhotos(kind);});
+      card.appendChild(actions);box.appendChild(card);
+    });saveEditor(kind);
   }
   ['notice','news'].forEach(function(kind){
     document.getElementById(kind+'Images').addEventListener('change',async function(e){
@@ -1175,10 +1212,10 @@
     }catch(err){publicLoadFailed=true;document.getElementById('publishStatus').textContent='게시글 읽기 실패. 새로고침 후 다시 시도해 주세요.';}
   })();
   document.getElementById('publishAll').addEventListener('click',async function(){
-    var button=this,status=document.getElementById('publishStatus'),tokenInput=document.getElementById('publishToken');
-    var token=tokenInput.value.trim(),branch=document.getElementById('publishBranch').value.trim(),path=document.getElementById('publishPath').value.trim();
-    if(token){sessionStorage.setItem('lk_github_token',token);}
-    if(!token){status.textContent='GitHub 게시 설정에서 토큰을 입력해 주세요.';return;}
+    var button=this,status=document.getElementById('publishStatus');
+    var token=authToken,branch=document.getElementById('publishBranch').value.trim(),path=document.getElementById('publishPath').value.trim();
+    if(!isAdminAuthed()){status.textContent='GitHub 인증이 필요합니다.';return;}
+    if(!token){status.textContent='GitHub 토큰으로 다시 로그인해 주세요.';return;}
     if(!branch||!/^([\w.-]+\/)*posts\.json$/.test(path)){status.textContent='브랜치와 posts.json 파일 경로를 확인해 주세요.';return;}
     button.disabled=true;status.textContent='게시 중…';
     try{
@@ -1201,11 +1238,11 @@
       status.textContent='GitHub 저장 완료. Pages 배포가 끝나면 방문자에게 공개됩니다.';
     }catch(err){status.textContent=err.message;}finally{button.disabled=false;token='';}
   });
-  document.getElementById('adminLogout').addEventListener('click',function(){document.getElementById('publishToken').value='';sessionStorage.removeItem('lk_github_token');draftLoaded=false;location.reload();});
+
 
   function saveEditor(kind){
     if(!isAdminAuthed())return;
-    var draft={id:document.getElementById(kind+'EditId').value,date:document.getElementById(kind+'Date').value,title:document.getElementById(kind+'Title').value,body:document.getElementById(kind+'Body').value,images:attached[kind]};
+    var draft={id:document.getElementById(kind+'EditId').value,date:document.getElementById(kind+'Date').value,title:document.getElementById(kind+'Title').value,body:document.getElementById(kind+'Body').value,images:attached[kind],presentation:readPresentation(kind)};
     var label=document.getElementById(kind+'Autosave');
     try{localStorage.setItem('lk_editor_'+kind,JSON.stringify(draft));autosaveFailed=false;label.textContent='초안 자동 저장됨 · 미공개';}
     catch(e){autosaveFailed=true;label.textContent='자동 저장 실패 · 창을 닫기 전에 등록·게시해 주세요';}
@@ -1218,7 +1255,7 @@
         document.getElementById(kind+'Date').value=draft.date||'';
         document.getElementById(kind+'Title').value=draft.title||'';
         document.getElementById(kind+'Body').value=draft.body||'';
-        attached[kind]=draft.images||[];previewPhotos(kind);
+        applyPresentation(kind,draft.presentation);attached[kind]=draft.images||[];previewPhotos(kind);
         document.getElementById(kind+'SubmitBtn').textContent=draft.id?'수정 저장':'등록';
         document.getElementById(kind+'CancelEdit').hidden=!draft.id;
         document.getElementById(kind+'Autosave').textContent='작성 중이던 초안 복원됨 · 미공개';
@@ -1227,9 +1264,10 @@
   }
   ['notice','news'].forEach(function(kind){
     document.getElementById(kind+'Form').addEventListener('input',function(){saveEditor(kind);});
+    document.getElementById(kind+'Form').addEventListener('change',function(){saveEditor(kind);});
     document.getElementById(kind+'PreviewPost').addEventListener('click',function(){
-      var n={body:document.getElementById(kind+'Body').value,images:attached[kind]};
-      document.getElementById('postPreviewBody').innerHTML='<h1>'+escapeText(document.getElementById(kind+'Title').value||'제목 없음')+'</h1><p class="muted">'+escapeText(document.getElementById(kind+'Date').value)+'</p><div class="notice-detail-body">'+bodyToParagraphs(n.body)+postImages(n)+'</div>';
+      var n={body:document.getElementById(kind+'Body').value,images:attached[kind],presentation:readPresentation(kind)};
+      document.getElementById('postPreviewBody').innerHTML='<h1>'+escapeText(document.getElementById(kind+'Title').value||'제목 없음')+'</h1><p class="muted">'+escapeText(document.getElementById(kind+'Date').value)+'</p><div class="notice-detail-body">'+renderPost(n)+'</div>';
       document.getElementById('postPreview').showModal();
     });
     document.getElementById(kind+'DiscardDraft').addEventListener('click',function(){if(confirm('작성 중인 내용과 첨부 사진을 비울까요? 등록된 게시물은 유지됩니다.')){if(kind==='notice')noticeResetForm();else newsResetForm();}});
@@ -1239,9 +1277,6 @@
     var url='https://lowkeyrecordz.github.io/web/'+location.hash;
     try{await navigator.clipboard.writeText(url);btn.textContent='복사됨';setTimeout(function(){btn.textContent='링크 복사';},2000);}catch(e){prompt('아래 주소를 복사해 주세요.',url);}
   });});
-  try{document.getElementById('publishToken').value=sessionStorage.getItem('lk_github_token')||'';}catch(e){}
-  document.getElementById('publishToken').addEventListener('input',function(e){try{if(e.target.value.trim())sessionStorage.setItem('lk_github_token',e.target.value.trim());else sessionStorage.removeItem('lk_github_token');}catch(err){}});
-  document.getElementById('adminLoginForm').addEventListener('submit',function(){if(isAdminAuthed()){restoreEditors();updateStatus();}});
   restoreEditors();
   window.addEventListener('beforeunload',function(e){if(autosaveFailed){e.preventDefault();e.returnValue='';}});
   async function watchPublication(expectedSha,attempt){
@@ -1251,6 +1286,7 @@
     pendingTimer=setTimeout(function(){watchPublication(expectedSha,attempt+1);},15000);
   }
 
+  document.querySelectorAll('[data-insert-video]').forEach(function(b){b.addEventListener('click',function(){insertMarker(b.getAttribute('data-insert-video'),'[[video]]');});});
 })();
 </script>
 </body>
