@@ -815,6 +815,19 @@
     return e;
   }
 
+  function postDateValue(post){
+    var match=String(post.date||'').trim().match(/^(\d{4})[-./](\d{1,2})[-./](\d{1,2})(?:$|T|\s)/);
+    if(!match)return -Infinity;
+    var year=Number(match[1]),month=Number(match[2]),day=Number(match[3]);
+    var date=new Date(0);date.setUTCHours(0,0,0,0);date.setUTCFullYear(year,month-1,day);
+    if(date.getUTCFullYear()!==year||date.getUTCMonth()!==month-1||date.getUTCDate()!==day)return -Infinity;
+    return date.getTime();
+  }
+  function newestPostFirst(a,b){
+    var first=postDateValue(a),second=postDateValue(b);
+    return first===second?0:first>second?-1:1;
+  }
+
   function renderNoticeList(){
     var list = document.getElementById('noticeList');
     list.innerHTML = '';
@@ -823,7 +836,7 @@
       var matchFilter = noticeState.filter==='all' || n.tag===noticeState.filter;
       var matchQuery = !q || n.title.toLowerCase().indexOf(q)>-1;
       return matchFilter && matchQuery;
-    });
+    }).sort(newestPostFirst);
     if(items.length===0){
       var empty = el('li','notice-empty',NOTICES.length ? '검색 결과가 없습니다.' : '등록된 공지가 없습니다.');
       list.appendChild(empty);
@@ -859,7 +872,7 @@
     var list = document.getElementById('newsList');
     var empty = document.getElementById('newsEmpty');
     list.innerHTML = '';
-    var items = NEWS.slice().sort(function(a,b){ return a.date < b.date ? 1 : -1; });
+    var items = NEWS.slice().sort(newestPostFirst);
     if(items.length===0){ empty.hidden = false; return; }
     empty.hidden = true;
     items.forEach(function(n){
@@ -1038,7 +1051,7 @@
       ul.innerHTML = '<li class="admin-empty">등록된 공지가 없습니다.</li>';
       return;
     }
-    NOTICES.slice().sort(function(a,b){return a.date<b.date?1:-1;}).forEach(function(n){
+    NOTICES.slice().sort(newestPostFirst).forEach(function(n){
       var li = el('li');
       li.innerHTML =
         '<span class="a-date">'+escapeText(fmtDate(n.date))+'</span>'+
@@ -1111,7 +1124,7 @@
       ul.innerHTML = '<li class="admin-empty">등록된 뉴스가 없습니다.</li>';
       return;
     }
-    NEWS.slice().sort(function(a,b){return a.date<b.date?1:-1;}).forEach(function(n){
+    NEWS.slice().sort(newestPostFirst).forEach(function(n){
       var li = el('li');
       li.innerHTML =
         '<span class="a-date">'+escapeText(fmtDate(n.date))+'</span>'+
