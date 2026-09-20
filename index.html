@@ -758,6 +758,16 @@ body.lk-playing{overflow:hidden}body.lk-playing>.site-header,body.lk-playing>hea
   .xw-status i:after{animation-duration:.01s!important}
   .xp-balloon.on{animation:none}
 }
+.frag{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff2e63;opacity:.55;cursor:pointer;vertical-align:middle;margin:0 5px;box-shadow:0 0 4px #ff2e63}
+.frag.nj{background:#0a3fd6;box-shadow:0 0 4px #0a3fd6}
+.frag:hover{opacity:1;transform:scale(1.6)}
+.crt .cur[data-frag]{cursor:pointer}
+#lk-arcade.h1 .xp-wall{filter:saturate(1.1) hue-rotate(-8deg)}
+#lk-arcade.h2 .xp-wall{filter:saturate(.8) hue-rotate(-25deg) contrast(1.1)}
+#lk-arcade.h3 .xp-wall{filter:saturate(.5) hue-rotate(-50deg) contrast(1.2) brightness(.85);animation:wallglitch 7s steps(1) infinite}
+#lk-arcade.h2:after,#lk-arcade.h3:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:8000;background:repeating-linear-gradient(0deg,rgba(0,0,0,.09) 0 1px,transparent 1px 3px)}
+@keyframes wallglitch{0%,93%,100%{transform:none}94%{transform:translateX(-6px) skewX(2deg)}96%{transform:translateX(5px)}}
+@media(prefers-reduced-motion:reduce){#lk-arcade.h3 .xp-wall{animation:none}}
 
 </style>
 </head>
@@ -2047,7 +2057,7 @@ const REL=[
   p:['원곡과 [slow mode], [sped up] 버전이 함께 올라와 있습니다. agree 이전의 마지막 싱글로 보도됐습니다.'],
   l:[['Bugs 크레딧','https://music.bugs.co.kr/album/20696578'],['Apple Music',SRC.karApple]]},
  {id:'agree',y:'2026.08',t:'agree',f:'',k:'싱글',new:1,
-  c:[['Artist','Karacin Jr.'],['Production','Nike Jean (보도자료)'],['Genre','Trap / R&B / Pop'],['Release','2026.08'],['M/V','2026.09.17'],['Lyrics','17개 언어 번역 제공']],
+  c:[['Artist','Karacin Jr.'],['Production','Nike Jean'],['Genre','Trap / R&B / Pop'],['Release','2026.08'],['M/V','2026.09.17'],['Lyrics','17개 언어 번역']],
   p:['관계가 더 가까워지기 직전의 긴장과 갈망을 다룬 곡. 느슨한 리듬, 절제된 보컬, 넓게 깔리는 신스가 몽환적인 분위기를 만듭니다.','M/V는 금단의 열매와 뱀, 재탄생의 이미지를 통해 욕망이 선택으로, 선택이 변화로 이어지는 흐름을 그립니다.'],
   l:[['M/V (YouTube)',SRC.agreeMV],['Spotify',SRC.agreeSpotify],['Linktree',SRC.linktree]]}
 ];
@@ -2096,7 +2106,7 @@ def('lowkey/index.htm','LOWKEY 포털',()=>`<div class="pg pg-portal">
  <div class="dir">
   <div class="box"><h3>▶ 아티스트 홈페이지</h3><ul><li><a data-go="karacin/enter.htm">카라신 주니어 (Karacin Jr.)</a></li><li><a data-go="nikejean/enter.htm">나이키 진 (Nike Jean)</a></li><li>${ext('https://lowkeyrecordz.github.io/web/#/artist/semi','세미 (Semi) — 공식 사이트')}</li></ul></div>
   <div class="box"><h3>▶ 오늘의 소식</h3><ul><li>2026.09.17 · <a data-go="karacin/press.htm">agree M/V 공개</a></li><li>2026.08 · <a data-go="karacin/rel/agree.htm">싱글 agree 발매</a></li><li>2026.01.11 · <a data-go="nikejean/semi.htm">Semi 데뷔 싱글 Dreamed of You</a></li></ul></div>
-  <div class="box"><h3>▶ 자료실</h3><ul><li><a data-go="karacin/discography.htm">카라신 주니어 디스코그래피</a></li><li><a data-go="nikejean/credits.htm">Nike Jean 프로덕션 크레딧</a></li><li><a data-go="karacin/press.htm">보도자료 모음</a></li><li><a data-go="karacin/lyrics.htm">가사방 (원문 대신 곡 노트)</a></li></ul></div>
+  <div class="box"><h3>▶ 자료실</h3><ul><li><a data-go="karacin/discography.htm">카라신 주니어 디스코그래피</a></li><li><a data-go="nikejean/credits.htm">Nike Jean 프로덕션 크레딧</a></li><li><a data-go="karacin/press.htm">보도자료 모음</a></li><li><a data-go="karacin/lyrics.htm">가사방</a></li></ul></div>
   <div class="box"><h3>▶ 놀이터</h3><ul><li><a data-app="beat">BEAT MAKER</a></li><li><a data-app="games">GAMES 폴더</a></li><li><a data-app="chat">LOWKEY 메신저</a></li><li><a data-go="karacin/guestbook.htm">방명록 남기기</a></li></ul></div>
  </div>
  <div class="ctr" style="padding:8px 12px 18px;color:#556;font-size:11px;border-top:1px solid #cfd8ea">LOWKEY RECORDZ는 알앤비, 트랩, 팝과 전자음악을 기반으로 아티스트와 프로듀서의 음악을 제작하고 발매하는 독립 레이블입니다.<br><a data-exit="1">← 공식 사이트로 돌아가기</a></div></div>`,null,'portal home 포털 로우키');
@@ -2126,7 +2136,7 @@ def('karacin/index.htm','KARACIN JR. HOME',()=>karFrame('index',`
   <tr><td>2026.08</td><td><a data-go="karacin/rel/agree.htm">싱글 “agree” 발매</a> · Nike Jean 프로덕션</td></tr>
   <tr><td>2025</td><td><a data-go="karacin/rel/nonstop.htm">NONSTOP (feat. Weedie Mane)</a> 3 버전</td></tr>
   <tr><td>2021</td><td><a data-go="karacin/rel/onnana.htm">ONNANA (온난화)</a> · <a data-go="karacin/rel/tof.htm">T.O.F EP</a></td></tr></table></div>
- <div class="ctr" style="margin-top:14px">당신은 이 컴퓨터에서 ${digits(visits())} 번째 방문자입니다.<br><span style="color:#a89bd4;font-size:11px">(이 브라우저에 저장된 기록이며 실제 방문자 수가 아닙니다)</span></div>
+ <div class="ctr" style="margin-top:14px">당신은 이 컴퓨터에서 ${digits(visits())} 번째 방문자입니다.<br><span style="color:#a89bd4;font-size:11px">(이 브라우저에 저장된 기록이며 실제 방문자 수가 아닙니다)</span> <i class="frag" data-frag="k1" role="button" aria-label="작은 점"></i></div>
  <div class="ctr" style="margin-top:10px">${b88('★ WEBRING ★','#ff2e63')}${b88('NETSCAPE<br>NOW!','#008080')}${b88('MADE ON<br>NOTEPAD','#ffd400','#000')}</div>`,true),null,'karacin jr 카라신 주니어 홈 home about 소개 trap soul r&b');
 
 /* KARACIN — discography */
@@ -2136,7 +2146,7 @@ def('karacin/discography.htm','DISCOGRAPHY',()=>karFrame('discography',`
  <div class="kar-box"><h3>■ 그 밖의 곡 (연도 미확인)</h3><p style="margin:0 0 6px;font-size:12px;color:#a89bd4">공개 음원 목록에서 확인된 제목입니다. 발매일은 스트리밍 서비스에서 확인해 주세요.</p>
   <ul style="margin:0;padding-left:18px">${MORE.map(([t,f])=>`<li>${t==='Mang Cut'?`<a data-go="nikejean/credits.htm">${t}</a>`:esc(t)} <small style="color:#a89bd4">${esc(f)}</small></li>`).join('')}</ul></div>
  <div class="kar-box"><h3>■ GUEST / FEAT.</h3><ul style="margin:0;padding-left:18px">${GUEST.map(([a,t])=>`<li>${esc(a)} — ${esc(t)}</li>`).join('')}</ul></div>
- <p style="font-size:11px;color:#a89bd4">출처: Apple Music, YouTube, Bugs, Mnet, maniadb 등 공개 정보. 빠진 곡이나 잘못된 정보는 <a data-go="karacin/guestbook.htm">방명록</a>이나 레이블 메일로 알려주세요.</p>`),null,'discography 디스코그래피 앨범 싱글 목록 release');
+ <p style="font-size:11px;color:#a89bd4">출처: Apple Music, YouTube, Bugs, Mnet, maniadb 등 공개 정보. 빠진 곡이나 잘못된 정보는 <a data-go="karacin/guestbook.htm">방명록</a>이나 레이블 메일로 알려주세요. <i class="frag" data-frag="k2" role="button" aria-label="작은 점"></i></p>`),null,'discography 디스코그래피 앨범 싱글 목록 release');
 
 /* KARACIN — release pages */
 REL.forEach(r=>def('karacin/rel/'+r.id+'.htm',r.t,()=>karFrame('discography',`
@@ -2151,39 +2161,32 @@ def('karacin/mv.htm','M/V THEATER',()=>karFrame('mv',`
  <div class="kar-box"><h3>■ “agree” OFFICIAL M/V · 2026.09.17</h3>
   <div class="mvbox" data-mv="aVXmJPoPCoU" style="background-image:url(${FR.garden})" role="button" tabindex="0" aria-label="M/V 재생"><div class="play">▶</div></div>
   <p style="margin:8px 0 0;font-size:12px;color:#a89bd4">재생하면 YouTube 플레이어가 로드됩니다. 재생되지 않으면 ${ext(SRC.agreeMV,'YouTube에서 열기')}.</p></div>
- <div class="kar-box"><h3>■ 화면 속 이미지</h3><p style="margin:0">보도자료는 M/V를 이렇게 설명합니다. 금단의 열매, 뱀, 재탄생의 이미지를 통해 욕망이 선택으로, 선택이 변화로 이어지는 과정을 초현실적인 공간 안에 담았다고요.</p></div>
+ <div class="kar-box"><h3>■ 화면 속 이미지</h3><p style="margin:0">금단의 열매, 뱀, 재탄생. 욕망은 선택이 되고, 선택은 변화가 된다.</p></div>
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 0 6px">
   ${[['garden','garden.bmp'],['shroom','mushroom.jpg'],['apple','apple_old.jpg'],['bitten','apple_bitten.jpg'],['skull','skull.gif'],['hands','hands.jpg']].map(([k,f],i)=>mini(f,k,(i%2?1.5:-1.5))).join('')}</div>
  <p style="font-size:11px;color:#a89bd4">스틸은 로우키레코즈 공식 사이트 메인 영상의 장면입니다.</p>`),null,'mv 뮤직비디오 agree video theater 극장 apple 사과 뱀 열매');
 
 /* KARACIN — press */
 def('karacin/press.htm','PRESS ROOM',()=>karFrame('press',`
- <div class="kar-box"><h3>■ PRESS ROOM 보도자료 스크랩</h3><p style="margin:0;font-size:12px;color:#a89bd4">원문 전체가 아니라 요약과 링크만 모았습니다. 기사 전문은 각 매체에서 읽어주세요.</p></div>
- <div class="clip"><span class="tape" style="left:14px;top:-8px;transform:rotate(-8deg)"></span>
-  <h4>Karacin jr. Explores Temptation with Single “agree”</h4><small>KpopWise · 2026.09.17 · Ciera Reeves</small>
-  <p style="margin:6px 0">직전 싱글 “Nonstop” 이후 1년 8개월 만의 복귀작. 트랩, R&amp;B, 팝을 섞어 관계가 깊어지기 직전의 긴장과 갈망을 담았고, 느슨한 리듬과 절제된 보컬, 넓게 깔리는 신스가 몽환적인 분위기를 만든다고 소개합니다. 오랜 협업자 Nike Jean이 프로덕션에 참여했고, 가사 번역이 17개 언어로 제공됩니다. 9월 17일 공개된 M/V는 금단의 열매, 뱀, 재탄생을 통해 욕망에서 선택, 변화로 이어지는 흐름을 그립니다.</p>
-  <div>${ext(SRC.agreePress,'기사 읽기 ↗')}</div></div>
- <div class="clip" style="transform:rotate(.6deg)"><span class="tape" style="right:18px;top:-8px;transform:rotate(7deg)"></span>
-  <h4>Karacin Jr. Releases New Single ‘agree,’ Continuing Longstanding Collaboration With Nike Jean</h4><small>SayArt · 헤드라인만 확인 (매체 사이트에서 제목으로 검색)</small>
-  <p style="margin:6px 0">제목 그대로, 카라신 주니어와 Nike Jean의 오랜 협업이 이어졌다는 소식입니다.</p></div>
- <div class="clip" style="transform:rotate(-.5deg)"><span class="tape" style="left:30px;top:-8px;transform:rotate(4deg)"></span>
-  <h4>카라신 주니어, 싱글 [ONNANA (온난화)] 발표</h4><small>maniadb 음반 소개 · 2021</small>
-  <p style="margin:6px 0">EP [T.O.F] 발표 한 달 만의 새 싱글. K-POP 느낌의 댄스 곡에 알앤비 신예 KAMA가 피처링했다는 소개입니다.</p>
-  <div>${ext('http://www.maniadb.com/album/873733','maniadb 열기 ↗')}</div></div>`),null,'press 보도자료 기사 kpopwise sayart maniadb news');
+ <div class="kar-box"><h3>■ PRESS</h3></div>
+ <div class="clip"><span class="tape" style="left:14px;top:-8px;transform:rotate(-8deg)"></span><h4>Karacin jr. Explores Temptation with Single “agree”</h4><small>KpopWise · 2026.09.17</small><div style="margin-top:6px">${ext(SRC.agreePress,'기사 ↗')}</div></div>
+ <div class="clip" style="transform:rotate(.6deg)"><span class="tape" style="right:18px;top:-8px;transform:rotate(7deg)"></span><h4>Karacin Jr. Releases New Single ‘agree,’ Continuing Longstanding Collaboration With Nike Jean</h4><small>SayArt</small></div>
+ <div class="clip" style="transform:rotate(-.5deg)"><span class="tape" style="left:30px;top:-8px;transform:rotate(4deg)"></span><h4>카라신 주니어, 싱글 [ONNANA (온난화)] 발표</h4><small>maniadb · 2021</small><div style="margin-top:6px">${ext('http://www.maniadb.com/album/873733','maniadb ↗')}</div></div>`),null,'press 보도자료 기사 kpopwise sayart maniadb news');
 
 /* KARACIN — lyric room (facts only, never lyric text) */
-def('karacin/lyrics.htm','LYRIC ROOM',(q,br)=>{
-  if(!br||!br.lyricOK)return karFrame('lyrics',`<div class="kar-box ctr" style="padding:22px 12px"><div style="font-size:42px">🔒</div><h3>LYRIC ROOM</h3>
-   <p>이 방에 들어가려면 약관에 동의해야 합니다.<br><span style="color:#a89bd4;font-size:12px">(동의하지 않아도 사이트의 다른 곳은 계속 볼 수 있어요)</span></p>
-   <button class="enter-btn" data-agree="1" style="cursor:pointer">약관 보기 / agree</button></div>`);
-  return karFrame('lyrics',`
-   <div class="kar-box"><h3>■ LYRIC ROOM · 곡 노트</h3><p style="margin:0">가사는 작사가와 권리자의 저작물이라 이 아카이브에 옮겨 적지 않습니다. 대신 보도자료와 크레딧에 나온 정보로 곡 노트를 만들고, 가사를 볼 수 있는 공식 페이지를 연결했어요.</p></div>
-   <div class="kar-box"><h3>■ agree</h3><p style="margin:0 0 6px">주제는 ‘가까워지기 직전의 긴장’. M/V의 열매와 뱀은 욕망, 선택, 변화의 흐름을 상징합니다. 가사 번역이 17개 언어로 제공되니 스트리밍 앱에서 원하는 언어로 읽어보세요.</p>
-    <div>▶ ${ext(SRC.agreeSpotify,'Spotify에서 가사 보기')} · ${ext(SRC.agreeMV,'M/V')}</div></div>
-   <div class="kar-box"><h3>■ NONSTOP</h3><p style="margin:0 0 6px">작사 Karacin Jr. · 편곡 Karacin Jr. · 프로듀서 Weedie Mane.</p><div>▶ ${ext('https://music.bugs.co.kr/album/20696578','벅스 곡 페이지')}</div></div>
-   <div class="kar-box"><h3>■ ONNANA (온난화)</h3><p style="margin:0 0 6px">작사 Karacin Jr., KAMA.</p><div>▶ ${ext('http://www.maniadb.com/album/873733','maniadb 크레딧')}</div></div>
-   <div class="kar-box"><h3>■ PEACE, LOVE, SHRED &amp; DRINK</h3><div>▶ ${ext('http://www.mnet.com/track/31253847','Mnet 음반 페이지')}</div></div>`);
-},null,'lyrics 가사 가사방 곡 노트');
+/* 가사는 아래 LYRICS 객체에 직접 붙여 넣으세요 (백틱 `` 안에 여러 줄 가능) */
+const LYRICS={
+ 'agree':``,
+ 'NONSTOP':``,
+ 'ONNANA (온난화)':``,
+ '빛이 있어 (BXXCH! SO)':``,
+ '따뜻하다고 (Still warm)':``,
+ '봄봄해 BomBomHae':``,
+ 'ah u Ready':``
+};
+def('karacin/lyrics.htm','LYRIC ROOM',()=>karFrame('lyrics',`
+ <div class="kar-box"><h3>■ LYRIC ROOM</h3></div>
+ ${Object.keys(LYRICS).map(k=>`<div class="kar-box"><h3>■ ${esc(k)}</h3>${LYRICS[k].trim()?`<div style="white-space:pre-wrap;line-height:1.9">${esc(LYRICS[k])}</div>`:'<div style="color:#a89bd4">가사를 채워 넣는 중…</div>'}</div>`).join('')}`),null,'lyrics 가사 가사방');
 
 /* KARACIN — guestbook */
 def('karacin/guestbook.htm','GUESTBOOK',()=>{const list=store.get('lk_gb',[]);return karFrame('guestbook',`
@@ -2192,7 +2195,7 @@ def('karacin/guestbook.htm','GUESTBOOK',()=>{const list=store.get('lk_gb',[]);re
   <label>이름<br><input class="xfield" id="gbn" maxlength="16" placeholder="닉네임"></label><br><br>
   <label>한마디<br><textarea class="xfield" id="gbm" rows="3" maxlength="140" placeholder="agree 들어봤어요…"></textarea></label><br>
   <button class="enter-btn" data-gb="1" style="margin-top:8px;cursor:pointer">등록하기</button></div>
- <div id="gblist">${list.length?list.map(e=>`<div class="gb-entry"><b>${esc(e.n)}</b><small>${esc(e.t)}</small><div>${esc(e.m)}</div></div>`).join(''):'<div class="ctr" style="color:#a89bd4">아직 글이 없습니다. 첫 번째 방명록을 남겨보세요!</div>'}</div>`);},null,'guestbook 방명록');
+ <div id="gblist">${list.length?list.map(e=>`<div class="gb-entry"><b>${esc(e.n)}</b><small>${esc(e.t)}</small><div>${esc(e.m)}</div></div>`).join(''):'<div class="ctr" style="color:#a89bd4">아직 글이 없습니다. 첫 번째 방명록을 남겨보세요! <i class="frag" data-frag="k3" role="button" aria-label="작은 점"></i></div>'}</div>`);},null,'guestbook 방명록');
 
 /* KARACIN — links */
 def('karacin/links.htm','LINKS',()=>karFrame('links',`
@@ -2211,7 +2214,7 @@ def('nikejean/enter.htm','이사 안내',()=>`<div class="pg pg-nj" style="min-h
 def('nikejean/index.htm','NIKE JEAN HOME',()=>njFrame('index',`
  <div class="crt"><div>C:\\LOWKEY&gt; whoami</div><div>nike jean <span style="opacity:.7">(formerly Na0H)</span></div><div>C:\\LOWKEY&gt; type about.txt</div>
   <div style="margin:4px 0">Trap, R&amp;B, Pop을 중심으로 작업하는 프로듀서. 카라신 주니어와 오랜 기간 협업하며 주요 작업의 프로듀싱과 편곡을 맡아왔습니다.</div>
-  <div style="margin:4px 0">몽환적인 전자음, 트랩 기반의 리듬, Pop과 R&amp;B를 결합한 프로덕션으로 두 아티스트의 공통된 음악적 언어를 발전시키는 중.</div><div>C:\\LOWKEY&gt;<span class="cur"> </span></div></div>
+  <div style="margin:4px 0">몽환적인 전자음, 트랩 기반의 리듬, Pop과 R&amp;B를 결합한 프로덕션으로 두 아티스트의 공통된 음악적 언어를 발전시키는 중.</div><div>C:\\LOWKEY&gt;<span class="cur" data-frag="n1" role="button" aria-label="커서"> </span></div></div>
  <div class="nj-cards">
   <div class="polar" style="--r:-2deg"><div class="im pix" style="${bg(P.nikejean&&P.nikejean.lofi)};aspect-ratio:3/4"></div><span>nikejean_press.gif</span></div>
   <div class="polar" style="--r:1.5deg"><div class="im" style="${bg(FR.hands)}"></div><span>agree_still_hands.jpg</span></div>
@@ -2219,18 +2222,18 @@ def('nikejean/index.htm','NIKE JEAN HOME',()=>njFrame('index',`
  <div><h3 style="margin:0 0 8px">연혁 (공개 정보 기준)</h3><ul class="tl">
   <li><b>Na0H</b> — 이 이름으로 음악 활동. 카라신 주니어 싱글 <i>Mang Cut</i>에 Na0H 이름으로 참여</li>
   <li><b>2026.01.11</b> — Semi 데뷔 싱글 <a data-go="nikejean/semi.htm">Dreamed of You</a> 총괄 프로듀싱</li>
-  <li><b>2026.08</b> — Karacin Jr. <a data-go="karacin/rel/agree.htm">agree</a> 프로덕션 참여. 레이블 소개에 따르면 Nike Jean 이름의 첫 공식 발매</li>
+  <li><b>2026.08</b> — Karacin Jr. <a data-go="karacin/rel/agree.htm">agree</a> 프로덕션 참여. Nike Jean 이름의 첫 공식 발매</li>
   <li><b>2026.09.17</b> — agree M/V 공개</li></ul></div>
  <div class="ctr"><a class="enter-btn" data-app="beat" style="display:inline-block;color:#000;text-decoration:none;cursor:pointer">▶ BEAT MAKER 실행</a></div>`,true),null,'nike jean 나이키 진 프로듀서 producer na0h home about');
 
 /* NIKE JEAN — credits */
 def('nikejean/credits.htm','CREDITS',()=>njFrame('credits',`
  <div><h3 style="margin:0 0 8px">PRODUCTION CREDITS</h3><div style="overflow-x:auto"><table class="spec"><tr><th>연도</th><th>아티스트</th><th>작품</th><th>역할</th></tr>
-  <tr><td>2026.08</td><td>Karacin Jr.</td><td><a data-go="karacin/rel/agree.htm">agree</a></td><td>프로덕션 (보도자료)</td></tr>
-  <tr><td>2026.01.11</td><td>Semi</td><td><a data-go="nikejean/semi.htm">Dreamed of You</a></td><td>총괄 프로듀싱 (레이블 소개)</td></tr>
-  <tr><td>—</td><td>Karacin Jr.</td><td>Mang Cut</td><td>feat. Na0H</td></tr>
-  <tr><td>—</td><td>Karacin Jr.</td><td>주요 작업 다수</td><td>프로듀싱 · 편곡 (레이블 소개)</td></tr></table></div></div>
- <p style="font-size:12px;color:#4a6099">공개 정보로 확인된 항목만 적었습니다. 빠진 크레딧은 레이블에 알려주세요. 옛 이름 Na0H의 곡은 ${ext(SRC.na0hDeezer,'Deezer')}에서 볼 수 있습니다.</p>`),null,'credits 크레딧 프로듀싱 mang cut na0h');
+  <tr><td>2026.08</td><td>Karacin Jr.</td><td><a data-go="karacin/rel/agree.htm">agree</a></td><td>프로덕션</td></tr>
+  <tr><td>2026.01.11</td><td>Semi</td><td><a data-go="nikejean/semi.htm">Dreamed of You</a></td><td>총괄 프로듀싱</td></tr>
+  <tr><td><i class="frag nj" data-frag="n2" role="button" aria-label="작은 점"></i></td><td>Karacin Jr.</td><td>Mang Cut</td><td>feat. Na0H</td></tr>
+  <tr><td>—</td><td>Karacin Jr.</td><td>주요 작업 다수</td><td>프로듀싱 · 편곡</td></tr></table></div></div>
+ <p style="font-size:12px;color:#4a6099">옛 이름 Na0H의 곡은 ${ext(SRC.na0hDeezer,'Deezer')}에서 볼 수 있습니다.</p>`),null,'credits 크레딧 프로듀싱 mang cut na0h');
 
 /* NIKE JEAN — Semi */
 def('nikejean/semi.htm','PRODUCED FOR SEMI',()=>njFrame('semi',`
@@ -2238,7 +2241,7 @@ def('nikejean/semi.htm','PRODUCED FOR SEMI',()=>njFrame('semi',`
   <div class="polar" style="--r:-2deg"><div class="im pix" style="${bg(P.semi&&P.semi.lofi)};aspect-ratio:3/4"></div><span>semi.gif</span></div>
   <div><h3 style="margin:0 0 6px">Semi — Dreamed of You</h3>
    <table class="spec"><tr><td width="90"><b>데뷔 싱글</b></td><td>2026.01.11 18:00 (KST)</td></tr><tr><td><b>프로듀싱</b></td><td>Nike Jean (총괄)</td></tr><tr><td><b>장르</b></td><td>재즈 기반 보컬 + 팝 · 록 · 드림코어</td></tr></table>
-   <p>꿈을 찾아가는 과정의 불안과 우울, 희망을 담은 곡이라고 소개됩니다. Semi는 얼터너티브 팝 싱어송라이터이자 회화 작가로, 작사와 멜로디 메이킹, 비주얼 디렉팅에 참여합니다.</p>
+   <p>꿈을 찾아가는 과정의 불안과 우울, 그리고 희망. Semi는 얼터너티브 팝 싱어송라이터이자 회화 작가로, 작사와 멜로디 메이킹, 비주얼 디렉팅에 참여합니다.</p>
    <div>▶ ${ext(SRC.semiMV,'M/V (YouTube)')} · ${ext(SRC.semiSP,'Spotify')}</div></div></div>`),null,'semi 세미 dreamed of you 데뷔 싱글');
 
 /* NIKE JEAN — beat maker */
@@ -2248,7 +2251,7 @@ def('nikejean/beat.htm','BEAT MAKER',()=>njFrame('beat',`
 
 /* NIKE JEAN — Na0H (same story from the other side) */
 def('nikejean/na0h.htm','Na0H → Nike Jean',()=>njFrame('na0h',`
- <div class="move"><h2>Na0H → Nike Jean</h2><p>기존 Na0H라는 이름으로 활동해온 프로듀서가 <b>agree</b>를 시작으로 Nike Jean이라는 이름 아래 본격적인 활동을 시작했습니다.</p>
+ <div class="move"><h2>Na0H → Nike Jean <i class="frag nj" data-frag="n3" role="button" aria-label="작은 점"></i></h2><p>기존 Na0H라는 이름으로 활동해온 프로듀서가 <b>agree</b>를 시작으로 Nike Jean이라는 이름 아래 본격적인 활동을 시작했습니다.</p>
   <p>${ext(SRC.na0hDeezer,'Na0H — Deezer')} · ${ext(SRC.njIG,'Instagram @nao_yim')}</p></div>`),null,'na0h 이름 변경 nike jean');
 
 /* ---- browser ---- */
@@ -2267,7 +2270,7 @@ function browse(url='lowkey/index.htm'){
   win.body.addEventListener('click',e=>{
     const t=e.target.closest('[data-t]');
     if(t){const k=t.dataset.t;if(k==='back'&&br.i>0){br.i--;nav(br,br.hist[br.i],false);}if(k==='fwd'&&br.i<br.hist.length-1){br.i++;nav(br,br.hist[br.i],false);}if(k==='ref')nav(br,br.hist[br.i],false);if(k==='home')nav(br,'lowkey/index.htm');if(k==='stop')finish(br,true);if(k==='go')goAddr(br);return;}
-    const a=e.target.closest('[data-go],[data-app],[data-mv],[data-exit],[data-agree],[data-gb],[data-s]');if(!a)return;e.preventDefault();
+    const a=e.target.closest('[data-go],[data-app],[data-mv],[data-exit],[data-agree],[data-gb],[data-s],[data-frag]');if(!a)return;e.preventDefault();if(a.dataset.frag){getFrag(a.dataset.frag);return;}
     if(a.dataset.go){if(a.dataset.rep){br.hist[br.i]=a.dataset.go;nav(br,a.dataset.go,false);}else nav(br,a.dataset.go);}
     else if(a.dataset.app)openApp(a.dataset.app);
     else if(a.dataset.mv)playMV(a);
@@ -2304,6 +2307,70 @@ function guest(br){const n=($('#gbn',br.page).value||'').trim(),m=($('#gbm',br.p
   if(!m){dlg({title:'방명록',icon:'warn',msg:'한마디를 입력해 주세요.'});return;}
   const d=new Date(),t=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
   const list=store.get('lk_gb',[]);list.unshift({n:n||'익명',m:m.slice(0,140),t});store.set('lk_gb',list.slice(0,30));nav(br,'karacin/guestbook.htm',false);}
+/* ===== ARG layer: fragments → 아이.exe ===== */
+const FRAG={
+ k1:{who:'K',f:'first_stage.log',t:['한때는 이름이 먼저 도착했다.','사람들은 나를 신예라고 불렀다.','신예라는 말에 유통기한이 있다는 걸','그때는 몰랐다.']},
+ k2:{who:'K',f:'quiet_years.txt',t:['불이 꺼진 뒤에도 작업실 전등은 켜둔다.','아무도 듣지 않는 곡을 끝까지 믹스한다.','그게 이 시간의 이름이다.']},
+ k3:{who:'K',f:'hardened.bak',t:['무명이 길어지면 외로움은 재료가 된다.','깎이고, 다져지고, 소리 하나가 남는다.','유행이 지나가도 남는 소리.']},
+ n1:{who:'N',f:'channels.wav.txt',t:['머릿속에 채널이 여러 개 있다.','어떤 날은 전부 켜져 있고','어떤 날은 전부 꺼진다.','리모컨은 뺏기지 않기로 했다.']},
+ n2:{who:'N',f:'someone_is_listening.log',t:['누가 나를 보고 있다는 느낌이 들 때가 있다.','맞을 때도, 틀릴 때도 있다.','확인하는 동안에도 곡은 만든다.']},
+ n3:{who:'N',f:'free.cfg',t:['자유는 고요한 상태가 아니다.','시끄러운 채로도','내가 고른 것을 놓지 않는 일이다.']}
+};
+const fragGot=()=>store.get('lk_frags',[]);
+function getFrag(k){
+  const F=FRAG[k];if(!F)return;const got=fragGot(),fresh=!got.includes(k);if(fresh){got.push(k);store.set('lk_frags',got);}
+  tick(fresh?1200:600,.15,'sine',.04);
+  const w=mkWin({id:'frag-'+k,title:F.f,icon:IC.note,w:400,h:250,cls:'fill',html:`<div class="crt" style="height:100%;border-radius:0;border:0;font-size:13.5px;line-height:1.9;color:${F.who==='K'?'#ffb6ec':'#8fe9ff'}"><div style="opacity:.6">[${F.who==='K'?'K':'N'}] fragment ${got.length}/6${fresh?'':' (다시 열람)'}</div><div id="ft"></div></div>`});
+  const el=$('#ft',w.body);const txt=F.t.join('\n');let i=0;el.style.whiteSpace='pre-wrap';
+  const iv=setInterval(()=>{el.textContent=txt.slice(0,++i);if(i>=txt.length)clearInterval(iv);},reduce?1:45);w.onclose=()=>clearInterval(iv);
+  syncHaunt();if(fresh&&got.length===4)setTimeout(()=>balloon('새 신호가 감지되었습니다','바탕화면에 낯선 파일이 생겼습니다',()=>openChild()),1500);
+}
+function syncHaunt(init){
+  const n=fragGot().length;root.classList.remove('h1','h2','h3');if(n>=1)root.classList.add(n>=5?'h3':n>=3?'h2':'h1');
+  if(n>=4&&!DESK.find(d=>d.k==='child')){DESK.push({k:'child',l:'아이.exe',ic:IC.star,run:()=>openChild()});const ic=$('.xp-icons');if(ic){ic.insertAdjacentHTML('beforeend',`<button class="xi" type="button" data-d="child" aria-label="아이.exe"><span class="ic">${IC.star}</span><span>아이.exe</span></button>`);bindIcons(ic);}}
+  const s=$('#sigbody');if(s)s.innerHTML=sigHTML();
+}
+const sigHTML=()=>{const g=fragGot(),bar=p=>FRAG&&Object.keys(FRAG).filter(k=>k[0]===p).map(k=>g.includes(k)?'▓':'░').join('');
+  return `K ${bar('k')}\nN ${bar('n')}\n\n${g.length<4?'신호가 약합니다.\n작은 점은 눌러야 열립니다.\n\n  K — 숫자 옆, 표 아래, 빈 방명록\n  N — 커서, 빈 칸, 이름 옆\n\n네 조각이면 무언가 응답합니다.':'응답 중.\n바탕화면의 아이.exe를 여세요.'+(g.length===6?'\n\n여섯 조각을 모두 모았습니다.':'')}`;};
+function openSignal(){mkWin({id:'sig',title:'signal.log',icon:IC.note,w:420,h:320,cls:'fill',html:`<div class="crt" style="height:100%;border-radius:0;border:0"><pre id="sigbody" style="margin:0;font:inherit;white-space:pre-wrap">${sigHTML()}</pre></div>`});}
+
+function openChild(){
+  const w=mkWin({id:'child',title:'아이.exe',icon:IC.star,w:680,h:500,cls:'fill',html:`<div class="xw-col" style="background:#000"><div class="grow" style="position:relative;overflow:hidden"><canvas id="cc" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="ct" style="position:absolute;left:0;right:0;bottom:8px;text-align:center;padding:0 12px;font:14px/1.6 'Malgun Gothic',sans-serif;text-shadow:0 0 6px #000;min-height:24px"></div></div><div style="display:flex;gap:6px;padding:6px;background:#111"><input class="xfield" id="cn" maxlength="50" placeholder="아이에게 한 줄 남기기" aria-label="아이에게 한 줄"><button class="xbtn" id="cs" type="button">남기기</button></div></div>`});
+  const cv=$('#cc',w.body),c=cv.getContext('2d'),ct=$('#ct',w.body);let W=0,H=0,sync=0,tgt=0,px_=-1,py_=-1,pulses=[],raf=0,t0=performance.now(),ln=0,lt=0;
+  const notes=store.get('lk_child_notes',[]);
+  const L=[['#ffb6ec','한때 이름이 먼저 도착했다.'],['#ffb6ec','조용한 해가 길어졌다. 깎이고, 다져졌다.'],['#8fe9ff','채널이 많은 날에도 내 신호는 놓지 않는다.'],['#8fe9ff','누가 듣고 있어도, 아무도 듣지 않아도 곡은 계속된다.'],['#ffd84a','그리고 둘 사이에 아이가 왔다.'],['#ffd84a','아이는 아무것도 증명하지 않아도 된다.'],['#fff','화면을 누르고 있으면, 소리가 하나로 모인다.']];
+  function rs(){const r=cv.getBoundingClientRect();W=cv.width=Math.max(200,r.width|0);H=cv.height=Math.max(200,r.height|0);}rs();const ro=new ResizeObserver(rs);ro.observe(cv);
+  const ss=x=>x*x*(3-2*x);
+  function frame(now){const t=(now-t0)/1000;c.fillStyle='rgba(0,0,8,.22)';c.fillRect(0,0,W,H);
+    sync+=(tgt-sync)*.03;const cx=W*.68,cy=H*.5;
+    // K: bright early spike, long flat strata that thicken over time
+    const layers=3+Math.min(9,Math.floor(t/6));
+    for(let i=0;i<layers;i++){c.beginPath();c.strokeStyle=`hsla(${310+i*4},85%,${60+i}%,${.12+.06*(i===0)})`;c.lineWidth=i===0?2:1;
+      for(let x=0;x<=cx;x+=4){const u=x/cx,spike=Math.exp(-u*7)*H*.2*Math.sin(u*40+t),tail=Math.sin(u*14+t*.6+i)*(2+i*.7),conv=ss(Math.max(0,(u-.55)/.45));
+        const y=(H*.3+i*2.5+spike+tail)*(1-conv)+cy*conv;x?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();}
+    // N: steady core + noisy ghost channels that calm as sync rises
+    const jit=(1-sync)*22;
+    for(let g=0;g<5;g++){c.beginPath();const core=g===0;c.strokeStyle=core?'rgba(160,240,255,.95)':`rgba(120,220,255,${.16})`;c.lineWidth=core?2:1;
+      for(let x=0;x<=cx;x+=4){const u=x/cx,conv=ss(Math.max(0,(u-.55)/.45));const n=core?0:(Math.random()-.5)*jit*(1+g*.3)+Math.sin(u*(20+g*9)+t*(1+g))*jit*.6;
+        const y=(H*.7+Math.sin(u*10+t)*6+n)*(1-conv)+cy*conv;x?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();}
+    // glitch slice
+    if(!reduce&&Math.random()<.05*(1-sync)){const y=Math.random()*H,h=6+Math.random()*24;try{c.drawImage(cv,0,y,W,h,(Math.random()-.5)*40,y,W,h);}catch(e){}}
+    // child: crayon scribble + shared line onward
+    const rad=16+Math.sin(t*2)*2+sync*10;c.strokeStyle=`rgba(255,216,74,${.55+.4*sync})`;c.lineWidth=3;c.shadowColor='#ffd84a';c.shadowBlur=6+sync*24;
+    for(let k=0;k<3;k++){c.beginPath();for(let a=0;a<=6.4;a+=.3){const rr=rad+(Math.sin(a*3+k*2+t)*2)+k*2.5,x=cx+Math.cos(a+k)*rr,y=cy+Math.sin(a+k)*rr;a?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();}
+    c.shadowBlur=0;c.beginPath();c.strokeStyle=`rgba(255,240,180,${.25+.5*sync})`;c.lineWidth=2;for(let x=cx+rad;x<=W;x+=4){const y=cy+Math.sin((x-cx)/30+t*2)*(2+sync*8)*(1-(x-cx)/(W-cx)*.6);x===cx+rad?c.moveTo(x,y):c.lineTo(x,y);}c.stroke();
+    pulses=pulses.filter(p=>p.r<260);pulses.forEach(p=>{p.r+=3;c.strokeStyle=`rgba(255,216,74,${1-p.r/260})`;c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,p.r,0,7);c.stroke();});
+    // notes left for the child drift upward
+    c.font="12px 'Malgun Gothic',sans-serif";c.fillStyle='rgba(255,240,200,.7)';notes.slice(-8).forEach((n,i)=>{const yy=H-((t*10+i*54)%(H+20));c.fillText(n,W*.08+((i*137)%(W*.5)),yy);});
+    // captions
+    if(t-lt>6||!lt){lt=t||.01;const l=sync>.8?['#fff','…들려요? 둘은 같은 박자였어요.']:L[ln%L.length];ln++;ct.style.color=l[0];ct.textContent=l[1];}
+    raf=requestAnimationFrame(frame);}
+  const hold=e=>{tgt=1;const r=cv.getBoundingClientRect();pulses.push({r:4});};const rel=()=>{tgt=0;};
+  cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);hold(e);};cv.onpointerup=rel;cv.onpointercancel=rel;
+  const send=()=>{const i=$('#cn',w.body),v=i.value.trim();if(!v)return;notes.push(v.slice(0,50));store.set('lk_child_notes',notes.slice(-30));i.value='';tick(900,.1,'sine',.03);};
+  $('#cs',w.body).onclick=send;$('#cn',w.body).onkeydown=e=>{if(e.key==='Enter')send();};
+  c.fillStyle='#000';c.fillRect(0,0,W,H);raf=requestAnimationFrame(frame);w.onclose=()=>{cancelAnimationFrame(raf);ro.disconnect();};
+}
 /* ===== LOWKEY XP — apps, desktop, router ===== */
 let exitHash='#/';
 
@@ -2415,10 +2482,10 @@ function openChat(){
   const log=$('#cl',w.body),qs=$('#cq',w.body);
   const say=(who,html)=>{const p=document.createElement('p');p.className=who==='me'?'me':'bot';p.innerHTML='<b>'+(who==='me'?'나':'LOWKEY_bot')+'</b>: '+html;log.appendChild(p);log.scrollTop=log.scrollHeight;};
   const A=[
-   ['새 소식 있어?','agree M/V가 2026년 9월 17일에 공개됐어요. 8월에 나온 싱글이고, 보도자료는 “유혹”이라는 주제를 이야기해요. <a data-go="karacin/mv.htm">M/V 극장 열기</a>'],
+   ['새 소식 있어?','agree M/V가 2026년 9월 17일에 공개됐어요. 8월에 나온 싱글이고, 주제는 유혹이에요. <a data-go="karacin/mv.htm">M/V 극장 열기</a>'],
    ['agree는 누가 만들었어?','카라신 주니어의 곡이고, 오랜 협업자 Nike Jean이 프로덕션에 참여했어요. <a data-go="karacin/rel/agree.htm">크레딧 보기</a>'],
    ['Nike Jean은 누구야?','Trap, R&B, Pop을 중심으로 하는 프로듀서예요. 예전에는 Na0H라는 이름으로 활동했어요. <a data-go="nikejean/enter.htm">홈페이지 방문</a>'],
-   ['가사 알려줘','가사 원문은 여기에 옮겨 적을 수 없어요. 대신 곡 노트와 공식 링크를 모아뒀어요. <a data-go="karacin/lyrics.htm">가사방으로</a>'],
+   ['가사 알려줘','가사는 가사방에 있어요. <a data-go="karacin/lyrics.htm">가사방으로</a>'],
    ['디스코그래피','2016년 ah u Ready부터 2026년 agree까지 정리해뒀어요. <a data-go="karacin/discography.htm">목록 보기</a>'],
    ['비트 만들어볼래','16스텝 시퀀서를 열어드릴게요. <a data-app="beat">BEAT MAKER 실행</a>']];
   say('bot','안녕하세요! 로우키레코즈 숨겨진 방에 오신 걸 환영해요. 궁금한 걸 골라보세요.');
@@ -2444,14 +2511,13 @@ function openReadme(){
  - 페이지 안의 링크를 따라가며 디스코그래피, 보도자료,
    프로덕션 크레딧을 볼 수 있습니다.
  - GAMES 폴더에는 작은 게임이 들어 있습니다.
+ - 화면 어딘가에 작은 점이 숨어 있습니다. signal.log를 열어보세요.
 
 [자료 출처]
  KpopWise (2026.09.17), Apple Music, YouTube, Bugs,
  Mnet, maniadb, Deezer, 로우키레코즈 공식 사이트
 
 [알림]
- - 가사 원문은 저작권 때문에 수록하지 않았습니다.
-   가사방에서 곡 노트와 공식 링크를 확인하세요.
  - 발매일을 확인하지 못한 곡은 연도를 비워두었습니다.
  - 정정 요청: LOWKEYRECORDZZZ@GMAIL.COM
 `;
@@ -2485,6 +2551,7 @@ const DESK=[
  {k:'games',l:'GAMES',ic:IC.folder,run:openGames},
  {k:'chat',l:'LOWKEY 메신저',ic:IC.chat,run:openChat},
  {k:'note',l:'readme.txt',ic:IC.note,run:openReadme},
+ {k:'sig',l:'signal.log',ic:IC.note,run:()=>openSignal()},
  {k:'bin',l:'휴지통',ic:IC.bin,run:openBin}
 ];
 function bindIcons(scope){$$('.xi',scope).forEach(b=>{if(b.dataset.bound)return;b.dataset.bound=1;
@@ -2516,6 +2583,7 @@ function build(){
   <div class="xp-bar"><button class="xp-start" type="button" aria-haspopup="true">${IC.flag}start</button><div class="xp-tasks"></div>
    <div class="xp-tray"><button type="button" class="xp-vol" aria-label="소리 켜기/끄기"></button><span class="xp-clock"></span></div></div>`;
   bindIcons($('.xp-icons'));
+  syncHaunt(true);
   $('.xp-start').onclick=e=>{e.stopPropagation();toggleMenu();};
   $('.xp-menu').addEventListener('click',e=>{const m=e.target.closest('[data-m]');if(!m)return;const k=m.dataset.m;closeMenu();
     if(k==='exit')location.hash=exitHash;else if(k==='pop')popAd();else if(k==='mv')browse('karacin/mv.htm');else if(k==='karacin'||k==='nikejean')browse(k+'/enter.htm');else if(k==='ie')browse('lowkey/index.htm');else openApp(k);});
