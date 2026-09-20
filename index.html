@@ -403,6 +403,8 @@
 .post-typography{font-size:var(--post-size,13px);line-height:1.75;overflow-wrap:anywhere}.post-font-sans{font-family:var(--font-body)}.post-font-serif{font-family:Georgia,'Noto Serif KR',serif}.post-font-mono{font-family:'Courier New',monospace}
 .post-media{margin:20px 0;width:var(--media-width,100%);max-width:100%}.post-media.align-center{margin-left:auto;margin-right:auto}.post-media.align-left{margin-right:auto}.post-media.align-right{margin-left:auto}.post-media img{width:100%;height:auto;display:block}.post-video{aspect-ratio:16/9;width:100%;border:0;display:block}.video-link{display:inline-block;padding:10px 16px;border:1px solid var(--line);border-radius:2px;text-decoration:none!important}.editor-tools{border:1px solid var(--line);padding:16px;display:grid;gap:12px}.editor-help{font-size:11px;line-height:1.7;margin:0;color:var(--fg-muted)}.editor-insert,.photo-item button{padding:7px 10px;border:1px solid var(--line);font-size:11px;border-radius:3px;align-self:end}.photo-item{display:flex;flex-direction:column;gap:6px;width:130px}.photo-item img{width:130px;height:100px;object-fit:cover}.photo-item small{font-size:11px}.photo-item-actions{display:flex;flex-wrap:wrap;gap:4px}
 @media(max-width:600px){.notice-detail-wrap{padding-top:115px}.post-typography{font-size:max(13px,var(--post-size,13px))}.editor-tools .form-row{gap:10px}}
+
+.catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:42px 24px;padding-bottom:80px}.catalog-card{display:block;min-width:0}.catalog-card img,.catalog-placeholder{width:100%;aspect-ratio:1;object-fit:cover;background:#141414}.journal-grid .catalog-card img,.journal-grid .catalog-placeholder{aspect-ratio:4/3}.catalog-placeholder{display:flex;align-items:center;justify-content:center;color:var(--fg-faint);font-size:11px;letter-spacing:.18em}.catalog-card h3{font-size:14px;font-weight:400;line-height:1.6;margin:12px 0 8px}.catalog-meta{font-size:10px;color:var(--fg-muted);letter-spacing:.08em;display:flex;justify-content:space-between;gap:8px}.catalog-card:hover img{opacity:.8}.journal-filters{display:flex;gap:24px;margin:0 0 32px}.journal-filters button{font-size:10px;letter-spacing:.1em;color:var(--fg-faint);padding:8px 0;border-bottom:1px solid transparent}.journal-filters button.active{color:var(--fg);border-color:var(--fg)}.shop-buy{border-top:1px solid var(--line,#282828);padding:24px 0;margin-top:32px;font-size:13px}.shop-buy button{padding:14px 28px;background:var(--fg);color:var(--bg);margin-top:16px}.shop-buy button:disabled{opacity:.45;cursor:default}.shop-buy input{width:70px;padding:10px;background:transparent;border:1px solid #333;color:inherit;margin-left:16px}.admin-tabs{flex-wrap:wrap}.nav-links{gap:20px}@media(max-width:700px){.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 14px}.journal-grid{grid-template-columns:1fr}.catalog-card h3{font-size:12px}.catalog-meta{font-size:9px}.nav-links{gap:24px}}
 </style>
 </head>
 <body>
@@ -419,6 +421,8 @@
     <a href="#/artist" data-top="artist">ARTIST</a>
     <a href="#/notice" data-top="notice">NOTICE</a>
     <a href="#/news" data-top="news">NEWS</a>
+    <a href="#/journal" data-top="journal">JOURNAL</a>
+    <a href="#/store" data-top="store">STORE</a>
   </nav>
   <button class="nav-toggle" id="navToggle" aria-label="메뉴">≡</button>
 </header>
@@ -593,7 +597,7 @@
   </div>
 </section>
 
-<!-- ADMIN LOGIN -->
+<section class="view" id="view-journal"><div class="page-head"><h2>JOURNAL</h2></div><div class="news-wrap"><div class="journal-filters" id="journalFilters"><button type="button" data-category="ALL" class="active">ALL</button><button type="button" data-category="INTERVIEW" class="">INTERVIEW</button><button type="button" data-category="TALK" class="">TALK</button><button type="button" data-category="TMI" class="">TMI</button></div><div class="catalog-grid journal-grid" id="journalList"></div><div class="empty-state" id="journalEmpty"><p>아직 등록된 저널이 없습니다.</p><p class="muted">아티스트의 이야기, 대화와 일상을 기록합니다.</p></div></div></section><section class="view" id="view-journal-detail"><div class="notice-detail-wrap"><a class="back-link" href="#/journal">← JOURNAL</a><div id="journalDetailContent"></div><button class="copy-post" data-copy-post>링크 복사</button></div></section><section class="view" id="view-store"><div class="page-head"><h2>STORE</h2></div><div class="news-wrap"><div class="catalog-grid store-grid" id="storeList"></div><div class="empty-state" id="storeEmpty"><p>새로운 상품을 준비하고 있습니다.</p><p class="muted">LOWKEY RECORDZ — OBJECTS & RECORDS</p></div></div></section><section class="view" id="view-store-detail"><div class="notice-detail-wrap"><a class="back-link" href="#/store">← STORE</a><div id="storeDetailContent"></div><button class="copy-post" data-copy-post>링크 복사</button></div></section><!-- ADMIN LOGIN -->
 <section class="view" id="view-admin-login">
   <div class="admin-login-wrap">
     <h2>ADMIN LOGIN</h2>
@@ -623,7 +627,7 @@
 <div class="publish-actions"><button id="publishAll">전체 게시</button><span id="publishStatus" role="status" aria-live="polite">공개 상태 확인 중…</span></div>
 <div class="admin-tabs">
       <button data-admin-tab="notice" class="active">공지 관리</button>
-      <button data-admin-tab="news">뉴스 관리</button>
+      <button data-admin-tab="news">뉴스 관리</button><button data-admin-tab="journal">저널 관리</button><button data-admin-tab="store">스토어 관리</button>
     </div>
 
     <div class="admin-panel" id="adminPanelNotice">
@@ -665,6 +669,40 @@
         </div>
       </form>
       <ul class="admin-list" id="adminNewsList"></ul>
+    </div>    <div class="admin-panel" id="adminPanelJournal" hidden>
+      <form class="admin-form" id="journalForm">
+        <input type="hidden" id="journalEditId">
+        <label>날짜<input type="date" id="journalDate" required></label>
+        <label>제목<input type="text" id="journalTitle" required></label>
+        <label>분류<select id="journalCategory"><option>INTERVIEW</option><option>TALK</option><option>TMI</option></select></label><div class="editor-tools">
+<div class="form-row"><label>본문 서체<select id="journalFont"><option value="sans">산세리프 · 기본</option><option value="serif">명조 · 에세이</option><option value="mono">고정폭 · 크레딧</option></select></label><label>글자 크기<select id="journalSize"><option value="13">13px · 기본</option><option value="12">12px · 작게</option><option value="14">14px</option><option value="16">16px</option></select></label></div>
+<div class="form-row"><label>사진 기본 위치<select id="journalPlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="journalWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="journalAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
+<label>영상 주소<input type="url" id="journalVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="journalVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="journal">커서 위치에 영상 삽입</button></div>
+<p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="journalBody" rows="5" required></textarea></label>
+        <label>사진 추가 (최대 6장)<input type="file" id="journalImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="journalPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
+        <div class="form-actions">
+          <button type="submit" class="primary" id="journalSubmitBtn">등록</button>
+          <button type="button" id="journalPreviewPost">미리보기</button><button type="button" id="journalDiscardDraft">작성 내용 비우기</button><button type="button" id="journalCancelEdit" hidden>취소</button><span id="journalAutosave" class="autosave-status" role="status"></span>
+        </div>
+      </form>
+      <ul class="admin-list" id="adminJournalList"></ul>
+    </div>    <div class="admin-panel" id="adminPanelStore" hidden>
+      <form class="admin-form" id="storeForm">
+        <input type="hidden" id="storeEditId">
+        <label>날짜<input type="date" id="storeDate" required></label>
+        <label>제목<input type="text" id="storeTitle" required></label>
+        <div class="form-row"><label>판매가 (원)<input id="storePrice" type="number" min="0" max="100000000" step="1" required></label><label>판매 상태<select id="storeStatus"><option value="coming">준비 중</option><option value="soldout">품절</option></select></label></div><p class="editor-help">첫 번째 사진이 상품 대표 이미지입니다. 실제 결제는 결제 서버 연결 후 활성화됩니다. 재고·주문·배송 정보는 공개 posts.json에 저장하지 않습니다.</p><div class="editor-tools">
+<div class="form-row"><label>본문 서체<select id="storeFont"><option value="sans">산세리프 · 기본</option><option value="serif">명조 · 에세이</option><option value="mono">고정폭 · 크레딧</option></select></label><label>글자 크기<select id="storeSize"><option value="13">13px · 기본</option><option value="12">12px · 작게</option><option value="14">14px</option><option value="16">16px</option></select></label></div>
+<div class="form-row"><label>사진 기본 위치<select id="storePlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="storeWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="storeAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
+<label>영상 주소<input type="url" id="storeVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="storeVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="store">커서 위치에 영상 삽입</button></div>
+<p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="storeBody" rows="5" required></textarea></label>
+        <label>사진 추가 (최대 6장)<input type="file" id="storeImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="storePreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
+        <div class="form-actions">
+          <button type="submit" class="primary" id="storeSubmitBtn">등록</button>
+          <button type="button" id="storePreviewPost">미리보기</button><button type="button" id="storeDiscardDraft">작성 내용 비우기</button><button type="button" id="storeCancelEdit" hidden>취소</button><span id="storeAutosave" class="autosave-status" role="status"></span>
+        </div>
+      </form>
+      <ul class="admin-list" id="adminStoreList"></ul>
     </div>
   </div>
 </section>
@@ -673,7 +711,7 @@
     <div class="footer-links">
       <a href="#/artist">ARTIST</a>
       <a href="#/notice">NOTICE</a>
-      <a href="#/news">NEWS</a>
+      <a href="#/news">NEWS</a><a href="#/journal">JOURNAL</a><a href="#/store">STORE</a>
       <a href="mailto:LOWKEYRECORDZZZ@GMAIL.COM">LOWKEYRECORDZZZ@GMAIL.COM</a>
       <button data-open-terms>사이트 이용 · 개인정보 안내</button>
       <a href="#/admin" class="footer-admin-link">ADMIN</a>
@@ -705,7 +743,7 @@
       <h4>개인정보와 이메일 문의</h4>
       <p>이 사이트는 방문자를 위한 회원가입이나 개인정보 입력 양식을 운영하지 않습니다. 이메일로 문의하시면 보내주신 이메일 주소와 문의 내용을 확인하여 답변 및 관련 업무 연락에 이용합니다. 문의 시 불필요한 개인정보는 보내지 않으셔도 됩니다.</p>
       <h4>브라우저 저장 기능</h4>
-      <p>현재 사이트 코드에는 방문자 분석이나 광고 추적 도구가 포함되어 있지 않습니다. 안내 확인 여부와 게시판 초안은 사용 중인 브라우저에 저장되며, 관리자 로그인 상태는 세션 저장소에 저장됩니다. 관리자가 전체 게시를 실행하면 글과 사진이 GitHub 저장소에 전송되어 공개됩니다. GitHub 토큰은 현재 페이지 메모리에만 보관하며 새로고침·탭 닫기·로그아웃 시 지워집니다. 브라우저 저장소, 사이트 파일, 게시물에는 포함하지 않습니다. 브라우저에 남은 데이터는 사이트 데이터 삭제 기능으로 지울 수 있습니다.</p>
+      <p>현재 사이트 코드에는 방문자 분석이나 광고 추적 도구가 포함되어 있지 않습니다. 안내 확인 여부와 게시판 초안은 사용 중인 브라우저에 저장되며, 관리자 로그인 상태는 현재 페이지 메모리에만 유지됩니다. 관리자가 전체 게시를 실행하면 글과 사진이 GitHub 저장소에 전송되어 공개됩니다. GitHub 토큰은 현재 페이지 메모리에만 보관하며 새로고침·탭 닫기·로그아웃 시 지워집니다. 브라우저 저장소, 사이트 파일, 게시물에는 포함하지 않습니다. 브라우저에 남은 데이터는 사이트 데이터 삭제 기능으로 지울 수 있습니다.</p>
       <h4>외부 서비스</h4>
       <p>이 사이트는 GitHub Pages로 제공되며 Google Fonts에서 글꼴을 불러옵니다. 사이트 접속과 글꼴 로딩 과정에서 각 제공업체에 IP 주소 등 접속 정보가 전달될 수 있습니다. 외부 음원·영상 서비스로 이동하면 해당 서비스의 개인정보처리방침이 적용됩니다.</p>
       <h4>문의</h4>
@@ -756,12 +794,16 @@
 
   var NOTICES = DEFAULT_NOTICES.slice();
   var NEWS = DEFAULT_NEWS.slice();
+  var JOURNAL=[], STORE=[], JOURNAL_KEY='lk_journal_draft_v1', STORE_KEY='lk_store_draft_v1';
+  var journalCategory='ALL';
+  // Payments remain disabled until a verified order and payment backend is deployed.
+
   var publicSha = null;
-  var publishedState=JSON.stringify({notices:DEFAULT_NOTICES,news:DEFAULT_NEWS});
+  var publishedState=JSON.stringify({notices:DEFAULT_NOTICES,news:DEFAULT_NEWS,journal:[],store:[]});
   var publicationPending=false;
   var autosaveFailed=false;
   var pendingTimer;
-  function boardState(){return JSON.stringify({notices:NOTICES,news:NEWS});}
+  function boardState(){return JSON.stringify({notices:NOTICES,news:NEWS,journal:JOURNAL,store:STORE});}
   function updateStatus(){
     var msg=document.getElementById('publishStatus');
     if(publicationPending){msg.textContent='GitHub 저장 완료 · 공개 반영 확인 중';return;}
@@ -907,7 +949,17 @@
   });
 
 
-  var attached = {notice:[],news:[]};
+
+  function readExtra(k){if(k==='journal')return {category:document.getElementById('journalCategory').value};if(k==='store')return {price:Number(document.getElementById('storePrice').value),status:document.getElementById('storeStatus').value};return {};}
+  function applyExtra(k,n){if(k==='journal')document.getElementById('journalCategory').value=['INTERVIEW','TALK','TMI'].includes(n.category)?n.category:'INTERVIEW';if(k==='store'){document.getElementById('storePrice').value=Number.isSafeInteger(n.price)?n.price:0;document.getElementById('storeStatus').value=['available','soldout','coming'].includes(n.status)?n.status:'coming';}}
+  function priceText(n){return Number.isSafeInteger(n.price)&&n.price>=0?n.price.toLocaleString('ko-KR')+' KRW':'가격 준비 중';}
+  function categoryText(n){return ['INTERVIEW','TALK','TMI'].includes(n.category)?n.category:'TMI';}
+  function saleText(n){return n.status==='soldout'?'SOLD OUT':'COMING SOON';}
+  function renderCatalog(k){var all=k==='journal'?JOURNAL:STORE, list=document.getElementById(k+'List');list.replaceChildren();var items=all.filter(function(n){return k!=='journal'||journalCategory==='ALL'||categoryText(n)===journalCategory;}).sort(newestPostFirst);document.getElementById(k+'Empty').hidden=items.length>0;items.forEach(function(n){var a=document.createElement('a');a.className='catalog-card';a.href='#/'+k+'/'+encodeURIComponent(n.id);var src=(n.images||[])[0];a.innerHTML=(validImage(src)?'<img src="'+escapeText(src)+'" alt="'+escapeText(n.title)+'" loading="lazy">':'<div class="catalog-placeholder">LOWKEY RECORDZ</div>')+'<h3>'+escapeText(n.title)+'</h3><div class="catalog-meta"><span>'+escapeText(k==='journal'?categoryText(n):priceText(n))+'</span><span>'+escapeText(k==='journal'?fmtDate(n.date):saleText(n))+'</span></div>';list.appendChild(a);});}
+  function renderCatalogDetail(k,id){try{id=decodeURIComponent(id);}catch(e){}var n=(k==='journal'?JOURNAL:STORE).find(function(n){return n.id===id;});var box=document.getElementById(k+'DetailContent');if(!n){box.innerHTML='<p class="muted">게시물을 찾을 수 없습니다.</p>';return;}box.innerHTML='<div class="notice-detail-meta">'+escapeText(k==='journal'?categoryText(n)+' · '+fmtDate(n.date):'LOWKEY RECORDZ STORE')+'</div><h1 class="notice-detail-title">'+escapeText(n.title)+'</h1><div class="notice-detail-body">'+renderPost(n)+'</div>';if(k==='store'){var buy=document.createElement('div');buy.className='shop-buy';buy.innerHTML='<p>'+escapeText(priceText(n))+'</p><button type="button" disabled>'+ (n.status==='soldout'?'품절':'판매 준비 중')+'</button><p class="muted">'+(n.status==='soldout'?'다음 판매 소식은 이곳에서 안내합니다.':'구매가 가능해지면 이곳에서 안내합니다.')+'</p>';box.appendChild(buy);}}
+  document.getElementById('journalFilters').addEventListener('click',function(e){var b=e.target.closest('[data-category]');if(!b)return;journalCategory=b.dataset.category;this.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===b);});renderCatalog('journal');});
+
+  var attached = {notice:[],news:[],journal:[],store:[]};
   /* ---------- ROUTER ---------- */
   var views = document.querySelectorAll('.view');
   var navLinks = document.querySelectorAll('.nav-links a');
@@ -946,6 +998,7 @@
       if(parts[1]){ renderNewsDetail(parts[1]); showView('view-news-detail'); setActiveNav('news'); return; }
       renderNewsList(); showView('view-news'); setActiveNav('news'); return;
     }
+    if(parts[0]==='journal'||parts[0]==='store'){var kind=parts[0]; if(parts[1]){renderCatalogDetail(kind,parts[1]);showView('view-'+kind+'-detail');}else{renderCatalog(kind);showView('view-'+kind);}setActiveNav(kind);return;}
     if(parts[0]==='admin'){
       if(isAdminAuthed()){ enterAdminDashboard(); showView('view-admin'); }
       else { showView('view-admin-login'); }
@@ -1034,13 +1087,14 @@
       var tab = btn.getAttribute('data-admin-tab');
       document.getElementById('adminPanelNotice').hidden = tab!=='notice';
       document.getElementById('adminPanelNews').hidden = tab!=='news';
+      document.getElementById('adminPanelJournal').hidden=tab!=='journal';document.getElementById('adminPanelStore').hidden=tab!=='store';
     });
   });
 
   function enterAdminDashboard(){
-    if(!draftLoaded){ NOTICES=loadData(NOTICE_KEY,NOTICES); NEWS=loadData(NEWS_KEY,NEWS); draftLoaded=true; }
+    if(!draftLoaded){ NOTICES=loadData(NOTICE_KEY,NOTICES); NEWS=loadData(NEWS_KEY,NEWS); JOURNAL=loadData(JOURNAL_KEY,JOURNAL); STORE=loadData(STORE_KEY,STORE); draftLoaded=true; }
     adminRenderNoticeList();
-    adminRenderNewsList();
+    adminRenderNewsList();adminRenderJournalList();adminRenderStoreList();
   }
 
   /* ---------- ADMIN: NOTICE CRUD ---------- */
@@ -1187,6 +1241,148 @@
   });
   document.getElementById('newsCancelEdit').addEventListener('click', newsResetForm);
 
+  function adminRenderJournalList(){
+    var ul = document.getElementById('adminJournalList');
+    ul.innerHTML = '';
+    if(JOURNAL.length===0){
+      ul.innerHTML = '<li class="admin-empty">등록된 저널이 없습니다.</li>';
+      return;
+    }
+    JOURNAL.slice().sort(newestPostFirst).forEach(function(n){
+      var li = el('li');
+      li.innerHTML =
+        '<span class="a-date">'+escapeText(fmtDate(n.date))+'</span>'+
+        '<span>'+escapeText(n.title)+'</span>'+
+        '<span class="a-actions"><button data-edit>수정</button><button data-del>삭제</button></span>';
+      li.querySelector('[data-edit]').addEventListener('click', function(){ journalStartEdit(n.id); });
+      li.querySelector('[data-del]').addEventListener('click', function(){
+        if(confirm('이 저널을 삭제할까요?')){
+          JOURNAL = JOURNAL.filter(function(x){return x.id!==n.id;});
+          saveData(JOURNAL_KEY, JOURNAL);
+          adminRenderJournalList();
+        }
+      });
+      ul.appendChild(li);
+    });
+  }
+
+  function journalStartEdit(id){
+    var n = JOURNAL.filter(function(x){return x.id===id;})[0];
+    if(!n) return;
+    document.getElementById('journalEditId').value = n.id;
+    document.getElementById('journalDate').value = n.date;
+    document.getElementById('journalTitle').value = n.title;
+    applyPresentation('journal',n.presentation);applyExtra('journal',n);
+    document.getElementById('journalBody').value = n.body; attached.journal=(n.images||[]).slice(); previewPhotos('journal');
+    document.getElementById('journalSubmitBtn').textContent = '수정 저장';
+    document.getElementById('journalCancelEdit').hidden = false;
+    document.getElementById('journalForm').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function journalResetForm(){
+    localStorage.removeItem('lk_editor_journal'); document.getElementById('journalAutosave').textContent='';
+    attached.journal=[]; previewPhotos('journal');
+    document.getElementById('journalForm').reset(); localStorage.removeItem('lk_editor_journal');
+    document.getElementById('journalEditId').value = '';
+    document.getElementById('journalSubmitBtn').textContent = '등록';
+    document.getElementById('journalCancelEdit').hidden = true;
+  }
+
+  document.getElementById('journalForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!isAdminAuthed())return;
+    var id = document.getElementById('journalEditId').value;
+    var data = {
+      id: id || uid('journal'),
+      date: document.getElementById('journalDate').value,
+      title: document.getElementById('journalTitle').value.trim(),
+      body: document.getElementById('journalBody').value.trim(),
+      images: attached.journal.slice(),
+      presentation: readPresentation('journal')
+    };
+    Object.assign(data,readExtra('journal'));
+    if(id){
+      JOURNAL = JOURNAL.map(function(n){ return n.id===id ? data : n; });
+    }else{
+      JOURNAL.push(data);
+    }
+    saveData(JOURNAL_KEY, JOURNAL);
+    journalResetForm();
+    adminRenderJournalList();
+  });
+  document.getElementById('journalCancelEdit').addEventListener('click', journalResetForm);
+
+  function adminRenderStoreList(){
+    var ul = document.getElementById('adminStoreList');
+    ul.innerHTML = '';
+    if(STORE.length===0){
+      ul.innerHTML = '<li class="admin-empty">등록된 상품이 없습니다.</li>';
+      return;
+    }
+    STORE.slice().sort(newestPostFirst).forEach(function(n){
+      var li = el('li');
+      li.innerHTML =
+        '<span class="a-date">'+escapeText(fmtDate(n.date))+'</span>'+
+        '<span>'+escapeText(n.title)+'</span>'+
+        '<span class="a-actions"><button data-edit>수정</button><button data-del>삭제</button></span>';
+      li.querySelector('[data-edit]').addEventListener('click', function(){ storeStartEdit(n.id); });
+      li.querySelector('[data-del]').addEventListener('click', function(){
+        if(confirm('이 상품을 삭제할까요?')){
+          STORE = STORE.filter(function(x){return x.id!==n.id;});
+          saveData(STORE_KEY, STORE);
+          adminRenderStoreList();
+        }
+      });
+      ul.appendChild(li);
+    });
+  }
+
+  function storeStartEdit(id){
+    var n = STORE.filter(function(x){return x.id===id;})[0];
+    if(!n) return;
+    document.getElementById('storeEditId').value = n.id;
+    document.getElementById('storeDate').value = n.date;
+    document.getElementById('storeTitle').value = n.title;
+    applyPresentation('store',n.presentation);applyExtra('store',n);
+    document.getElementById('storeBody').value = n.body; attached.store=(n.images||[]).slice(); previewPhotos('store');
+    document.getElementById('storeSubmitBtn').textContent = '수정 저장';
+    document.getElementById('storeCancelEdit').hidden = false;
+    document.getElementById('storeForm').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function storeResetForm(){
+    localStorage.removeItem('lk_editor_store'); document.getElementById('storeAutosave').textContent='';
+    attached.store=[]; previewPhotos('store');
+    document.getElementById('storeForm').reset(); localStorage.removeItem('lk_editor_store');
+    document.getElementById('storeEditId').value = '';
+    document.getElementById('storeSubmitBtn').textContent = '등록';
+    document.getElementById('storeCancelEdit').hidden = true;
+  }
+
+  document.getElementById('storeForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!isAdminAuthed())return;
+    var id = document.getElementById('storeEditId').value;
+    var data = {
+      id: id || uid('store'),
+      date: document.getElementById('storeDate').value,
+      title: document.getElementById('storeTitle').value.trim(),
+      body: document.getElementById('storeBody').value.trim(),
+      images: attached.store.slice(),
+      presentation: readPresentation('store')
+    };
+    Object.assign(data,readExtra('store'));
+    if(id){
+      STORE = STORE.map(function(n){ return n.id===id ? data : n; });
+    }else{
+      STORE.push(data);
+    }
+    saveData(STORE_KEY, STORE);
+    storeResetForm();
+    adminRenderStoreList();
+  });
+  document.getElementById('storeCancelEdit').addEventListener('click', storeResetForm);
+
   function previewPhotos(kind){
     var box=document.getElementById(kind+'Preview');box.replaceChildren();
     attached[kind].forEach(function(src,i){var card=document.createElement('div');card.className='photo-item';var im=document.createElement('img');im.src=validImage(src)?src:'';im.alt='사진 '+(i+1);card.appendChild(im);var label=document.createElement('small');label.textContent='사진 '+(i+1);card.appendChild(label);var actions=document.createElement('div');actions.className='photo-item-actions';
@@ -1196,7 +1392,7 @@
       card.appendChild(actions);box.appendChild(card);
     });saveEditor(kind);
   }
-  ['notice','news'].forEach(function(kind){
+  ['notice','news','journal','store'].forEach(function(kind){
     document.getElementById(kind+'Images').addEventListener('change',async function(e){
       var input=e.target, button=document.getElementById(kind+'SubmitBtn');button.disabled=true;
       try{
@@ -1220,8 +1416,9 @@
       if(!response.ok)throw Error('게시글을 불러오지 못했습니다.');
       var raw=await response.text(), data=JSON.parse(raw);
       if(!Array.isArray(data.notices)||!Array.isArray(data.news))throw Error('게시판 파일 형식이 올바르지 않습니다.');
-      publicSha=await blobSha(raw); publishedState=JSON.stringify({notices:data.notices,news:data.news});
-      if(!draftLoaded || (!localStorage.getItem(NOTICE_KEY) && !localStorage.getItem(NEWS_KEY))){NOTICES=data.notices;NEWS=data.news;route();} updateStatus();
+      data.journal=Array.isArray(data.journal)?data.journal:[];data.store=Array.isArray(data.store)?data.store:[];
+      publicSha=await blobSha(raw); publishedState=JSON.stringify({notices:data.notices,news:data.news,journal:data.journal,store:data.store});
+      if(!draftLoaded || (!localStorage.getItem(NOTICE_KEY) && !localStorage.getItem(NEWS_KEY) && !localStorage.getItem(JOURNAL_KEY) && !localStorage.getItem(STORE_KEY))){NOTICES=data.notices;NEWS=data.news;JOURNAL=data.journal;STORE=data.store;route();} updateStatus();
     }catch(err){publicLoadFailed=true;document.getElementById('publishStatus').textContent='게시글 읽기 실패. 새로고침 후 다시 시도해 주세요.';}
   })();
   document.getElementById('publishAll').addEventListener('click',async function(){
@@ -1240,14 +1437,14 @@
       if(response.status!==404&&!response.ok)throw Error('저장소를 읽지 못했습니다. 토큰 권한과 브랜치를 확인해 주세요. ('+response.status+')');
       if(meta&&meta.sha!==publicSha)throw Error('공개 게시판이 변경됐거나 아직 배포 중입니다. 작성 내용은 이 브라우저에 남아 있습니다. 배포 완료 후 새로고침하고 다시 게시해 주세요.');
       if(!meta&&publicSha)throw Error('게시판 파일 경로가 다릅니다. GitHub Pages 폴더의 posts.json 경로를 입력해 주세요.');
-      var payload=JSON.stringify({notices:NOTICES,news:NEWS,updatedAt:new Date().toISOString()});
+      var payload=JSON.stringify({notices:NOTICES,news:NEWS,journal:JOURNAL,store:STORE,updatedAt:new Date().toISOString()});
       var bytes=new TextEncoder().encode(payload),binary='';
       if(bytes.length>20*1024*1024)throw Error('게시판 사진 용량이 20MB를 넘었습니다. 사진 수를 줄여 주세요.');
       for(var i=0;i<bytes.length;i+=32768)binary+=String.fromCharCode.apply(null,bytes.subarray(i,i+32768));
       var body={message:'Update LOWKEY RECORDZ posts',content:btoa(binary),branch:branch};if(meta)body.sha=meta.sha;
       response=await fetch(base,{method:'PUT',headers:Object.assign({},headers,{'Content-Type':'application/json'}),body:JSON.stringify(body)});
       var result=await response.json();if(!response.ok)throw Error('게시 실패 ('+response.status+'). 토큰의 Contents 쓰기 권한과 브랜치 설정을 확인해 주세요.');
-      publicSha=result.content.sha; publishedState=JSON.stringify({notices:JSON.parse(payload).notices,news:JSON.parse(payload).news}); if(boardState()===publishedState){localStorage.removeItem(NOTICE_KEY);localStorage.removeItem(NEWS_KEY);} publicationPending=true; watchPublication(publicSha);
+      publicSha=result.content.sha; var sent=JSON.parse(payload);publishedState=JSON.stringify({notices:sent.notices,news:sent.news,journal:sent.journal,store:sent.store}); if(boardState()===publishedState){localStorage.removeItem(NOTICE_KEY);localStorage.removeItem(NEWS_KEY);localStorage.removeItem(JOURNAL_KEY);localStorage.removeItem(STORE_KEY);} publicationPending=true; watchPublication(publicSha);
       status.textContent='GitHub 저장 완료. Pages 배포가 끝나면 방문자에게 공개됩니다.';
     }catch(err){status.textContent=err.message;}finally{button.disabled=false;token='';}
   });
@@ -1256,26 +1453,27 @@
   function saveEditor(kind){
     if(!isAdminAuthed())return;
     var draft={id:document.getElementById(kind+'EditId').value,date:document.getElementById(kind+'Date').value,title:document.getElementById(kind+'Title').value,body:document.getElementById(kind+'Body').value,images:attached[kind],presentation:readPresentation(kind)};
+    Object.assign(draft,readExtra(kind));
     var label=document.getElementById(kind+'Autosave');
     try{localStorage.setItem('lk_editor_'+kind,JSON.stringify(draft));autosaveFailed=false;label.textContent='초안 자동 저장됨 · 미공개';}
     catch(e){autosaveFailed=true;label.textContent='자동 저장 실패 · 창을 닫기 전에 등록·게시해 주세요';}
   }
   function restoreEditors(){
     if(!isAdminAuthed())return;
-    ['notice','news'].forEach(function(kind){
+    ['notice','news','journal','store'].forEach(function(kind){
       try{var raw=localStorage.getItem('lk_editor_'+kind);if(!raw)return;var draft=JSON.parse(raw);
         document.getElementById(kind+'EditId').value=draft.id||'';
         document.getElementById(kind+'Date').value=draft.date||'';
         document.getElementById(kind+'Title').value=draft.title||'';
         document.getElementById(kind+'Body').value=draft.body||'';
-        applyPresentation(kind,draft.presentation);attached[kind]=draft.images||[];previewPhotos(kind);
+        applyExtra(kind,draft);applyPresentation(kind,draft.presentation);attached[kind]=draft.images||[];previewPhotos(kind);
         document.getElementById(kind+'SubmitBtn').textContent=draft.id?'수정 저장':'등록';
         document.getElementById(kind+'CancelEdit').hidden=!draft.id;
         document.getElementById(kind+'Autosave').textContent='작성 중이던 초안 복원됨 · 미공개';
       }catch(e){}
     });
   }
-  ['notice','news'].forEach(function(kind){
+  ['notice','news','journal','store'].forEach(function(kind){
     document.getElementById(kind+'Form').addEventListener('input',function(){saveEditor(kind);});
     document.getElementById(kind+'Form').addEventListener('change',function(){saveEditor(kind);});
     document.getElementById(kind+'PreviewPost').addEventListener('click',function(){
@@ -1283,7 +1481,7 @@
       document.getElementById('postPreviewBody').innerHTML='<h1>'+escapeText(document.getElementById(kind+'Title').value||'제목 없음')+'</h1><p class="muted">'+escapeText(document.getElementById(kind+'Date').value)+'</p><div class="notice-detail-body">'+renderPost(n)+'</div>';
       document.getElementById('postPreview').showModal();
     });
-    document.getElementById(kind+'DiscardDraft').addEventListener('click',function(){if(confirm('작성 중인 내용과 첨부 사진을 비울까요? 등록된 게시물은 유지됩니다.')){if(kind==='notice')noticeResetForm();else newsResetForm();}});
+    document.getElementById(kind+'DiscardDraft').addEventListener('click',function(){if(confirm('작성 중인 내용과 첨부 사진을 비울까요? 등록된 게시물은 유지됩니다.')){if(kind==='notice')noticeResetForm();else if(kind==='news')newsResetForm();else if(kind==='journal')journalResetForm();else storeResetForm();}});
   });
   document.getElementById('closePostPreview').addEventListener('click',function(){document.getElementById('postPreview').close();});
   document.querySelectorAll('[data-copy-post]').forEach(function(btn){btn.addEventListener('click',async function(){
