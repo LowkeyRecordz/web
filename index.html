@@ -1067,7 +1067,27 @@ body:has(#view-journal-detail.active){overflow:hidden}
 #journalList .mj-book:hover,#journalList .mj-book:focus-visible{transform:none;filter:brightness(1.15)}
 }
 </style>
-</head>
+<style id="journal-page-composer">
+.bk-spread{perspective:1800px;isolation:isolate}
+.bk-page{backface-visibility:hidden}
+.bk-reader .bk-copy .mj-q{font-weight:700!important;margin-top:1.25em!important}
+.bk-reader .bk-copy .mj-q:first-child{margin-top:0!important}
+.bk-chapter{display:flex;align-items:center;padding:calc(var(--page-w)*.12)!important}
+.bk-chapter h2{font-family:"Pretendard Variable",sans-serif!important;font-size:clamp(24px,3vw,42px);line-height:1.35;letter-spacing:-.04em;word-break:keep-all;overflow-wrap:anywhere;margin:0}
+.journal-page-tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 8px}
+.journal-page-tools button{background:#202020;color:#eee;border:1px solid #555;padding:10px 14px;border-radius:4px;cursor:pointer;font:inherit;font-size:12px}
+.journal-page-tools button:hover{background:#363636}
+</style><style id="inline-text-format">
+.inline-format-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:10px 0;font-size:12px}
+.inline-format-tools button{padding:8px 10px;background:#202020;color:#eee;border:1px solid #555;border-radius:4px;cursor:pointer;font:inherit}
+.inline-format-tools button:hover{background:#393939}
+.inline-format-tools .format-color-label{display:flex;align-items:center;gap:6px;margin:0}
+.inline-format-tools input[type=color]{width:34px;height:32px;min-height:0;padding:2px;cursor:pointer}
+.format-help{display:block;font-size:11px;line-height:1.6;color:#999;margin:7px 0}
+.bk-copy .inline-bold,.post-typography .inline-bold{font-weight:750!important}
+.bk-copy .inline-italic,.post-typography .inline-italic{font-style:italic!important}
+.bk-copy .inline-underline,.post-typography .inline-underline{text-decoration:underline!important;text-underline-offset:.18em}
+</style></head>
 <body>
 
 <header class="nav">
@@ -1339,7 +1359,11 @@ body:has(#view-journal-detail.active){overflow:hidden}
 <div class="form-row"><label>본문 서체<select id="journalFont"><option value="sans">산세리프 · 기본</option><option value="serif">명조 · 에세이</option><option value="mono">고정폭 · 크레딧</option></select></label><label>글자 크기<select id="journalSize"><option value="13">13px · 기본</option><option value="12">12px · 작게</option><option value="14">14px</option><option value="16">16px</option></select></label></div>
 <div class="form-row"><label>사진 기본 위치<select id="journalPlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="journalWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="journalAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
 <label>영상 주소<input type="url" id="journalVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="journalVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="journal">커서 위치에 영상 삽입</button></div>
-<p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="journalBody" rows="14" placeholder="소개 문단을 적어주세요.&#10;&#10;Q. 질문을 적어주세요.&#10;&#10;A. 답변을 적어주세요.&#10;&#10;사진은 첨부 순서대로 자동 배치됩니다." required></textarea></label>
+<p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><div class="journal-page-tools" id="journalPageTools">
+<button type="button" data-jpage="break">새 지면 시작</button>
+<button type="button" data-jpage="title">부제목 전용 지면</button>
+<button type="button" data-jpage="photo">사진 전용 지면</button>
+</div><p class="editor-help">커서를 놓고 버튼을 누르세요. [[page]]는 다음 지면, [[title:부제목]]은 부제목만 담는 한 장입니다. 지면 지정 후 사진은 ‘본문에 삽입’한 위치에만 표시됩니다. 긴 글은 다음 장으로 이어집니다. 미리보기로 확인하세요.</p><label>본문<textarea id="journalBody" rows="14" placeholder="소개 문단을 적어주세요.&#10;&#10;Q. 질문을 적어주세요.&#10;&#10;A. 답변을 적어주세요.&#10;&#10;사진은 첨부 순서대로 자동 배치됩니다." required></textarea></label>
         <label>사진 추가 (최대 6장)<input type="file" id="journalImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="journalPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p><label>표지 썸네일 (선택 · 3:4 세로 비율 권장)<input type="file" id="journalCover" accept="image/jpeg,image/png,image/webp"></label><div class="photo-preview" id="journalCoverPreview"></div><p class="muted">표지 사진 위에 제목과 발행 정보가 자동으로 배치됩니다. 본문은 빈 줄로 문단을 나누고 사진을 첨부하면 자동 편집됩니다. Q. / A.로 인터뷰를 작성할 수 있습니다. 사진은 한 페이지 전체에, 글은 지면 분량에 맞춰 자동으로 나뉩니다. 미리보기에서 책장을 넘겨 확인하세요.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="journalSubmitBtn">등록</button>
@@ -1478,7 +1502,37 @@ body:has(#view-journal-detail.active){overflow:hidden}
   }
   function escapeText(x){return String(x||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function safeUrl(value){try{var u=new URL(value);return u.protocol==='https:'||u.protocol==='http:'?u.href:'';}catch(e){return '';}}
-  function linkedText(text){return String(text||'').split(/(https?:\/\/[^\s<>]+)/g).map(function(part){var u=/^https?:\/\//.test(part)?safeUrl(part):'';return u?'<a target="_blank" rel="noopener noreferrer" href="'+escapeText(u)+'">'+escapeText(part)+'</a>':escapeText(part);}).join('');}
+  function plainLinkedText(text){return String(text||'').split(/(https?:\/\/[^\s<>]+)/g).map(function(part){var u=/^https?:\/\//.test(part)?safeUrl(part):'';return u?'<a target="_blank" rel="noopener noreferrer" href="'+escapeText(u)+'">'+escapeText(part)+'</a>':escapeText(part);}).join('');}
+
+  function formatUnits(text){
+    var out=[],stack=[],rx=/\[\[(\/?(?:b|i|u)|color:#[0-9a-fA-F]{6}|\/color)\]\]/g,at=0,m;
+    function add(t){Array.from(t).forEach(function(ch){out.push({ch:ch,marks:stack.slice()});});}
+    text=String(text||'');
+    while((m=rx.exec(text))){
+      add(text.slice(at,m.index));var tag=m[1];
+      if(tag[0]==='/'){var type=tag.slice(1);for(var i=stack.length-1;i>=0;i--){if(stack[i].split(':')[0]===type){stack.splice(i,1);break;}}}
+      else stack.push(tag);
+      at=rx.lastIndex;
+    }
+    add(text.slice(at));return out;
+  }
+  function unitsHTML(units){
+    var html='',at=0;
+    while(at<units.length){
+      var marks=units[at].marks,key=marks.join('|'),end=at+1;
+      while(end<units.length&&units[end].marks.join('|')===key)end++;
+      var body=plainLinkedText(units.slice(at,end).map(function(x){return x.ch;}).join(''));
+      marks.forEach(function(tag){
+        if(tag==='b')body='<strong class="inline-bold">'+body+'</strong>';
+        else if(tag==='i')body='<em class="inline-italic">'+body+'</em>';
+        else if(tag==='u')body='<u class="inline-underline">'+body+'</u>';
+        else if(/^color:#[0-9a-fA-F]{6}$/.test(tag))body='<span style="color:'+tag.slice(6)+'">'+body+'</span>';
+      });
+      html+=body;at=end;
+    }
+    return html;
+  }
+  function linkedText(text){return unitsHTML(formatUnits(text));}
   function bodyToParagraphs(body){return String(body||'').replace(/\r\n?/g,'\n').split(/\n[ \t]*\n+/).filter(Boolean).map(function(p){return '<p>'+p.split('\n').map(linkedText).join('<br>')+'</p>';}).join('');}
   function readPresentation(k){return {font:document.getElementById(k+'Font').value,size:document.getElementById(k+'Size').value,placement:document.getElementById(k+'Placement').value,width:document.getElementById(k+'Width').value,align:document.getElementById(k+'Align').value,video:document.getElementById(k+'Video').value,videoMode:document.getElementById(k+'VideoMode').value};}
   function applyPresentation(k,p){p=p||{};var defaults={Font:'sans',Size:'13',Placement:'after',Width:'100',Align:'center',Video:'',VideoMode:'embed'};Object.keys(defaults).forEach(function(name){var prop=name[0].toLowerCase()+name.slice(1);document.getElementById(k+name).value=p[prop]||defaults[name];});}
@@ -1495,7 +1549,10 @@ body:has(#view-journal-detail.active){overflow:hidden}
     return '<p><a class="video-link" href="'+escapeText(p.video)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a></p>';
   }
   function renderPost(n){var p=normalizedPresentation(n.presentation),images=Array.isArray(n.images)?n.images:[],used=new Set(),videoUsed=false;
-    var parts=String(n.body||'').split(/(\[\[photo:\d+\]\]|\[\[video\]\])/g),content=parts.map(function(t){
+    var parts=String(n.body||'').split(/(\[\[photo:\d+\]\]|\[\[video\]\]|\[\[page\]\]|\[\[title:[^\]]+\]\])/g),content=parts.map(function(t){
+      if(t==='[[page]]')return '<hr class="post-section-break">';
+      var heading=t.match(/^\[\[title:([^\]]+)\]\]$/);
+      if(heading)return '<h2>'+linkedText(heading[1].trim())+'</h2>';
       var m=t.match(/^\[\[photo:(\d+)\]\]$/);if(m){var i=Number(m[1])-1;used.add(i);return imageMarkup(images[i],p);}
       if(t==='[[video]]'){videoUsed=true;return videoMarkup(p);}return bodyToParagraphs(t);
     }).join('');
@@ -1642,7 +1699,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
   ];
   function mjPad(n){return String(n).padStart(2,'0');}
   function mjHash(s){var h=0;s=String(s);for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
-  function mjPlain(b){return String(b||'').replace(/\[\[(photo:\d+|video)\]\]/g,'').replace(/^\s*[QA][.:)]\s*/gm,'').replace(/\s+/g,' ').trim();}
+  function mjPlain(b){return formatUnits(b).map(function(x){return x.ch;}).join('').replace(/\[\[(photo:\d+|video)\]\]/g,'').replace(/^\s*[QA][.:)]\s*/gm,'').replace(/\s+/g,' ').trim();}
   function mjIssues(){var m={};JOURNAL.slice().sort(function(a,b){return newestPostFirst(b,a);}).forEach(function(n,i){m[n.id]=i+1;});mjNo=m;}
   function mjIsQ(t){return /^\s*Q[.:)]\s*/i.test(t);}
   function mjIsA(t){return /^\s*A[.:)]\s*/i.test(t);}
@@ -1731,14 +1788,59 @@ body:has(#view-journal-detail.active){overflow:hidden}
   window.addEventListener('resize',function(){mjCenter(true);});
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){mjCenter(true);});
 
+  document.getElementById('journalPageTools').addEventListener('click',function(e){
+    var b=e.target.closest('[data-jpage]');if(!b)return;
+    var area=document.getElementById('journalBody'),token='[[page]]';
+    if(b.dataset.jpage==='title'){
+      var title=prompt('이 지면에 표시할 부제목을 입력하세요.');if(!title||!title.trim())return;
+      token='[[title:'+title.trim().replace(/\]/g,'')+']]';
+    }
+    if(b.dataset.jpage==='photo'){
+      var num=prompt('첨부한 사진 번호를 입력하세요. (첫 번째 사진 = 1)','1');
+      if(num===null)return;
+      var i=Number(num);if(!Number.isInteger(i)||i<1||i>(attached.journal||[]).length){alert('첨부된 사진의 번호를 입력해 주세요.');return;}
+      token='[[page]]\n\n[[photo:'+i+']]\n\n[[page]]';
+    }
+    var start=area.selectionStart,end=area.selectionEnd;
+    area.setRangeText('\n\n'+token+'\n\n',start,end,'end');
+    area.focus();area.dispatchEvent(new Event('input',{bubbles:true}));saveEditor('journal');
+  });
+
+  ['notice','news','journal','store'].forEach(function(kind){
+    var area=document.getElementById(kind+'Body');if(!area)return;
+    var bar=document.createElement('div');bar.className='inline-format-tools';bar.setAttribute('role','toolbar');bar.setAttribute('aria-label','본문 글자 서식');
+    bar.innerHTML='<button type="button" data-mark="b" title="굵게"><strong>B</strong> 굵게</button><button type="button" data-mark="i" title="기울임"><em>I</em> 기울임</button><button type="button" data-mark="u" title="밑줄"><u>U</u> 밑줄</button><label class="format-color-label">글자색 <input type="color" value="#bd3038" aria-label="글자색 선택"></label><button type="button" data-mark="color">색상 적용</button><button type="button" data-mark="clear">서식 지우기</button>';
+    area.parentElement.insertBefore(bar,area);
+    var help=document.createElement('small');help.className='format-help';help.textContent='글자를 드래그해 선택한 뒤 서식을 적용하세요. 본문에는 서식 표시가 들어가며 실제 모양은 미리보기에서 확인할 수 있습니다.';
+    area.after(help);
+    bar.addEventListener('mousedown',function(e){if(e.target.closest('button'))e.preventDefault();});
+    bar.addEventListener('click',function(e){
+      var b=e.target.closest('[data-mark]');if(!b)return;
+      var a=area.selectionStart,z=area.selectionEnd;
+      if(a===z){help.textContent='먼저 서식을 바꿀 글자를 선택해 주세요.';area.focus();return;}
+      var selected=area.value.slice(a,z),tag=b.dataset.mark;
+      if(/\[\[(?:photo:|title:|page\]\]|video\]\])/.test(selected)){help.textContent='지면·사진 표시를 제외한 글자만 선택해 주세요.';return;}
+      var result;
+      if(tag==='clear')result=selected.replace(/\[\[(\/?(?:b|i|u)|color:#[0-9a-fA-F]{6}|\/color)\]\]/g,'');
+      else{
+        var open=tag==='color'?'color:'+bar.querySelector('input').value:tag;
+        result=selected.split('\n').map(function(line){return line.trim()?'[['+open+']]'+line+'[[/'+tag+']]':line;}).join('\n');
+      }
+      area.setRangeText(result,a,z,'select');area.focus();area.dispatchEvent(new Event('input',{bubbles:true}));saveEditor(kind);
+      help.textContent='서식을 적용했습니다. 미리보기에서 실제 모양을 확인하세요.';
+    });
+  });
   /* ---------- MAGAZINE COMPOSER ---------- */
   function mjTokens(n){
     var imgs=Array.isArray(n.images)?n.images:[],used=new Set(),out=[];
-    String(n.body||'').replace(/\r\n?/g,'\n').split(/(\[\[photo:\d+\]\]|\[\[video\]\])/g).forEach(function(t){
+    String(n.body||'').replace(/\r\n?/g,'\n').split(/(\[\[photo:\d+\]\]|\[\[video\]\]|\[\[page\]\]|\[\[title:[^\]]+\]\])/g).forEach(function(t){
+      if(t==='[[page]]'){out.push({t:'break'});return;}
+      var heading=t.match(/^\[\[title:([^\]]+)\]\]$/);
+      if(heading){out.push({t:'title',text:heading[1].trim()});return;}
       var m=t.match(/^\[\[photo:(\d+)\]\]$/);
       if(m){var i=Number(m[1])-1;if(validImage(imgs[i])){used.add(i);out.push({t:'photo',src:imgs[i]});}return;}
       if(t==='[[video]]'){out.push({t:'video'});return;}
-      t.split(/\n[ \t]*\n+/).map(function(s){return s.trim();}).filter(Boolean).forEach(function(p){out.push({t:'p',text:p});});
+      t.split(/\n[ \t]*\n+|\n(?=[ \t]*(?:\[\[(?:b|i|u|color:#[0-9a-fA-F]{6})\]\])*[QA][.:)][ \t]*)/i).map(function(s){return s.trim();}).filter(Boolean).forEach(function(p){out.push({t:'p',text:p});});
     });
     return {out:out,used:used};
   }
@@ -1766,6 +1868,13 @@ body:has(#view-journal-detail.active){overflow:hidden}
   }
   function mjCompose(n){
     var imgs=Array.isArray(n.images)?n.images:[],tk=mjTokens(n),out=tk.out,used=tk.used;
+    if(out.some(function(x){return x.t==='break'||x.t==='title';})){
+      return {manual:true,hero:null,stand:'',blocks:out.map(function(x){
+        if(x.t==='p')return {k:'text',ps:[x.text]};
+        if(x.t==='photo')return {k:'photos',list:[x.src]};
+        return {k:x.t,text:x.text};
+      })};
+    }
     if(!out.some(function(x){return x.t==='video';})&&mjVideo(n))out.push({t:'video'});
     var hero=null;
     for(var i=0;i<imgs.length;i++){if(!used.has(i)&&validImage(imgs[i])){hero=imgs[i];used.add(i);break;}}
@@ -1797,8 +1906,8 @@ body:has(#view-journal-detail.active){overflow:hidden}
     return {hero:hero,stand:stand,blocks:blocks};
   }
   function mjParaHTML(t,first,qa){
-    if(mjIsQ(t))return '<p class="mj-q">'+linkedText(t.replace(/^\s*Q[.:)]\s*/i,''))+'</p>';
-    if(mjIsA(t))return '<p>'+t.replace(/^\s*A[.:)]\s*/i,'').split('\n').map(linkedText).join('<br>')+'</p>';
+    if(mjIsQ(t))return '<p class="mj-q">'+t.split('\n').map(linkedText).join('<br>')+'</p>';
+    if(mjIsA(t))return '<p>'+t.split('\n').map(linkedText).join('<br>')+'</p>';
     return '<p'+(first&&!qa?' class="mj-drop"':'')+'>'+t.split('\n').map(linkedText).join('<br>')+'</p>';
   }
   function mjArt(seed){
@@ -1818,23 +1927,23 @@ body:has(#view-journal-detail.active){overflow:hidden}
     function rebuild(){
       if(!root.isConnected||!root.clientWidth)return;
       var fraction=pages.length?index/pages.length:0;per=innerWidth>=800?2:1;root.classList.toggle('bk-double',per===2);pages=[];spread.replaceChildren();
-      var c=mjCompose(n),src=validImage(n.cover)?n.cover:c.hero,cover=page('cover');
+      var c=mjCompose(n),src=validImage(n.cover)?n.cover:(c.hero||(n.images||[]).filter(validImage)[0]),cover=page('cover');
       cover.innerHTML=(src?'<img src="'+escapeText(src)+'" alt="'+escapeText(n.title)+' 표지">':'')+'<div class="bk-cover-top">LOWKEY JOURNAL <span>No.'+mjPad(mjNo[n.id]||1)+'</span></div><div class="bk-cover-title"><small>'+escapeText(categoryText(n))+' · '+escapeText(fmtDate(n.date))+'</small><h1>'+escapeText(n.title)+'</h1></div>';pages.push(cover);
       var current=null,content=null;
       function newText(){current=page('text');current.innerHTML='<div class="bk-running">LOWKEY JOURNAL</div><div class="bk-copy"><div class="bk-copy-inner"></div></div>';spread.replaceChildren(current);content=current.querySelector('.bk-copy');pages.push(current);}
       function addText(text){
-        var rest=Array.from(text),isQ=mjIsQ(text),continued=false;
+        var rest=formatUnits(text),isQ=mjIsQ(rest.map(function(x){return x.ch;}).join('')),continued=false;
         while(rest.length){
           if(!current)newText();
           var p=document.createElement('p');if(isQ)p.className='mj-q';content.querySelector('.bk-copy-inner').appendChild(p);
-          function put(k){p.innerHTML=mjParaHTML(rest.slice(0,k).join(''),false,false).replace(/^<p[^>]*>|<\/p>$/g,'');}
+          function put(k){p.innerHTML=unitsHTML(rest.slice(0,k)).replace(/\n/g,'<br>');}
           put(rest.length);
           if(content.scrollHeight<=content.clientHeight+1){rest=[];break;}
           var lo=0,hi=rest.length;
           while(lo<hi){var mid=Math.ceil((lo+hi)/2);put(mid);if(content.scrollHeight<=content.clientHeight+1)lo=mid;else hi=mid-1;}
           if(lo<1){p.remove();if(content.querySelector('.bk-copy-inner').children.length){current=null;continue;}lo=1;}
           var cut=lo;
-          if(lo<rest.length&&lo>30){for(var k=lo;k>lo-30;k--){if(/\s/.test(rest[k-1])){cut=k;break;}}}
+          if(lo<rest.length&&lo>30){for(var k=lo;k>lo-30;k--){if(/\s/.test(rest[k-1].ch)){cut=k;break;}}}
           put(cut);rest=rest.slice(cut);current=null;continued=true;
         }
       }
@@ -1842,7 +1951,10 @@ body:has(#view-journal-detail.active){overflow:hidden}
       if(c.stand)addText(c.stand);
       // A cover upload never consumes an interior photograph.
       if(c.hero)photo(c.hero);
-      c.blocks.forEach(function(b){if(b.k==='text')b.ps.forEach(addText);else if(b.k==='photos')b.list.forEach(photo);else if(b.k==='video'){var v=mjVideo(n);if(v){current=null;var el=page('video');el.innerHTML='<div class="bk-running">SCREENING ROOM</div>'+(v.embed?'<iframe src="'+escapeText(v.embed)+'" title="저널 영상" allowfullscreen></iframe>':'')+'<a href="'+escapeText(v.url)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a>';pages.push(el);}}});
+      c.blocks.forEach(function(b){
+        if(b.k==='break'){current=null;return;}
+        if(b.k==='title'){current=null;var titlePage=page('chapter');titlePage.innerHTML='<div class="bk-running">LOWKEY JOURNAL</div><h2>'+escapeText(b.text).replace(/\n/g,'<br>')+'</h2>';pages.push(titlePage);return;}
+        if(b.k==='text')b.ps.forEach(addText);else if(b.k==='photos')b.list.forEach(photo);else if(b.k==='video'){var v=mjVideo(n);if(v){current=null;var el=page('video');el.innerHTML='<div class="bk-running">SCREENING ROOM</div>'+(v.embed?'<iframe src="'+escapeText(v.embed)+'" title="저널 영상" allowfullscreen></iframe>':'')+'<a href="'+escapeText(v.url)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a>';pages.push(el);}}});
       var end=page('end');end.innerHTML='<small>LOWKEY RECORDZ JOURNAL</small><h2>'+escapeText(n.title)+'</h2><a href="#/journal">목록으로 ↗</a>';pages.push(end);
       pages.forEach(function(el,i){var f=document.createElement('span');f.className='bk-folio';f.textContent=String(i+1).padStart(2,'0');el.appendChild(f);});
       index=Math.min(pages.length-1,Math.floor(fraction*pages.length));if(index>0&&per===2)index=1+Math.floor((index-1)/2)*2;show(false);
@@ -1852,9 +1964,35 @@ body:has(#view-journal-detail.active){overflow:hidden}
       if(!single&&pages[index+1])spread.appendChild(pages[index+1]);
       prev.disabled=index===0;next.disabled=index+(single?1:per)>=pages.length;
       count.textContent=(index+1)+( !single&&pages[index+1]?'–'+(index+2):'')+' / '+pages.length;
-      if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)spread.animate([{opacity:.4,transform:'perspective(1200px) rotateY(-5deg)'},{opacity:1,transform:'perspective(1200px) rotateY(0deg)'}],{duration:260,easing:'ease-out'});
     }
-    function turn(dir){if((dir<0&&prev.disabled)||(dir>0&&next.disabled))return;spread.querySelectorAll('iframe').forEach(function(f){f.src=f.src;});index=dir>0?index+(index===0?1:per):(index<=per?0:index-per);show(true);}
+    var turning=false;
+    async function turn(dir){
+      if(turning||(dir<0&&prev.disabled)||(dir>0&&next.disabled))return;
+      var target=dir>0?index+(index===0?1:per):(index<=per?0:index-per);
+      spread.querySelectorAll('iframe').forEach(function(f){f.src=f.src;});
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches){index=target;show(false);return;}
+      turning=true;
+      var leaf=dir>0?spread.lastElementChild:spread.firstElementChild;
+      try{
+        if(leaf){
+          leaf.style.transformOrigin=dir>0?'left center':'right center';
+          await leaf.animate([
+            {transform:'rotateY(0deg)',filter:'brightness(1)'},
+            {transform:'rotateY('+(-dir*88)+'deg)',filter:'brightness(.68)'}
+          ],{duration:260,easing:'ease-in',fill:'forwards'}).finished;
+          leaf.getAnimations().forEach(function(a){a.cancel();});
+        }
+        index=target;show(false);
+        var incoming=dir>0?spread.firstElementChild:spread.lastElementChild;
+        if(incoming){
+          incoming.style.transformOrigin=dir>0?'right center':'left center';
+          await incoming.animate([
+            {transform:'rotateY('+(dir*88)+'deg)',filter:'brightness(.68)'},
+            {transform:'rotateY(0deg)',filter:'brightness(1)'}
+          ],{duration:300,easing:'ease-out'}).finished;
+        }
+      }finally{turning=false;}
+    }
     prev.onclick=function(){turn(-1);};next.onclick=function(){turn(1);};root.onkeydown=function(e){if(e.target.closest('input,textarea,select,iframe'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();e.stopPropagation();turn(e.key==='ArrowRight'?1:-1);}};
     var touch=null;spread.addEventListener('touchstart',function(e){touch={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});spread.addEventListener('touchend',function(e){if(!touch)return;var dx=e.changedTouches[0].clientX-touch.x,dy=e.changedTouches[0].clientY-touch.y;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5)turn(dx<0?1:-1);touch=null;},{passive:true});
     requestAnimationFrame(function(){rebuild();});
