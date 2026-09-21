@@ -2487,7 +2487,7 @@ async function artistReply(k,hist,t){
     const d=await r.json().catch(()=>({}));
     if(r.ok&&d&&d.reply){AIERR='';return String(d.reply).slice(0,300);}
     AIERR='서버 응답 '+r.status+' '+(d.detail||d.error||'(빈 답변: API 키 확인)');console.warn('chat worker',r.status,d);
-  }catch(e){AIERR='워커에 연결되지 않음 (ORIGIN 값이나 주소 확인)';console.warn('chat worker',e);}}
+  }catch(e){AIERR='워커에 닿지 못함 · 현재 사이트 주소: '+location.origin+' · 워커 주소나 ORIGIN 값을 확인';console.warn('chat worker',e);}}
   return localReply(k,t);}
 
 /* presence: someone is online only now and then */
