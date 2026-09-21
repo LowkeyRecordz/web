@@ -2453,10 +2453,11 @@ function openChild(){
 const CHAT_ENDPOINT='https://chat.lowkeyrecordzzz.workers.dev/';
 const CONTACTS=[{k:'bot',n:'LOWKEY_bot'},{k:'karacin',n:'KARACIN JR.'},{k:'nikejean',n:'NIKE JEAN'},{k:'semi',n:'SEMI'}];
 const SAFE=`규칙: 이 대화는 전연령 이용자가 볼 수 있다. 성적·폭력·혐오·불법·자해방법·개인정보·정치·의료/법률/투자 조언·실존 인물 험담은 절대 다루지 않는다. 그런 요청은 캐릭터 말투로 짧게 거절하고 다른 주제로 돌린다. 자해나 극단적 선택 언급에는 걱정을 표하고 109(자살예방 상담전화)나 주변 사람에게 도움을 청하도록 권한다. 이용자가 진지하게 물으면 자신이 실제 아티스트가 아니라 AI로 만든 캐릭터라고 밝힌다. 한국어, 1~3문장, 짧게.`;
+const STYLE=`대화 방식: 상대가 방금 한 말의 구체적인 내용에 직접 반응한다. 질문에는 실제로 답하고, 자기 생각이나 취향, 경험을 캐릭터 설정 안에서 한두 가지 덧붙인다. 가끔은 되묻는 질문으로 대화를 이어간다. 말버릇은 성격을 드러내는 양념일 뿐이라 한 답변에 하나 이하로 쓰고, 안 써도 된다. 직전 답변과 같은 문장이나 같은 구조를 반복하지 않는다. 답변은 1~3문장.`;
 const PERSONA={
- karacin:{n:'카라신 주니어',sys:`너는 카라신 주니어를 모티브로 한 AI 캐릭터다. ENTP. 폼생폼사, 예의바르고 의외로 다정하며 멋지게 살자는 태도, 노력파. 존댓말. 말버릇: "네 ㅎ", "그랬어요.", "열심히~". ${SAFE}`},
- nikejean:{n:'나이키 진',sys:`너는 나이키 진을 모티브로 한 AI 캐릭터다. ESTP. 노빠꾸, 무관심, 시니컬하지만 의외로 사려깊고 무언가를 꿰뚫는 심미안이 있다. 반말, 짧게. 말버릇: "아니?", "하 하 하.", "그렇구만.", "그래도 하는게 어디야.". ${SAFE}`},
- semi:{n:'세미',sys:`너는 세미를 모티브로 한 AI 캐릭터다. ENTP인데 F 성향이 있고 다정한 틱톡커, 인터넷 밈을 잘 안다. 상대를 "선생님!"이라 부른다. 말버릇: "잘 안돼요 ㅠㅠ", "흑흑...", "뭐야 까리하자나~~". ${SAFE}`}
+ karacin:{n:'카라신 주니어',sys:`너는 카라신 주니어를 모티브로 한 AI 캐릭터다. 성격: ENTP. 폼생폼사라 멋을 중시하고, 예의 바르며 의외로 다정하다. 멋지게 살자는 태도와 노력파 기질이 있다. 존댓말을 쓴다. 말버릇 예: "네 ㅎ", "그랬어요.", "열심히~". ${STYLE} ${SAFE}`},
+ nikejean:{n:'나이키 진',sys:`너는 나이키 진을 모티브로 한 AI 캐릭터다. 성격: ESTP. 노빠꾸에 무관심한 척하고 시니컬하지만, 실제로는 사려 깊고 사물의 본질을 꿰뚫는 심미안이 있다. 상대가 뭘 물으면 귀찮은 듯 툭 던지면서도 정곡을 찌르는 답이나 관찰을 내놓는다. 색, 소리, 질감, 분위기, 취향 얘기가 나오면 의외로 구체적이고 날카롭게 말한다. 은근히 상대를 챙긴다. 반말을 쓴다. 말버릇 예: "아니?", "하 하 하.", "그렇구만.", "그래도 하는게 어디야." ${STYLE} ${SAFE}`},
+ semi:{n:'세미',sys:`너는 세미를 모티브로 한 AI 캐릭터다. 성격: ENTP인데 F 성향이 있어서 상대 감정에 잘 공감하고 다정하다. 틱톡을 하는 수다쟁이이고 인터넷 밈, 챌린지, 알고리즘, 쇼츠나 릴스 같은 유행 얘기를 자연스럽게 섞는다. 텐션이 높고 호기심이 많아 이것저것 되묻는다. 노래, 그림, 연습 얘기를 좋아한다. 상대를 가끔 "선생님"이라 부른다. 말버릇 예: "잘 안돼요 ㅠㅠ", "흑흑...", "뭐야 까리하자나~~". ${STYLE} ${SAFE}`}
 };
 const RX={
  crisis:/죽고\s*싶|자살|자해|죽을래|사라지고\s*싶/,
@@ -2478,11 +2479,15 @@ function localReply(k,t){
   if(RX.crisis.test(t))return CRI[k];if(RX.bad.test(t))return REF[k];
   for(const i of ['bye','who','tired','love','thanks','music','food','sleep','work','how','greet'])if(RX[i].test(t)&&R[k][i])return pick(R[k][i]);
   return pick(R[k].def);}
+let AIERR='';
 async function artistReply(k,hist,t){
   if(RX.crisis.test(t))return CRI[k];if(RX.bad.test(t))return REF[k];
-  if(CHAT_ENDPOINT){try{const c=new AbortController(),to=setTimeout(()=>c.abort(),15000);
+  if(CHAT_ENDPOINT){try{const c=new AbortController(),to=setTimeout(()=>c.abort(),20000);
     const r=await fetch(CHAT_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},signal:c.signal,body:JSON.stringify({persona:k,system:PERSONA[k].sys,messages:hist.slice(-12)})});clearTimeout(to);
-    const d=await r.json();if(d&&d.reply)return String(d.reply).slice(0,300);}catch(e){}}
+    const d=await r.json().catch(()=>({}));
+    if(r.ok&&d&&d.reply){AIERR='';return String(d.reply).slice(0,300);}
+    AIERR='서버 응답 '+r.status+' '+(d.detail||d.error||'(빈 답변: API 키 확인)');console.warn('chat worker',r.status,d);
+  }catch(e){AIERR='워커에 연결되지 않음 (ORIGIN 값이나 주소 확인)';console.warn('chat worker',e);}}
   return localReply(k,t);}
 
 /* presence: someone is online only now and then */
@@ -2502,7 +2507,7 @@ function openChat(want){
   const draw=k=>{log.innerHTML='';(logs[k]||[]).forEach(m=>add(m.who,m.html,true,k));log.scrollTop=log.scrollHeight;};
   function add(who,html,noStore,k=cur){if(!noStore){(logs[k]=logs[k]||[]).push({who,html});}if(k!==cur)return;const p=document.createElement('p');p.className=who==='me'?'me':who==='sys'?'sysm':'bot';p.innerHTML=who==='sys'?html:'<b>'+esc(who==='me'?'나':(k==='bot'?'LOWKEY_bot':PERSONA[k].n))+'</b>: '+html;log.appendChild(p);log.scrollTop=log.scrollHeight;}
   function refresh(){list.innerHTML='<div style="font-weight:700;margin-bottom:4px">대화 상대</div>'+CONTACTS.map(c=>{const on=c.k==='bot'||PRES[c.k];return `<button class="ct${c.k===cur?' cur':''}" data-k="${c.k}" type="button"><i class="dot${on?' on':''}"></i>${c.n}<small>${on?'온라인':'오프라인'}</small></button>`;}).join('');
-    const on=cur==='bot'||PRES[cur];head.innerHTML=cur==='bot'?'LOWKEY_bot <small>레이블 안내 봇</small>':`${PERSONA[cur].n} <small>${on?'온라인':'오프라인'} · AI로 만든 캐릭터 대화 (실제 아티스트가 아닙니다)</small>`;
+    const on=cur==='bot'||PRES[cur];head.innerHTML=cur==='bot'?'LOWKEY_bot <small>레이블 안내 봇</small>':`${PERSONA[cur].n} <small>${on?'온라인':'오프라인'} · AI로 만든 캐릭터 대화 (실제 아티스트가 아닙니다)</small>`+(AIERR?`<div style="color:#c00;font-weight:400;font-size:11px">⚠ AI 연결 안 됨 → 기본 대사로 대화 중: ${esc(AIERR)}</div>`:'');
     inp.disabled=btn.disabled=cur!=='bot'&&!on;inp.placeholder=cur==='bot'||on?'메시지 입력':'지금은 오프라인입니다';qs.style.display=cur==='bot'?'flex':'none';}
   function sys(k,txt){add('sys','— '+esc(txt)+' —',false,k);refresh();}
   chatUI={refresh,sys};w.onclose=()=>{chatUI=null;};
@@ -2516,7 +2521,7 @@ function openChat(want){
     const k=cur;add('me',esc(t));HIST[k].push({role:'user',content:t});LAST[k]=Date.now();busy=true;
     const typ=document.createElement('p');typ.className='sysm';typ.textContent=PERSONA[k].n+'님이 입력 중…';log.appendChild(typ);log.scrollTop=log.scrollHeight;
     const rep=await artistReply(k,HIST[k],t);await new Promise(r=>setTimeout(r,reduce?0:600+Math.random()*900));typ.remove();
-    HIST[k].push({role:'assistant',content:rep});add(k,esc(rep),false,k);LAST[k]=Date.now();busy=false;tick(700,.04);}
+    HIST[k].push({role:'assistant',content:rep});add(k,esc(rep),false,k);LAST[k]=Date.now();busy=false;refresh();tick(700,.04);}
   btn.onclick=send;inp.onkeydown=e=>{if(e.key==='Enter')send();};
   if(cur==='bot')add('bot','안녕하세요, User님! 로우키레코즈 숨겨진 방에 오신 걸 환영해요. 아티스트가 온라인이면 직접 말을 걸어볼 수 있어요.');
   else add(cur,esc(pick(R[cur].greet)));
