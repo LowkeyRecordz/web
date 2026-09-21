@@ -1030,6 +1030,16 @@ body:has(#view-journal-detail.active){overflow:hidden}
 #journalDetailContent>.bk-reader{flex:0 0 auto;margin: auto; padding-top:24px;padding-bottom:8px}
 #journalDetailContent .bk-nav{margin:24px 0 0}
 @media(max-width:799px){#journalDetailContent{padding-bottom:16px}#journalDetailContent>.bk-reader{padding-top:12px;padding-bottom:0}#journalDetailContent .bk-nav{margin-top:18px}}
+</style><style>
+/* Interior typesetting: generous margins, left-aligned text, vertical centering. */
+.bk-page.bk-text{padding:calc(var(--page-w)*.14) calc(var(--page-w)*.115)}
+.bk-text .bk-copy{height:100%;display:flex;flex-direction:column;overflow:hidden}
+.bk-copy-inner{flex:0 0 auto;width:100%;margin-top:auto;margin-bottom:auto;display:flow-root;text-align:left}
+.bk-copy-inner p{margin:0 0 1.15em!important;line-height:1.75!important;letter-spacing:-.025em}
+.bk-copy-inner p:last-child{margin-bottom:0!important}
+.bk-text .bk-running{top:calc(var(--page-w)*.065);left:calc(var(--page-w)*.115);right:calc(var(--page-w)*.115);font-size:10px;letter-spacing:.12em}
+.bk-text .bk-folio{bottom:calc(var(--page-w)*.055);right:calc(var(--page-w)*.085)}
+@media(max-width:799px){.bk-page.bk-text{padding:calc(var(--page-w)*.15) calc(var(--page-w)*.095)}.bk-text .bk-running{left:calc(var(--page-w)*.095);right:calc(var(--page-w)*.095)}}
 </style></head>
 <body>
 
@@ -1769,18 +1779,18 @@ body:has(#view-journal-detail.active){overflow:hidden}
       var c=mjCompose(n),src=validImage(n.cover)?n.cover:c.hero,cover=page('cover');
       cover.innerHTML=(src?'<img src="'+escapeText(src)+'" alt="'+escapeText(n.title)+' 표지">':'')+'<div class="bk-cover-top">LOWKEY JOURNAL <span>No.'+mjPad(mjNo[n.id]||1)+'</span></div><div class="bk-cover-title"><small>'+escapeText(categoryText(n))+' · '+escapeText(fmtDate(n.date))+'</small><h1>'+escapeText(n.title)+'</h1></div>';pages.push(cover);
       var current=null,content=null;
-      function newText(){current=page('text');current.innerHTML='<div class="bk-running">LOWKEY JOURNAL</div><div class="bk-copy"></div>';spread.replaceChildren(current);content=current.querySelector('.bk-copy');pages.push(current);}
+      function newText(){current=page('text');current.innerHTML='<div class="bk-running">LOWKEY JOURNAL</div><div class="bk-copy"><div class="bk-copy-inner"></div></div>';spread.replaceChildren(current);content=current.querySelector('.bk-copy');pages.push(current);}
       function addText(text){
         var rest=Array.from(text),isQ=mjIsQ(text),continued=false;
         while(rest.length){
           if(!current)newText();
-          var p=document.createElement('p');if(isQ)p.className='mj-q';content.appendChild(p);
+          var p=document.createElement('p');if(isQ)p.className='mj-q';content.querySelector('.bk-copy-inner').appendChild(p);
           function put(k){p.innerHTML=mjParaHTML(rest.slice(0,k).join(''),false,false).replace(/^<p[^>]*>|<\/p>$/g,'');}
           put(rest.length);
           if(content.scrollHeight<=content.clientHeight+1){rest=[];break;}
           var lo=0,hi=rest.length;
           while(lo<hi){var mid=Math.ceil((lo+hi)/2);put(mid);if(content.scrollHeight<=content.clientHeight+1)lo=mid;else hi=mid-1;}
-          if(lo<1){p.remove();if(content.children.length){current=null;continue;}lo=1;}
+          if(lo<1){p.remove();if(content.querySelector('.bk-copy-inner').children.length){current=null;continue;}lo=1;}
           var cut=lo;
           if(lo<rest.length&&lo>30){for(var k=lo;k>lo-30;k--){if(/\s/.test(rest[k-1])){cut=k;break;}}}
           put(cut);rest=rest.slice(cut);current=null;continued=true;
