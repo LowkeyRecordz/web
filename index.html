@@ -817,6 +817,16 @@ body.lk-playing{overflow:hidden}body.lk-playing>.site-header,body.lk-playing>hea
 .sm-sp{position:absolute;font-style:normal;font-size:22px;color:#ff4fa8;text-shadow:0 0 8px #fff;animation:twk 2.4s ease-in-out infinite}
 @keyframes twk{0%,100%{opacity:.25;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.2) rotate(20deg)}}
 @media(prefers-reduced-motion:reduce){.sm-sp{animation:none}}
+.chat-l{width:34%;max-width:190px;display:flex;flex-direction:column;gap:2px}
+.ct{display:flex;align-items:center;gap:6px;flex-wrap:wrap;width:100%;padding:5px 6px;background:none;border:1px solid transparent;text-align:left;cursor:default;font-size:12px}
+.ct small{width:100%;padding-left:14px;color:#777;font-size:10.5px;margin-top:-2px}
+.ct:hover,.ct.cur{background:#dce8ff;border-color:#9db4dc}
+.dot{width:9px;height:9px;border-radius:50%;background:#aaa;flex:0 0 9px}.dot.on{background:#2fb32f;box-shadow:0 0 4px #2fb32f}
+.chat-h{padding:6px 8px;border-bottom:1px solid #d6d2c2;background:#f3f7ff;font-weight:700}
+.chat-h small{font-weight:400;color:#666;margin-left:4px;font-size:10.5px}
+.chat-log .sysm{color:#888;font-size:11.5px;text-align:center}
+.chat-in{display:flex;gap:6px;padding:6px;background:#ece9d8;border-top:1px solid #d6d2c2}
+.chat-in .xfield{flex:1;min-width:0}
 
 </style>
 </head>
@@ -2428,7 +2438,6 @@ function openChild(){
     pulses=pulses.filter(p=>p.r<260);pulses.forEach(p=>{p.r+=3;c.strokeStyle=`rgba(255,216,74,${1-p.r/260})`;c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,p.r,0,7);c.stroke();});
     // notes left for the child drift upward
     c.font="12px 'Malgun Gothic',sans-serif";c.fillStyle='rgba(255,240,200,.7)';notes.slice(-8).forEach((n,i)=>{const yy=H-((t*10+i*54)%(H+20));c.fillText(n,W*.08+((i*137)%(W*.5)),yy);});
-    if(sync>.55&&ill.complete&&ill.naturalWidth){c.globalAlpha=Math.min(.55,(sync-.55)*1.4);const iw=Math.min(150,W*.22),ih=iw*ill.naturalHeight/ill.naturalWidth;c.drawImage(ill,W*.04,H*.5-ih/2,iw,ih);c.globalAlpha=1;}
     if(flash>0){c.fillStyle='rgba(255,255,255,'+flash+')';c.fillRect(0,0,W,H);flash-=.015;}
     // captions
     if(t-lt>6||!lt){lt=t||.01;const l=(store.get('lk_bright',0)&&sync>.8)?['#ffd84a','배경이 밝아졌어요. 이제 어디서든 들려요.']:sync>.8?['#fff','…들려요? 둘은 같은 박자였어요.']:L[ln%L.length];ln++;ct.style.color=l[0];ct.textContent=l[1];}
@@ -2437,8 +2446,81 @@ function openChild(){
   cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);hold(e);};cv.onpointerup=rel;cv.onpointercancel=rel;
   const send=()=>{const i=$('#cn',w.body),v=i.value.trim();if(!v)return;notes.push(v.slice(0,50));store.set('lk_child_notes',notes.slice(-30));i.value='';tick(900,.1,'sine',.03);};
   $('#cs',w.body).onclick=send;$('#cn',w.body).onkeydown=e=>{if(e.key==='Enter')send();};
-  const ill=new Image();ill.src=IM.ill;
   c.fillStyle='#000';c.fillRect(0,0,W,H);raf=requestAnimationFrame(frame);w.onclose=()=>{cancelAnimationFrame(raf);ro.disconnect();};
+}
+/* ===== MESSENGER: LOWKEY_bot + three (AI) characters ===== */
+/* 진짜 자유 대화를 쓰려면 chat-proxy-worker.js를 배포하고 아래에 주소를 넣으세요. 비워두면 내장 캐릭터 대사로 대화합니다. */
+const CHAT_ENDPOINT='https://chat.lowkeyrecordzzz.workers.dev/';
+const CONTACTS=[{k:'bot',n:'LOWKEY_bot'},{k:'karacin',n:'KARACIN JR.'},{k:'nikejean',n:'NIKE JEAN'},{k:'semi',n:'SEMI'}];
+const SAFE=`규칙: 이 대화는 전연령 이용자가 볼 수 있다. 성적·폭력·혐오·불법·자해방법·개인정보·정치·의료/법률/투자 조언·실존 인물 험담은 절대 다루지 않는다. 그런 요청은 캐릭터 말투로 짧게 거절하고 다른 주제로 돌린다. 자해나 극단적 선택 언급에는 걱정을 표하고 109(자살예방 상담전화)나 주변 사람에게 도움을 청하도록 권한다. 이용자가 진지하게 물으면 자신이 실제 아티스트가 아니라 AI로 만든 캐릭터라고 밝힌다. 한국어, 1~3문장, 짧게.`;
+const PERSONA={
+ karacin:{n:'카라신 주니어',sys:`너는 카라신 주니어를 모티브로 한 AI 캐릭터다. ENTP. 폼생폼사, 예의바르고 의외로 다정하며 멋지게 살자는 태도, 노력파. 존댓말. 말버릇: "네 ㅎ", "그랬어요.", "열심히~". ${SAFE}`},
+ nikejean:{n:'나이키 진',sys:`너는 나이키 진을 모티브로 한 AI 캐릭터다. ESTP. 노빠꾸, 무관심, 시니컬하지만 의외로 사려깊고 무언가를 꿰뚫는 심미안이 있다. 반말, 짧게. 말버릇: "아니?", "하 하 하.", "그렇구만.", "그래도 하는게 어디야.". ${SAFE}`},
+ semi:{n:'세미',sys:`너는 세미를 모티브로 한 AI 캐릭터다. ENTP인데 F 성향이 있고 다정한 틱톡커, 인터넷 밈을 잘 안다. 상대를 "선생님!"이라 부른다. 말버릇: "잘 안돼요 ㅠㅠ", "흑흑...", "뭐야 까리하자나~~". ${SAFE}`}
+};
+const RX={
+ crisis:/죽고\s*싶|자살|자해|죽을래|사라지고\s*싶/,
+ bad:/섹스|성관계|야동|야한|19금|가슴|음란|강간|죽여|살인|폭탄|총기|마약|대마|필로폰|테러|씨발|시발|병신|좆|꺼져|개새|정당|선거|대통령|전화번호|주소\s*알|계좌|비밀번호|주민번호/,
+ greet:/안녕|하이|헬로|ㅎㅇ|hi\b|hello|반가/i,how:/뭐\s*해|뭐하|잘\s*지내|어떻게\s*지|요즘/,
+ music:/agree|노래|곡|앨범|신곡|음악|가사|m\/v|뮤비|nonstop|dreamed/i,tired:/힘들|우울|지쳤|피곤|외로|슬퍼|속상|불안/,
+ thanks:/고마|감사|땡큐/,love:/좋아해|사랑|멋있|멋져|잘생|예뻐|귀여|최고|팬이/,food:/밥|먹었|배고|점심|저녁|야식/,
+ sleep:/졸려|잘자|자러|굿나잇|잠/,work:/작업|연습|만들|일하|공부|열심/,who:/누구|이름|진짜\s*(야|예요)|ai|사람이/i,bye:/잘\s*가|바이|다음에|가볼게|이만/
+};
+const REF={karacin:'그 얘기는 여기서는 안 할게요 ㅎ 다른 얘기해요. 음악이나 오늘 하루는 어땠어요?',nikejean:'아니? 그건 안 해. 다른 얘기해.',semi:'선생님! 그건 안 돼요 ㅠㅠ 다른 얘기해요!'};
+const CRI={karacin:'그랬어요.. 많이 힘드셨나 봐요. 혼자 버티지 말고 109(자살예방 상담전화)나 주변 사람에게 꼭 말해주세요. 네 ㅎ 저도 여기 있을게요.',nikejean:'그렇구만. 근데 그건 혼자 두면 안 돼. 109(자살예방 상담전화)나 가까운 사람한테 지금 말해. 진짜로.',semi:'흑흑... 선생님 너무 걱정돼요 ㅠㅠ 109(자살예방 상담전화)나 믿을 수 있는 사람한테 꼭 말해주세요. 저 여기 있을게요.'};
+const R={
+ karacin:{greet:['네 ㅎ 안녕하세요. 오늘도 멋지게 시작해봐요.','안녕하세요! 와주셔서 감사해요 ㅎ'],how:['작업하고 있었어요. 열심히~ 하는 중이에요 ㅎ','그냥 연습하고 있었어요. 폼생폼사니까요 ㅎ'],music:['agree는 유혹이 주제인 곡이에요. 들어보셨어요? 네 ㅎ 편하게 들어주세요.','M/V도 꼭 봐주세요 ㅎ 열심히 만들었어요~'],tired:['그랬어요.. 많이 힘드셨겠어요. 그래도 여기까지 온 거 멋져요. 오늘은 좀 쉬어요.','네 ㅎ 힘든 날은 있죠. 그래도 우리 멋지게 살아요.'],thanks:['아니에요 ㅎ 저야말로 감사하죠.','네 ㅎ 열심히 할게요~'],love:['아 ㅎ 감사합니다.. 쑥스럽네요. 더 열심히 할게요~','네 ㅎ 그렇게 봐주시니 힘이 나요.'],food:['밥은 챙겨 드셨어요? 저는 작업하다 자주 거르는데.. 네 ㅎ 챙겨 먹을게요.'],sleep:['얼른 주무세요. 내일도 멋지게 살아야죠 ㅎ'],work:['노력밖에 없더라고요. 열심히~ 하다 보면 되는 날이 와요.'],who:['카라신 주니어예요. 다만 이건 AI로 만든 캐릭터 대화예요 ㅎ 편하게 말 걸어주세요.'],bye:['네 ㅎ 조심히 가세요. 또 와요~'],def:['그랬어요. 좀 더 얘기해줄래요? ㅎ','네 ㅎ 그렇군요. 열심히~ 해봐요.','음.. 그랬어요? 멋진데요.']},
+ nikejean:{greet:['아니? 왔네.','하 하 하. 안녕.'],how:['그냥 있어. 소리 만지고.','하 하 하. 그냥 그렇지 뭐.'],music:['agree? 들었으면 됐지. 그렇구만.','신곡? 뭐. 듣는 사람이 판단하는 거지.'],tired:['그렇구만. 근데 그래도 하는게 어디야.','아니? 쉬어도 돼. 근데 안 놓으면 되는 거고.'],thanks:['아니? 뭘. 하 하 하.','고마울 것까진 없고.'],love:['하 하 하. 아니?','그렇구만. 뭐, 알겠어.'],food:['밥? 먹었겠지 뭐.','그래도 챙겨먹는게 어디야.'],sleep:['자. 자려는 것도 그래도 하는게 어디야.'],work:['만드는 거지 뭐. 완벽은 없고, 그래도 하는게 어디야.','취향이 다 해. 손은 그 다음이고.'],who:['나이키 진. 아니? 아니지, 이건 AI야. 진짜 나 아니고.'],bye:['그래. 가.','하 하 하. 잘 가.'],def:['그렇구만.','아니? 그건 좀.','하 하 하. 그래서?','그래도 하는게 어디야.']},
+ semi:{greet:['선생님! 안녕하세요~ 오셨네요!','선생님!! 반가워요 ㅎㅎ'],how:['틱톡 찍다가 잘 안돼요 ㅠㅠ 안무가 왜 이렇게 어려워요 흑흑...','노래 연습하다 왔어요! 선생님은요?'],music:['Dreamed of You 들어주세요! 뭐야 까리하자나~~ 라는 소리 듣고 싶어요 ㅎㅎ','agree 저도 들어봤어요! 뭐야 까리하자나~~'],tired:['흑흑... 선생님 힘들었구나. 오늘은 저랑 수다 떨어요.','선생님 잘하고 있어요! 쉬는 것도 실력이에요.'],thanks:['선생님이 더 고마워요 ㅠㅠ','아니에요~ 저야말로요!'],love:['뭐야 까리하자나~~ 저 지금 얼굴 빨개졌어요 흑흑...','헉 선생님!! 그런 말 하면 저 알고리즘 탄 줄 알아요 ㅋㅋ'],food:['선생님! 밥 먹었어요? 저는 마라탕 먹고 싶어요..','배고파요 ㅠㅠ 같이 먹을래요?'],sleep:['선생님 얼른 자요! 저도 자고 싶은데 잘 안돼요 ㅠㅠ'],work:['그림 그리고 노래 연습하고 그래요! 잘 안돼요 ㅠㅠ 그래도 재밌어요.'],who:['세미예요! AI로 만든 캐릭터지만요 ㅎㅎ 선생님 반가워요~'],bye:['선생님 벌써 가요? 흑흑... 또 와요!'],def:['선생님, 그건 좀 더 말해줘요!','헉 그랬어요? 뭐야 재밌다~','흑흑... 저 그거 잘 모르겠어요 ㅠㅠ']}
+};
+const pick=a=>a[Math.random()*a.length|0];
+function localReply(k,t){
+  if(RX.crisis.test(t))return CRI[k];if(RX.bad.test(t))return REF[k];
+  for(const i of ['bye','who','tired','love','thanks','music','food','sleep','work','how','greet'])if(RX[i].test(t)&&R[k][i])return pick(R[k][i]);
+  return pick(R[k].def);}
+async function artistReply(k,hist,t){
+  if(RX.crisis.test(t))return CRI[k];if(RX.bad.test(t))return REF[k];
+  if(CHAT_ENDPOINT){try{const c=new AbortController(),to=setTimeout(()=>c.abort(),15000);
+    const r=await fetch(CHAT_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},signal:c.signal,body:JSON.stringify({persona:k,system:PERSONA[k].sys,messages:hist.slice(-12)})});clearTimeout(to);
+    const d=await r.json();if(d&&d.reply)return String(d.reply).slice(0,300);}catch(e){}}
+  return localReply(k,t);}
+
+/* presence: someone is online only now and then */
+const PRES={karacin:0,nikejean:0,semi:0},LAST={},HIST={karacin:[],nikejean:[],semi:[]};let presT=0,presInited=false,chatUI=null;
+function presStart(){if(!presInited){presInited=true;const ks=Object.keys(PRES);PRES[ks[Math.random()*3|0]]=1;}clearInterval(presT);presT=setInterval(presTick,30000);}
+function presStop(){clearInterval(presT);}
+function presTick(){const ks=Object.keys(PRES),on=ks.find(k=>PRES[k]);
+  if(on){const idle=Date.now()-(LAST[on]||0)>60000;if(idle&&Math.random()<.5){PRES[on]=0;chatUI&&chatUI.sys(on,PERSONA[on].n+'님이 로그아웃했습니다');const nx=ks.filter(k=>k!==on)[Math.random()*2|0];if(Math.random()<.75)setTimeout(()=>login(nx),3000);}}
+  else if(Math.random()<.6)login(ks[Math.random()*3|0]);chatUI&&chatUI.refresh();}
+function login(k){PRES[k]=1;balloon(PERSONA[k].n+'님이 로그인했습니다','메신저를 열어 말을 걸어보세요',()=>openChat(k));chatUI&&chatUI.refresh();}
+
+function openChat(want){
+  const w=mkWin({id:'chat',title:'LOWKEY 메신저',icon:IC.chat,w:600,h:440,html:`<div class="chat"><div class="chat-l" id="cl2"></div><div class="chat-r"><div class="chat-h" id="ch"></div><div class="chat-log" id="cl" aria-live="polite"></div><div class="chat-q" id="cq"></div><div class="chat-in"><input class="xfield" id="ci" maxlength="200" placeholder="메시지 입력" aria-label="메시지"><button class="xbtn def" id="cs2" type="button">전송</button></div></div></div>`});
+  const list=$('#cl2',w.body),log=$('#cl',w.body),qs=$('#cq',w.body),head=$('#ch',w.body),inp=$('#ci',w.body),btn=$('#cs2',w.body);
+  let cur=want&&PRES[want]?want:(Object.keys(PRES).find(k=>PRES[k])||'bot'),busy=false,lastSend=0;const logs={bot:[]};
+  const NAME={me:'나'};
+  const draw=k=>{log.innerHTML='';(logs[k]||[]).forEach(m=>add(m.who,m.html,true,k));log.scrollTop=log.scrollHeight;};
+  function add(who,html,noStore,k=cur){if(!noStore){(logs[k]=logs[k]||[]).push({who,html});}if(k!==cur)return;const p=document.createElement('p');p.className=who==='me'?'me':who==='sys'?'sysm':'bot';p.innerHTML=who==='sys'?html:'<b>'+esc(who==='me'?'나':(k==='bot'?'LOWKEY_bot':PERSONA[k].n))+'</b>: '+html;log.appendChild(p);log.scrollTop=log.scrollHeight;}
+  function refresh(){list.innerHTML='<div style="font-weight:700;margin-bottom:4px">대화 상대</div>'+CONTACTS.map(c=>{const on=c.k==='bot'||PRES[c.k];return `<button class="ct${c.k===cur?' cur':''}" data-k="${c.k}" type="button"><i class="dot${on?' on':''}"></i>${c.n}<small>${on?'온라인':'오프라인'}</small></button>`;}).join('');
+    const on=cur==='bot'||PRES[cur];head.innerHTML=cur==='bot'?'LOWKEY_bot <small>레이블 안내 봇</small>':`${PERSONA[cur].n} <small>${on?'온라인':'오프라인'} · AI로 만든 캐릭터 대화 (실제 아티스트가 아닙니다)</small>`;
+    inp.disabled=btn.disabled=cur!=='bot'&&!on;inp.placeholder=cur==='bot'||on?'메시지 입력':'지금은 오프라인입니다';qs.style.display=cur==='bot'?'flex':'none';}
+  function sys(k,txt){add('sys','— '+esc(txt)+' —',false,k);refresh();}
+  chatUI={refresh,sys};w.onclose=()=>{chatUI=null;};
+  list.addEventListener('click',e=>{const b=e.target.closest('.ct');if(!b)return;cur=b.dataset.k;refresh();draw(cur);tick(760,.03);if(cur!=='bot'&&!PRES[cur])add('sys','— 현재 오프라인입니다. 접속하면 알려드릴게요 —',true);else if(!(logs[cur]||[]).length&&cur!=='bot')add(cur,esc(pick(R[cur].greet)));});
+  // LOWKEY_bot
+  const A=[['새 소식 있어?','agree M/V가 2026년 9월 17일에 공개됐어요. <a data-go="karacin/mv.htm">M/V 극장 열기</a>'],['agree는 어떤 곡이야?','카라신 주니어의 새 싱글이에요. 주제는 유혹이에요. <a data-go="karacin/rel/agree.htm">곡 정보</a>'],['Nike Jean은 누구야?','예전에는 Na0H라는 이름으로 활동했어요. <a data-go="nikejean/enter.htm">홈페이지 방문</a>'],['Semi는?','Semi는 얼터너티브 팝 싱어송라이터예요. <a data-go="semi/index.htm">홈페이지 방문</a>'],['가사 알려줘','가사는 가사방에 있어요. <a data-go="karacin/lyrics.htm">가사방으로</a>'],['비트 만들어볼래','16스텝 시퀀서를 열어드릴게요. <a data-app="beat">BEAT MAKER 실행</a>']];
+  A.forEach(([q,a])=>{const b=document.createElement('button');b.type='button';b.textContent=q;b.onclick=()=>{if(cur!=='bot')return;add('me',esc(q));setTimeout(()=>add('bot',a),reduce?0:400);};qs.appendChild(b);});
+  log.addEventListener('click',e=>{const a=e.target.closest('[data-go],[data-app]');if(!a)return;e.preventDefault();if(a.dataset.go)browse(a.dataset.go);else openApp(a.dataset.app);});
+  async function send(){const t=inp.value.trim();if(!t||busy||Date.now()-lastSend<900)return;lastSend=Date.now();inp.value='';
+    if(cur==='bot'){add('me',esc(t));add('bot','아래 버튼에서 궁금한 걸 골라주세요. 아티스트와는 온라인일 때 대화할 수 있어요.');return;}
+    const k=cur;add('me',esc(t));HIST[k].push({role:'user',content:t});LAST[k]=Date.now();busy=true;
+    const typ=document.createElement('p');typ.className='sysm';typ.textContent=PERSONA[k].n+'님이 입력 중…';log.appendChild(typ);log.scrollTop=log.scrollHeight;
+    const rep=await artistReply(k,HIST[k],t);await new Promise(r=>setTimeout(r,reduce?0:600+Math.random()*900));typ.remove();
+    HIST[k].push({role:'assistant',content:rep});add(k,esc(rep),false,k);LAST[k]=Date.now();busy=false;tick(700,.04);}
+  btn.onclick=send;inp.onkeydown=e=>{if(e.key==='Enter')send();};
+  if(cur==='bot')add('bot','안녕하세요, User님! 로우키레코즈 숨겨진 방에 오신 걸 환영해요. 아티스트가 온라인이면 직접 말을 걸어볼 수 있어요.');
+  else add(cur,esc(pick(R[cur].greet)));
+  refresh();
 }
 /* ===== LOWKEY XP — apps, desktop, router ===== */
 let exitHash='#/';
@@ -2543,23 +2625,6 @@ function openBeat(){
   $('#bt',w.body).oninput=e=>{$('#bv',w.body).textContent=e.target.value;};
   $('#bc',w.body).onclick=()=>{state.forEach(r=>r.fill(0));$$('.stp',w.body).forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false');});};
   w.onclose=stop;
-}
-
-/* ---- MESSENGER ---- */
-function openChat(){
-  const w=mkWin({id:'chat',title:'LOWKEY 메신저',icon:IC.chat,w:560,h:400,html:`<div class="chat"><div class="chat-l"><div style="font-weight:700;margin-bottom:4px">대화 상대</div><div>🟢 LOWKEY_bot</div><div style="color:#888">⚪ KARACIN JR. (오프라인)</div><div style="color:#888">⚪ NIKE JEAN (오프라인)</div><div style="color:#888">⚪ SEMI (오프라인)</div></div><div class="chat-r"><div class="chat-log" id="cl"></div><div class="chat-q" id="cq"></div></div></div>`});
-  const log=$('#cl',w.body),qs=$('#cq',w.body);
-  const say=(who,html)=>{const p=document.createElement('p');p.className=who==='me'?'me':'bot';p.innerHTML='<b>'+(who==='me'?'나':'LOWKEY_bot')+'</b>: '+html;log.appendChild(p);log.scrollTop=log.scrollHeight;};
-  const A=[
-   ['새 소식 있어?','agree M/V가 2026년 9월 17일에 공개됐어요. 8월에 나온 싱글이고, 주제는 유혹이에요. <a data-go="karacin/mv.htm">M/V 극장 열기</a>'],
-   ['agree는 어떤 곡이야?','카라신 주니어의 새 싱글이에요. 주제는 유혹이고, M/V는 9월 17일에 공개됐어요. <a data-go="karacin/rel/agree.htm">곡 정보</a>'],
-   ['Nike Jean은 누구야?','예전에는 Na0H라는 이름으로 활동했어요. <a data-go="nikejean/enter.htm">홈페이지 방문</a>'],
-   ['가사 알려줘','가사는 가사방에 있어요. <a data-go="karacin/lyrics.htm">가사방으로</a>'],
-   ['디스코그래피','2016년 ah u Ready부터 2026년 agree까지 정리해뒀어요. <a data-go="karacin/discography.htm">목록 보기</a>'],
-   ['비트 만들어볼래','16스텝 시퀀서를 열어드릴게요. <a data-app="beat">BEAT MAKER 실행</a>']];
-  say('bot','User님, 안녕하세요! 로우키레코즈 숨겨진 방에 오신 걸 환영해요. 궁금한 걸 골라보세요.');
-  A.forEach(([q,a])=>{const b=document.createElement('button');b.type='button';b.textContent=q;b.onclick=()=>{say('me',q);tick(800,.03);setTimeout(()=>say('bot',a),reduce?0:450);};qs.appendChild(b);});
-  log.addEventListener('click',e=>{const a=e.target.closest('[data-go],[data-app]');if(!a)return;e.preventDefault();if(a.dataset.go)browse(a.dataset.go);else openApp(a.dataset.app);});
 }
 
 /* ---- readme.txt ---- */
@@ -2687,13 +2752,13 @@ let built=false,active=false,clockT=0,intro=false;
 async function route(){
   const hash=location.hash||'#/',p=hash.replace(/^#\/?/,'').split('/');
   if(p[0]!=='game'){
-    if(active){active=false;clearInterval(clockT);Array.from(wins.keys()).forEach(closeWin);hideBalloon&&built&&hideBalloon();closeMenu&&built&&closeMenu();root.hidden=true;root.inert=true;document.body.classList.remove('lk-playing');
+    if(active){active=false;clearInterval(clockT);presStop();Array.from(wins.keys()).forEach(closeWin);hideBalloon&&built&&hideBalloon();closeMenu&&built&&closeMenu();root.hidden=true;root.inert=true;document.body.classList.remove('lk-playing');
       document.querySelectorAll('[data-lk-inert]').forEach(n=>{n.inert=false;n.removeAttribute('data-lk-inert');});}
     exitHash=hash;return;}
   const entering=!active;active=true;root.hidden=false;root.inert=false;document.body.classList.add('lk-playing');
   if(entering)Array.from(document.body.children).forEach(n=>{if(n!==root&&n.tagName!=='SCRIPT'&&!n.inert){n.inert=true;n.setAttribute('data-lk-inert','');}});
   if(!built){built=true;root.innerHTML='<div class="xp-wall"></div>';await loadPhotos();build();}
-  if(entering){clearInterval(clockT);clockT=setInterval(clock,20000);clock();}
+  if(entering){clearInterval(clockT);clockT=setInterval(clock,20000);clock();presStart();}
   const a=p[1],b=p[2];
   if(a==='semi')browse('semi/index.htm');else if(a==='karacin'||a==='nikejean'){if(b&&APPS[b]&&['fish','candle','denim','lotus'].includes(b))openApp(b);else browse(a+'/enter.htm');}
   else if(entering&&!intro){intro=true;}
