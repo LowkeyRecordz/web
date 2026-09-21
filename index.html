@@ -2450,6 +2450,7 @@ function openChild(){
 }
 /* ===== MESSENGER: LOWKEY_bot + three (AI) characters ===== */
 /* 진짜 자유 대화를 쓰려면 chat-proxy-worker.js를 배포하고 아래에 주소를 넣으세요. 비워두면 내장 캐릭터 대사로 대화합니다. */
+const BUILD='0921-d';
 const CHAT_ENDPOINT='https://chat.lowkeyrecordzzz.workers.dev/';
 const CONTACTS=[{k:'bot',n:'LOWKEY_bot'},{k:'karacin',n:'KARACIN JR.'},{k:'nikejean',n:'NIKE JEAN'},{k:'semi',n:'SEMI'}];
 const SAFE=`규칙: 이 대화는 전연령 이용자가 볼 수 있다. 성적·폭력·혐오·불법·자해방법·개인정보·정치·의료/법률/투자 조언·실존 인물 험담은 절대 다루지 않는다. 그런 요청은 캐릭터 말투로 짧게 거절하고 다른 주제로 돌린다. 자해나 극단적 선택 언급에는 걱정을 표하고 109(자살예방 상담전화)나 주변 사람에게 도움을 청하도록 권한다. 이용자가 진지하게 물으면 자신이 실제 아티스트가 아니라 AI로 만든 캐릭터라고 밝힌다. 한국어, 1~3문장, 짧게.`;
@@ -2507,7 +2508,7 @@ function openChat(want){
   const draw=k=>{log.innerHTML='';(logs[k]||[]).forEach(m=>add(m.who,m.html,true,k));log.scrollTop=log.scrollHeight;};
   function add(who,html,noStore,k=cur){if(!noStore){(logs[k]=logs[k]||[]).push({who,html});}if(k!==cur)return;const p=document.createElement('p');p.className=who==='me'?'me':who==='sys'?'sysm':'bot';p.innerHTML=who==='sys'?html:'<b>'+esc(who==='me'?'나':(k==='bot'?'LOWKEY_bot':PERSONA[k].n))+'</b>: '+html;log.appendChild(p);log.scrollTop=log.scrollHeight;}
   function refresh(){list.innerHTML='<div style="font-weight:700;margin-bottom:4px">대화 상대</div>'+CONTACTS.map(c=>{const on=c.k==='bot'||PRES[c.k];return `<button class="ct${c.k===cur?' cur':''}" data-k="${c.k}" type="button"><i class="dot${on?' on':''}"></i>${c.n}<small>${on?'온라인':'오프라인'}</small></button>`;}).join('');
-    const on=cur==='bot'||PRES[cur];head.innerHTML=cur==='bot'?'LOWKEY_bot <small>레이블 안내 봇</small>':`${PERSONA[cur].n} <small>${on?'온라인':'오프라인'} · AI로 만든 캐릭터 대화 (실제 아티스트가 아닙니다)</small>`+(AIERR?`<div style="color:#c00;font-weight:400;font-size:11px">⚠ AI 연결 안 됨 → 기본 대사로 대화 중: ${esc(AIERR)}</div>`:'');
+    const on=cur==='bot'||PRES[cur];head.innerHTML=cur==='bot'?'LOWKEY_bot <small>레이블 안내 봇</small>':`${PERSONA[cur].n} <small>${on?'온라인':'오프라인'} · AI로 만든 캐릭터 대화 (실제 아티스트가 아닙니다)</small>`+(AIERR?`<div style="color:#c00;font-weight:400;font-size:11px">⚠ AI 연결 안 됨 → 기본 대사로 대화 중: ${esc(AIERR)}</div>`:'');head.insertAdjacentHTML('afterbegin',`<span style="float:right;color:#aaa;font-weight:400;font-size:10px">build ${BUILD}</span>`);
     inp.disabled=btn.disabled=cur!=='bot'&&!on;inp.placeholder=cur==='bot'||on?'메시지 입력':'지금은 오프라인입니다';qs.style.display=cur==='bot'?'flex':'none';}
   function sys(k,txt){add('sys','— '+esc(txt)+' —',false,k);refresh();}
   chatUI={refresh,sys};w.onclose=()=>{chatUI=null;};
