@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://lowkeyrecordz.github.io/web/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0c0c0e;
@@ -828,6 +828,170 @@ body.lk-playing{overflow:hidden}body.lk-playing>.site-header,body.lk-playing>hea
 .chat-in{display:flex;gap:6px;padding:6px;background:#ece9d8;border-top:1px solid #d6d2c2}
 .chat-in .xfield{flex:1;min-width:0}
 
+/* ================= JOURNAL MAGAZINE ================= */
+#view-journal,#view-journal-detail{
+  --paper:#ecebe5;--ink:#16161a;--ink-soft:#5f5e5a;--rule:#cfcdc5;
+  --font-serif:'Noto Serif KR','Times New Roman',serif;
+  --bh:min(58vh,440px);--cw:calc(var(--bh) * .74);--sw:46px;
+}
+#view-journal :focus-visible,#view-journal-detail :focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+#view-journal .page-head{padding-top:120px;padding-bottom:22px}
+#view-journal .page-head h2{font-size:24px}
+#view-journal .mj-filters{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+.mj-page{min-height:100svh;display:flex;flex-direction:column;padding-bottom:50px}
+#view-journal-detail.active{position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}
+body:has(#view-journal-detail.active){overflow:hidden}
+/* ---------- SHELF PAGE ---------- */
+
+.mj-stage{flex:1;display:flex;flex-direction:column;justify-content:center;padding-top:36px}
+.mj-shelf{
+  display:flex;align-items:flex-end;gap:10px;height:calc(var(--bh) + 24px);
+  overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+  border-bottom:1px solid var(--line);padding-bottom:0;scroll-behavior:smooth;
+}
+.mj-shelf::-webkit-scrollbar{display:none}
+.mj-pad{flex:0 0 calc(50vw - var(--cw)/2 - 18px);height:1px}
+
+.mj-book{
+  position:relative;flex:0 0 var(--sw);height:var(--bh);margin:0;cursor:pointer;
+  transition:flex-basis .6s cubic-bezier(.3,.7,.2,1),margin .6s cubic-bezier(.3,.7,.2,1),transform .25s ease;
+}
+.mj-book:not(.mj-on):hover{transform:translateY(-8px)}
+.mj-book.mj-on{flex-basis:var(--cw);margin:0 18px}
+
+.mj-spine{position:absolute;left:0;top:0;width:var(--sw);height:100%;background:var(--bg-c);color:var(--fg-c);overflow:hidden;transition:opacity .3s}
+.mj-spine.mj-edge{box-shadow:inset 0 0 0 1px #2c2b30}
+.mj-book.mj-on .mj-spine{opacity:0;pointer-events:none}
+.mj-spine-title{
+  position:absolute;left:0;top:0;width:var(--bh);height:var(--sw);line-height:var(--sw);
+  transform-origin:0 0;transform:translate(var(--sw),0) rotate(90deg);
+  padding:0 0 0 20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:calc(var(--bh) - 56px);font-size:13px;font-weight:600;letter-spacing:.01em;
+}
+.mj-spine-no{position:absolute;left:0;bottom:12px;width:var(--sw);text-align:center;font-family:var(--font-display);font-size:9px;opacity:.7}
+
+.mj-cover{position:absolute;left:0;top:0;width:var(--cw);height:100%;opacity:0;pointer-events:none;transition:opacity .35s .2s;box-shadow:0 24px 50px -18px #000,0 0 0 1px #ffffff14;overflow:hidden;background:var(--bg-c)}
+.mj-book.mj-on .mj-cover{opacity:1;pointer-events:auto}
+.mj-cover>img.mj-thumb{width:100%;height:100%;object-fit:cover}
+
+/* 자동 생성 표지 (디자인한 썸네일이 없을 때) */
+.mj-gc{position:relative;width:100%;height:100%;color:var(--fg-c);padding:20px 20px 22px;display:flex;flex-direction:column;justify-content:space-between}
+.mj-gc-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mj-gc.mj-has-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0006 0%,#0000 30%,#000a 100%)}
+.mj-gc.mj-has-img{color:#f3f2ee}
+.mj-gc>div,.mj-gc>.mj-gc-top{position:relative;z-index:1}
+.mj-gc-top{display:flex;justify-content:space-between;font-family:var(--font-display);font-size:9px;font-weight:500}
+.mj-gc-title{font-family:var(--font-serif);font-weight:900;font-size:clamp(20px,calc(var(--bh)*.065),30px);line-height:1.2;margin:0;word-break:keep-all;letter-spacing:-.02em}
+.mj-gc-foot{font-size:11px;margin-top:12px;opacity:.85}
+
+.mj-shelf-tools{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding:26px clamp(20px,4vw,48px) 0;min-height:150px}
+.mj-info{max-width:560px}
+.mj-info h3{font-family:var(--font-serif);font-weight:700;font-size:clamp(20px,2.4vw,28px);line-height:1.35;margin:0 0 8px;word-break:keep-all}
+.mj-info .mj-meta{font-size:11px;color:var(--fg-muted);letter-spacing:.08em;margin-bottom:10px}
+.mj-info p{font-size:13px;color:var(--fg-muted);margin:0;line-height:1.75}
+.mj-tools{display:flex;gap:10px;align-items:center;flex:0 0 auto}
+.mj-tools button{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;color:var(--fg-muted);font-size:16px}
+.mj-tools button:hover{color:var(--fg);border-color:var(--fg-muted)}
+.mj-tools .mj-open{width:auto;border-radius:24px;padding:0 20px;font-size:12px;color:var(--bg);background:var(--fg);border-color:var(--fg);font-weight:600}
+.mj-tools .mj-open:hover{background:#fff;color:var(--bg)}
+.mj-empty{padding:80px clamp(20px,4vw,48px);color:var(--fg-muted);font-size:14px}
+.mj-empty p{margin:0 0 6px}
+
+/* ---------- READER ---------- */
+.mj-progress{position:fixed;left:0;top:0;height:2px;width:100%;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);z-index:210}
+.mj-rbar{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px clamp(16px,3vw,40px);background:linear-gradient(var(--bg) 40%,#0c0c0e00)}
+.mj-rbar a{white-space:nowrap;font-size:12px;letter-spacing:.14em;font-weight:600;color:var(--fg-muted)}
+.mj-rbar a:hover{color:var(--fg)}
+.mj-rbar .mj-t{font-size:12px;color:var(--fg-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.mj-mag{max-width:1240px;margin:0 auto;padding:6px clamp(10px,3vw,40px) 140px;display:flex;flex-direction:column;gap:26px}
+
+.mj-sp{position:relative;background:var(--paper);color:var(--ink);display:grid;grid-template-columns:1fr 1fr;min-height:min(80vh,780px);box-shadow:0 40px 70px -40px #000;overflow:hidden}
+.mj-sp.mj-two::after{content:'';position:absolute;top:0;bottom:0;left:calc(50% - 26px);width:52px;pointer-events:none;background:linear-gradient(90deg,#0000,#0000001c 50%,#0000)}
+.mj-sp.mj-one{grid-template-columns:1fr}
+.mj-sp.mj-txt{min-height:min(56vh,560px)}
+.mj-sp.mj-qt{min-height:min(62vh,600px)}
+.mj-pg{position:relative;min-width:0}
+.mj-rh{position:absolute;top:22px;left:44px;right:44px;display:flex;justify-content:space-between;font-size:10px;color:var(--ink-soft);gap:20px;z-index:2}
+.mj-rh span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mj-fo{position:absolute;bottom:20px;font-family:var(--font-display);font-size:9px;color:var(--ink-soft);z-index:2}
+.mj-fo.mj-l{left:44px}.mj-fo.mj-r{right:44px}
+.mj-on-img .mj-fo,.mj-on-img .mj-rh{color:#fff;text-shadow:0 0 12px #0008}
+
+/* 오프닝 */
+.mj-op-l{padding:48px 44px 44px;display:flex;flex-direction:column;justify-content:space-between;gap:36px}
+.mj-op-top{display:flex;justify-content:space-between;font-family:var(--font-display);font-size:10px;font-weight:500}
+.mj-op-cat{font-size:12px;font-weight:600;color:var(--accent);margin-bottom:16px}
+.mj-op-title{font-family:var(--font-serif);font-weight:900;font-size:clamp(34px,4.8vw,72px);line-height:1.13;letter-spacing:-.025em;margin:0;word-break:keep-all}
+.mj-op-stand{font-family:var(--font-serif);font-size:clamp(15px,1.35vw,18px);line-height:1.9;color:#2b2a28;margin:0 0 6px;max-width:34em;word-break:keep-all}
+.mj-op-date{font-size:11px;color:var(--ink-soft);margin-top:16px}
+.mj-op-r{min-height:420px}
+.mj-op-r img,.mj-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* 본문 */
+.mj-tx{padding:76px 64px 64px}
+.mj-cols{columns:2;column-gap:128px;column-rule:0 solid transparent;font-family:var(--font-serif);font-size:15.5px;line-height:2;color:#26252a;word-break:keep-all;overflow-wrap:break-word}
+.mj-cols p{margin:0 0 1.1em;orphans:3;widows:3}
+.mj-cols a{text-decoration:underline;text-underline-offset:3px}
+.mj-cols p.mj-drop::first-letter{float:left;font-weight:900;font-size:4.3em;line-height:.85;padding:.06em .1em 0 0;color:var(--ink)}
+.mj-cols p.mj-q{font-family:var(--font-body);font-weight:700;font-size:13.5px;line-height:1.7;color:#b8233e;margin-top:1.6em;break-after:avoid}
+.mj-cols p.mj-q:first-child{margin-top:0}
+
+/* 풀 쿼트 */
+.mj-qt{background:var(--accent);color:#f7efe9;align-items:center}
+.mj-qt .mj-pg{display:flex;align-items:center}
+.mj-qt .mj-in{padding:100px clamp(28px,7vw,110px);width:100%}
+.mj-qt blockquote{margin:0;max-width:900px;font-family:var(--font-serif);font-weight:900;font-size:clamp(26px,4vw,56px);line-height:1.3;letter-spacing:-.02em;word-break:keep-all}
+.mj-qt .mj-rh,.mj-qt .mj-fo{color:#ffe1e3}
+
+/* 사진 */
+.mj-ph{position:relative;overflow:hidden;min-height:min(80vh,780px);background:#1a1a1d}
+.mj-bleed{min-height:min(88vh,860px)}
+.mj-inset{padding:64px}
+.mj-inset figure{margin:0;width:min(46%,480px);aspect-ratio:4/5;position:relative;overflow:hidden;background:#1a1a1d}
+.mj-inset figure img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mj-inset.mj-left{justify-items:start;align-items:center}
+.mj-inset.mj-right{justify-items:end;align-items:center}
+.mj-sp.mj-one.mj-inset{display:grid}
+.mj-vid{padding:64px;align-items:center;justify-items:center}
+.mj-vid iframe{width:100%;aspect-ratio:16/9;border:0;background:#000}
+.mj-vid a{position:absolute;left:44px;bottom:20px;font-size:11px;color:var(--ink-soft);text-decoration:underline}
+
+/* 콜로폰 */
+.mj-co-l{padding:56px 44px;display:flex;flex-direction:column;justify-content:space-between}
+.mj-co-no{font-family:var(--font-display);font-weight:700;font-size:clamp(56px,9vw,132px);line-height:1;letter-spacing:-.04em}
+.mj-co-meta{font-size:12px;color:var(--ink-soft);line-height:1.9}
+.mj-co-r{padding:56px 44px;display:flex;flex-direction:column;justify-content:flex-end;gap:0}
+.mj-co-r button,.mj-co-r a{display:flex;justify-content:space-between;gap:20px;text-align:left;padding:18px 0;border-top:1px solid var(--rule);font-size:14px;color:var(--ink)}
+.mj-co-r button:last-child{border-bottom:1px solid var(--rule)}
+.mj-co-r button small{display:block;font-size:11px;color:var(--ink-soft);margin-bottom:2px}
+.mj-co-r button:hover{color:var(--accent)}
+.mj-co-r button[disabled]{opacity:.35;cursor:default}
+
+
+/* ---------- MOBILE ---------- */
+@media(max-width:760px){
+  #view-journal,#view-journal-detail{--bh:min(52vh,400px);--sw:40px}
+  .mj-shelf-tools{flex-direction:column;min-height:0}
+  .mj-sp,.mj-sp.mj-two{grid-template-columns:1fr;min-height:0}
+  .mj-sp.mj-txt,.mj-sp.mj-qt{min-height:0}
+  .mj-sp.mj-two::after{display:none}
+  .mj-op-r{min-height:0;aspect-ratio:4/5}
+  .mj-op-l{padding:36px 24px}
+  .mj-tx{padding:64px 24px 56px}
+  .mj-cols{columns:1;font-size:15px}
+  .mj-rh{left:24px;right:24px}.mj-fo.mj-l{left:24px}.mj-fo.mj-r{right:24px}
+  .mj-ph{min-height:0;aspect-ratio:4/5}
+  .mj-bleed{min-height:0}
+  .mj-inset{padding:56px 24px}
+  .mj-inset figure{width:78%}
+  .mj-vid{padding:56px 16px}
+  .mj-co-l,.mj-co-r{padding:36px 24px}
+  .mj-qt .mj-in{padding:72px 24px}
+}
+@media(prefers-reduced-motion:reduce){
+  #view-journal *,#view-journal-detail *{transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
 </style>
 </head>
 <body>
@@ -1020,7 +1184,7 @@ body.lk-playing{overflow:hidden}body.lk-playing>.site-header,body.lk-playing>hea
   </div>
 </section>
 
-<section class="view" id="view-journal"><div class="page-head"><h2>JOURNAL</h2></div><div class="news-wrap"><div class="journal-filters" id="journalFilters"><button type="button" data-category="ALL" class="active">ALL</button><button type="button" data-category="INTERVIEW" class="">INTERVIEW</button><button type="button" data-category="TALK" class="">TALK</button><button type="button" data-category="TMI" class="">TMI</button></div><div class="catalog-grid journal-grid" id="journalList"></div><div class="empty-state" id="journalEmpty"><p>아직 등록된 저널이 없습니다.</p><p class="muted">아티스트의 이야기, 대화와 일상을 기록합니다.</p></div></div></section><section class="view" id="view-journal-detail"><div class="notice-detail-wrap"><a class="back-link" href="#/journal">← JOURNAL</a><div id="journalDetailContent"></div><button class="copy-post" data-copy-post>링크 복사</button></div></section><section class="view" id="view-store"><div class="page-head"><h2>STORE</h2></div><div class="news-wrap"><div class="catalog-grid store-grid" id="storeList"></div><div class="empty-state" id="storeEmpty"><p>새로운 상품을 준비하고 있습니다.</p><p class="muted">LOWKEY RECORDZ — OBJECTS & RECORDS</p></div></div></section><section class="view" id="view-store-detail"><div class="notice-detail-wrap"><a class="back-link" href="#/store">← STORE</a><div id="storeDetailContent"></div><button class="copy-post" data-copy-post>링크 복사</button></div></section><!-- ADMIN LOGIN -->
+<section class="view" id="view-journal"><div class="mj-page"><div class="page-head"><h2>JOURNAL</h2></div><div class="mj-filters"><div class="journal-filters" id="journalFilters"><button type="button" data-category="ALL" class="active">ALL</button><button type="button" data-category="INTERVIEW" class="">INTERVIEW</button><button type="button" data-category="TALK" class="">TALK</button><button type="button" data-category="TMI" class="">TMI</button></div></div><div class="mj-stage"><div class="mj-shelf" id="journalList" role="listbox" aria-label="저널 목록"></div><div class="mj-shelf-tools" id="mjBar"><div class="mj-info" id="mjInfo" aria-live="polite"></div><div class="mj-tools"><button type="button" id="mjPrev" aria-label="이전 호">←</button><button type="button" id="mjNext" aria-label="다음 호">→</button><button type="button" class="mj-open" id="mjOpen">펼쳐 읽기</button></div></div><div class="empty-state" id="journalEmpty"><p>아직 등록된 저널이 없습니다.</p><p class="muted">아티스트의 이야기, 대화와 일상을 기록합니다.</p></div></div></div></section><section class="view" id="view-journal-detail"><div id="journalDetailContent"></div></section><section class="view" id="view-store"><div class="page-head"><h2>STORE</h2></div><div class="news-wrap"><div class="catalog-grid store-grid" id="storeList"></div><div class="empty-state" id="storeEmpty"><p>새로운 상품을 준비하고 있습니다.</p><p class="muted">LOWKEY RECORDZ — OBJECTS & RECORDS</p></div></div></section><section class="view" id="view-store-detail"><div class="notice-detail-wrap"><a class="back-link" href="#/store">← STORE</a><div id="storeDetailContent"></div><button class="copy-post" data-copy-post>링크 복사</button></div></section><!-- ADMIN LOGIN -->
 <section class="view" id="view-admin-login">
   <div class="admin-login-wrap">
     <h2>ADMIN LOGIN</h2>
@@ -1102,7 +1266,7 @@ body.lk-playing{overflow:hidden}body.lk-playing>.site-header,body.lk-playing>hea
 <div class="form-row"><label>사진 기본 위치<select id="journalPlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="journalWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="journalAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
 <label>영상 주소<input type="url" id="journalVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="journalVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="journal">커서 위치에 영상 삽입</button></div>
 <p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="journalBody" rows="5" required></textarea></label>
-        <label>사진 추가 (최대 6장)<input type="file" id="journalImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="journalPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
+        <label>사진 추가 (최대 6장)<input type="file" id="journalImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="journalPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p><label>표지 썸네일 (선택 · 3:4 세로 비율 권장)<input type="file" id="journalCover" accept="image/jpeg,image/png,image/webp"></label><div class="photo-preview" id="journalCoverPreview"></div><p class="muted">디자인한 표지 이미지를 올리면 저널 책장에 그대로 표시됩니다. 비워 두면 제목과 첫 사진으로 표지가 자동 생성됩니다. 표지를 누르면 제거됩니다.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="journalSubmitBtn">등록</button>
           <button type="button" id="journalPreviewPost">미리보기</button><button type="button" id="journalDiscardDraft">작성 내용 비우기</button><button type="button" id="journalCancelEdit" hidden>취소</button><span id="journalAutosave" class="autosave-status" role="status"></span>
@@ -1373,8 +1537,8 @@ body.lk-playing{overflow:hidden}body.lk-playing>.site-header,body.lk-playing>hea
 
 
 
-  function readExtra(k){if(k==='journal')return {category:document.getElementById('journalCategory').value};if(k==='store')return {price:Number(document.getElementById('storePrice').value),status:document.getElementById('storeStatus').value};return {};}
-  function applyExtra(k,n){if(k==='journal')document.getElementById('journalCategory').value=['INTERVIEW','TALK','TMI'].includes(n.category)?n.category:'INTERVIEW';if(k==='store'){document.getElementById('storePrice').value=Number.isSafeInteger(n.price)?n.price:0;document.getElementById('storeStatus').value=['available','soldout','coming'].includes(n.status)?n.status:'coming';}}
+  function readExtra(k){if(k==='journal')return {category:document.getElementById('journalCategory').value,cover:mjCover};if(k==='store')return {price:Number(document.getElementById('storePrice').value),status:document.getElementById('storeStatus').value};return {};}
+  function applyExtra(k,n){if(k==='journal'){mjCover=validImage(n.cover)?n.cover:'';mjCoverPreview();}if(k==='journal')document.getElementById('journalCategory').value=['INTERVIEW','TALK','TMI'].includes(n.category)?n.category:'INTERVIEW';if(k==='store'){document.getElementById('storePrice').value=Number.isSafeInteger(n.price)?n.price:0;document.getElementById('storeStatus').value=['available','soldout','coming'].includes(n.status)?n.status:'coming';}}
   function priceText(n){return Number.isSafeInteger(n.price)&&n.price>=0?n.price.toLocaleString('ko-KR')+' KRW':'가격 준비 중';}
   function categoryText(n){return ['INTERVIEW','TALK','TMI'].includes(n.category)?n.category:'TMI';}
   function saleText(n){return n.status==='soldout'?'SOLD OUT':'COMING SOON';}
@@ -1395,9 +1559,253 @@ body.lk-playing{overflow:hidden}body.lk-playing>.site-header,body.lk-playing>hea
       info.append(title,price);card.append(media,info);list.appendChild(card);
     });
   }
-  function renderCatalog(k){if(k==='store'){renderStoreCatalog();return;}var all=k==='journal'?JOURNAL:STORE, list=document.getElementById(k+'List');list.replaceChildren();var items=all.filter(function(n){return k!=='journal'||journalCategory==='ALL'||categoryText(n)===journalCategory;}).sort(newestPostFirst);document.getElementById(k+'Empty').hidden=items.length>0;items.forEach(function(n){var a=document.createElement('a');a.className='catalog-card';a.href='#/'+k+'/'+encodeURIComponent(n.id);var src=(n.images||[])[0];a.innerHTML=(validImage(src)?'<img src="'+escapeText(src)+'" alt="'+escapeText(n.title)+'" loading="lazy">':'<div class="catalog-placeholder">LOWKEY RECORDZ</div>')+'<h3>'+escapeText(n.title)+'</h3><div class="catalog-meta"><span>'+escapeText(k==='journal'?categoryText(n):priceText(n))+'</span><span>'+escapeText(k==='journal'?fmtDate(n.date):saleText(n))+'</span></div>';list.appendChild(a);});}
-  function renderCatalogDetail(k,id){try{id=decodeURIComponent(id);}catch(e){}var n=(k==='journal'?JOURNAL:STORE).find(function(n){return n.id===id;});var box=document.getElementById(k+'DetailContent');if(!n){box.innerHTML='<p class="muted">게시물을 찾을 수 없습니다.</p>';return;}box.innerHTML='<div class="notice-detail-meta">'+escapeText(k==='journal'?categoryText(n)+' · '+fmtDate(n.date):'LOWKEY RECORDZ STORE')+'</div><h1 class="notice-detail-title">'+escapeText(n.title)+'</h1><div class="notice-detail-body">'+renderPost(n)+'</div>';if(k==='store'){var buy=document.createElement('div');buy.className='shop-buy';buy.innerHTML='<p>'+escapeText(priceText(n))+'</p><button type="button" disabled>'+ (n.status==='soldout'?'품절':'판매 준비 중')+'</button><p class="muted">'+(n.status==='soldout'?'다음 판매 소식은 이곳에서 안내합니다.':'구매가 가능해지면 이곳에서 안내합니다.')+'</p>';box.appendChild(buy);}}
-  document.getElementById('journalFilters').addEventListener('click',function(e){var b=e.target.closest('[data-category]');if(!b)return;journalCategory=b.dataset.category;this.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===b);});renderCatalog('journal');});
+  /* ================= JOURNAL MAGAZINE ================= */
+  var mjActiveId=null,mjList=[],mjNo={},mjRect=null,mjCover='';
+  var MJ_GAP=10,MJ_MARG=18;
+  var MJ_SPINES=[
+    {bg:'#b5472c',fg:'#f3eee6'},{bg:'#a9a9ac',fg:'#141416'},{bg:'#2b2b2e',fg:'#f3f2ee'},
+    {bg:'#e9e8e3',fg:'#141416'},{bg:'#e2405a',fg:'#fff'},{bg:'#141416',fg:'#f3f2ee',edge:true},{bg:'#c8c7cb',fg:'#141416'}
+  ];
+  function mjPad(n){return String(n).padStart(2,'0');}
+  function mjHash(s){var h=0;s=String(s);for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+  function mjPlain(b){return String(b||'').replace(/\[\[(photo:\d+|video)\]\]/g,'').replace(/^\s*[QA][.:)]\s*/gm,'').replace(/\s+/g,' ').trim();}
+  function mjIssues(){var m={};JOURNAL.slice().sort(function(a,b){return newestPostFirst(b,a);}).forEach(function(n,i){m[n.id]=i+1;});mjNo=m;}
+  function mjIsQ(t){return /^\s*Q[.:)]\s*/i.test(t);}
+  function mjIsA(t){return /^\s*A[.:)]\s*/i.test(t);}
+  function mjHref(id){return '#/journal/'+encodeURIComponent(id);}
+
+  /* ---------- SHELF ---------- */
+  function mjPadEl(){var d=document.createElement('i');d.className='mj-pad';return d;}
+  function mjCoverHTML(n){
+    if(validImage(n.cover))return '<img class="mj-thumb" src="'+escapeText(n.cover)+'" alt="'+escapeText(n.title)+' 표지">';
+    var img=(n.images||[]).filter(validImage)[0];
+    return '<div class="mj-gc'+(img?' mj-has-img':'')+'">'+(img?'<img class="mj-gc-img" src="'+escapeText(img)+'" alt="">':'')+
+      '<div class="mj-gc-top"><span>LOWKEY JOURNAL</span><span>No.'+mjPad(mjNo[n.id])+'</span></div>'+
+      '<div><h3 class="mj-gc-title">'+escapeText(n.title)+'</h3><div class="mj-gc-foot">'+categoryText(n)+'&ensp;'+escapeText(fmtDate(n.date))+'</div></div></div>';
+  }
+  function mjRenderShelf(){
+    var box=document.getElementById('journalList');mjIssues();
+    mjList=JOURNAL.filter(function(n){return journalCategory==='ALL'||categoryText(n)===journalCategory;}).sort(newestPostFirst);
+    box.replaceChildren();
+    document.getElementById('journalEmpty').hidden=mjList.length>0;
+    document.getElementById('mjBar').style.display=mjList.length?'':'none';
+    box.style.display=mjList.length?'':'none';
+    if(!mjList.length)return;
+    box.appendChild(mjPadEl());
+    mjList.forEach(function(n,i){
+      var c=MJ_SPINES[(mjNo[n.id]-1)%MJ_SPINES.length],b=document.createElement('div');
+      b.className='mj-book';b.setAttribute('role','option');b.tabIndex=0;b.dataset.i=i;
+      b.style.setProperty('--bg-c',c.bg);b.style.setProperty('--fg-c',c.fg);b.setAttribute('aria-label',n.title);
+      b.innerHTML='<div class="mj-spine'+(c.edge?' mj-edge':'')+'"><div class="mj-spine-title">'+escapeText(n.title)+'</div><div class="mj-spine-no">'+mjPad(mjNo[n.id])+'</div></div><div class="mj-cover">'+mjCoverHTML(n)+'</div>';
+      box.appendChild(b);
+    });
+    box.appendChild(mjPadEl());
+    var idx=mjList.findIndex(function(n){return n.id===mjActiveId;});
+    mjSetActive(idx<0?0:idx,true);
+  }
+  function mjSetActive(i,instant){
+    if(!mjList.length)return;
+    i=Math.max(0,Math.min(mjList.length-1,i));mjActiveId=mjList[i].id;
+    document.querySelectorAll('#journalList .mj-book').forEach(function(b){var on=+b.dataset.i===i;b.classList.toggle('mj-on',on);b.setAttribute('aria-selected',on);});
+    var n=mjList[i];
+    document.getElementById('mjInfo').innerHTML='<div class="mj-meta">No.'+mjPad(mjNo[n.id])+'&ensp;'+categoryText(n)+'&ensp;'+escapeText(fmtDate(n.date))+'</div><h3>'+escapeText(n.title)+'</h3><p>'+escapeText(mjPlain(n.body).slice(0,96))+'…</p>';
+    document.getElementById('mjPrev').disabled=i===0;document.getElementById('mjNext').disabled=i===mjList.length-1;
+    if(instant)requestAnimationFrame(function(){mjCenter(true);});else mjCenter(false);
+  }
+  function mjActiveIndex(){return mjList.findIndex(function(n){return n.id===mjActiveId;});}
+  function mjCenter(instant){
+    var box=document.getElementById('journalList'),pad=box.querySelector('.mj-pad'),cov=box.querySelector('.mj-cover'),sp=box.querySelector('.mj-spine');
+    if(!pad||!cov||!sp||!pad.offsetWidth)return;
+    var i=mjActiveIndex();if(i<0)return;
+    var left=pad.offsetWidth+MJ_GAP+i*(sp.offsetWidth+MJ_GAP)+MJ_MARG;
+    box.style.scrollBehavior=instant?'auto':'smooth';
+    box.scrollTo({left:Math.max(0,left+cov.offsetWidth/2-box.clientWidth/2)});
+  }
+  function mjOpen(id,el){var c=el&&el.querySelector('.mj-cover');mjRect=c?c.getBoundingClientRect():null;location.hash=mjHref(id);}
+  document.getElementById('journalList').addEventListener('click',function(e){
+    var b=e.target.closest('.mj-book');if(!b)return;var i=+b.dataset.i;
+    if(mjList[i]&&mjList[i].id===mjActiveId)mjOpen(mjActiveId,b);else mjSetActive(i);
+  });
+  document.getElementById('journalList').addEventListener('keydown',function(e){
+    var b=e.target.closest('.mj-book');if(!b||(e.key!=='Enter'&&e.key!==' '))return;e.preventDefault();
+    var i=+b.dataset.i;if(mjList[i].id===mjActiveId)mjOpen(mjActiveId,b);else mjSetActive(i);
+  });
+  document.getElementById('mjPrev').addEventListener('click',function(){mjSetActive(mjActiveIndex()-1);});
+  document.getElementById('mjNext').addEventListener('click',function(){mjSetActive(mjActiveIndex()+1);});
+  document.getElementById('mjOpen').addEventListener('click',function(){var b=document.querySelector('#journalList .mj-book.mj-on');if(mjActiveId)mjOpen(mjActiveId,b);});
+  document.addEventListener('keydown',function(e){
+    if(document.getElementById('view-journal-detail').classList.contains('active')){if(e.key==='Escape')location.hash='#/journal';return;}
+    if(!document.getElementById('view-journal').classList.contains('active'))return;
+    var t=e.target&&e.target.tagName;if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT')return;
+    if(e.key==='ArrowRight'){mjSetActive(mjActiveIndex()+1);var b=document.querySelector('#journalList .mj-book.mj-on');if(b&&document.activeElement&&document.activeElement.closest('#journalList'))b.focus({preventScroll:true});}
+    if(e.key==='ArrowLeft'){mjSetActive(mjActiveIndex()-1);var c=document.querySelector('#journalList .mj-book.mj-on');if(c&&document.activeElement&&document.activeElement.closest('#journalList'))c.focus({preventScroll:true});}
+  });
+  window.addEventListener('resize',function(){mjCenter(true);});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){mjCenter(true);});
+
+  /* ---------- MAGAZINE COMPOSER ---------- */
+  function mjTokens(n){
+    var imgs=Array.isArray(n.images)?n.images:[],used=new Set(),out=[];
+    String(n.body||'').replace(/\r\n?/g,'\n').split(/(\[\[photo:\d+\]\]|\[\[video\]\])/g).forEach(function(t){
+      var m=t.match(/^\[\[photo:(\d+)\]\]$/);
+      if(m){var i=Number(m[1])-1;if(validImage(imgs[i])){used.add(i);out.push({t:'photo',src:imgs[i]});}return;}
+      if(t==='[[video]]'){out.push({t:'video'});return;}
+      t.split(/\n[ \t]*\n+/).map(function(s){return s.trim();}).filter(Boolean).forEach(function(p){out.push({t:'p',text:p});});
+    });
+    return {out:out,used:used};
+  }
+  function mjPickQuote(paras){
+    if(paras.length<3)return '';
+    var best='',score=-1e9;
+    paras.forEach(function(p,pi){
+      if(pi===0||mjIsQ(p))return;
+      p.replace(/^\s*A[.:)]\s*/i,'').split(/(?<=[.!?。…])\s+/).forEach(function(s){
+        s=s.trim();var len=s.length;if(len<16||len>64)return;
+        var sc=-Math.abs(len-34)-pi*.4;if(sc>score){score=sc;best=s;}
+      });
+    });
+    return best;
+  }
+  function mjVideo(n){
+    var p=normalizedPresentation(n.presentation);if(!p.video)return null;
+    var u;try{u=new URL(p.video);}catch(e){return null;}
+    var id='',embed='';
+    if(['youtube.com','www.youtube.com','m.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com'].indexOf(u.hostname)>-1){id=u.searchParams.get('v')||((u.pathname.match(/^\/(?:shorts|embed|live)\/([^/]+)/)||[])[1])||'';}
+    else if(u.hostname==='youtu.be')id=u.pathname.slice(1);
+    if(/^[\w-]{11}$/.test(id))embed='https://www.youtube-nocookie.com/embed/'+id;
+    if(['vimeo.com','www.vimeo.com','player.vimeo.com'].indexOf(u.hostname)>-1){var m=u.pathname.match(/^\/(?:video\/)?(\d+)\/?$/);if(m)embed='https://player.vimeo.com/video/'+m[1];}
+    return {url:p.video,embed:p.videoMode==='embed'?embed:''};
+  }
+  function mjCompose(n){
+    var imgs=Array.isArray(n.images)?n.images:[],tk=mjTokens(n),out=tk.out,used=tk.used;
+    if(!out.some(function(x){return x.t==='video';})&&mjVideo(n))out.push({t:'video'});
+    var hero=null;
+    for(var i=0;i<imgs.length;i++){if(!used.has(i)&&validImage(imgs[i])){hero=imgs[i];used.add(i);break;}}
+    var paraCount=out.filter(function(x){return x.t==='p';}).length,stand='';
+    if(out[0]&&out[0].t==='p'&&!mjIsQ(out[0].text)&&!mjIsA(out[0].text)&&out[0].text.length<=300&&paraCount>=3)stand=out.shift().text;
+    var blocks=[],cur=null,len=0;
+    function flush(){if(cur){blocks.push(cur);cur=null;len=0;}}
+    out.forEach(function(x){
+      if(x.t==='p'){if(!cur)cur={k:'text',ps:[]};cur.ps.push(x.text);len+=x.text.length;if(len>1000)flush();}
+      else{
+        flush();
+        if(x.t==='photo'){var last=blocks[blocks.length-1];if(last&&last.k==='photos'&&last.list.length<2&&!last.auto)last.list.push(x.src);else blocks.push({k:'photos',list:[x.src]});}
+        else blocks.push({k:'video'});
+      }
+    });
+    flush();
+    var rest=[];imgs.forEach(function(s,i){if(!used.has(i)&&validImage(s))rest.push(s);});
+    if(rest.length){
+      var groups=[],k=0;
+      while(k<rest.length){var sz=groups.length%2===1?2:1;groups.push(rest.slice(k,k+sz));k+=sz;}
+      var res=[],g=0;
+      blocks.forEach(function(b){res.push(b);if(b.k==='text'&&g<groups.length)res.push({k:'photos',list:groups[g++],auto:true});});
+      while(g<groups.length)res.push({k:'photos',list:groups[g++],auto:true});
+      blocks=res;
+    }
+    var allParas=[];out.forEach(function(x){if(x.t==='p')allParas.push(x.text);});
+    var quote=mjPickQuote(allParas);
+    if(quote){var ti=-1;blocks.forEach(function(b,i){if(ti<0&&b.k==='text')ti=i;});if(ti>=0)blocks.splice(ti+1,0,{k:'quote',text:quote});}
+    return {hero:hero,stand:stand,blocks:blocks};
+  }
+  function mjParaHTML(t,first,qa){
+    if(mjIsQ(t))return '<p class="mj-q">'+linkedText(t.replace(/^\s*Q[.:)]\s*/i,''))+'</p>';
+    if(mjIsA(t))return '<p>'+t.replace(/^\s*A[.:)]\s*/i,'').split('\n').map(linkedText).join('<br>')+'</p>';
+    return '<p'+(first&&!qa?' class="mj-drop"':'')+'>'+t.split('\n').map(linkedText).join('<br>')+'</p>';
+  }
+  function mjArt(seed){
+    var s=seed>>>0,r=function(){s=(s*1664525+1013904223)>>>0;return s/4294967296;},h0=Math.floor(r()*360),w=1200,h=1500,cols=['hsl('+h0+' 70% 55%)','hsl('+((h0+40)%360)+' 80% 65%)','hsl('+((h0+200)%360)+' 60% 30%)','hsl('+((h0+320)%360)+' 70% 70%)'],bl='';
+    for(var i=0;i<6;i++)bl+='<ellipse cx="'+(r()*w)+'" cy="'+(r()*h)+'" rx="'+(w*(.15+r()*.3))+'" ry="'+(h*(.1+r()*.3))+'" fill="'+cols[i%4]+'" opacity="'+(.55+r()*.4)+'"/>';
+    var svg="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 "+w+" "+h+"' preserveAspectRatio='xMidYMid slice'><defs><filter id='b' x='-20%' y='-20%' width='140%' height='140%'><feGaussianBlur stdDeviation='"+(w/14)+"'/></filter><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .55 0'/></filter></defs><rect width='"+w+"' height='"+h+"' fill='hsl("+h0+" 40% 12%)'/><g filter='url(#b)'>"+bl+"</g><rect width='"+w+"' height='"+h+"' filter='url(#n)' opacity='.5'/></svg>";
+    return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
+  }
+  function mjBuild(n){
+    var c=mjCompose(n),no=mjPad(mjNo[n.id]),page=2,html='',photoIdx=0,firstText=true,cat=categoryText(n),e=escapeText;
+    var qa=/^\s*Q[.:)]/m.test(n.body||'');
+    var heroSrc=c.hero||mjArt(mjHash(n.title));
+    function folio(){var l=mjPad(page),r=mjPad(page+1);page+=2;return {l:'<span class="mj-fo mj-l">'+l+'</span>',r:'<span class="mj-fo mj-r">'+r+'</span>'};}
+    function rh(){return '<div class="mj-rh"><span>LOWKEY JOURNAL&ensp;'+e(n.title)+'</span><span>'+cat+'</span></div>';}
+    var f=folio();
+    html+='<section class="mj-sp mj-two">'+
+      '<div class="mj-pg mj-op-l"><div class="mj-op-top"><span>LOWKEY JOURNAL</span><span>No.'+no+'</span></div>'+
+      '<div><div class="mj-op-cat">'+cat+'</div><h1 class="mj-op-title">'+e(n.title)+'</h1><div class="mj-op-date">'+e(fmtDate(n.date))+'</div></div>'+
+      '<div>'+(c.stand?'<p class="mj-op-stand">'+linkedText(c.stand)+'</p>':'')+'</div>'+f.l+'</div>'+
+      '<div class="mj-pg mj-op-r mj-on-img"><img src="'+e(heroSrc)+'" alt="">'+f.r+'</div></section>';
+    c.blocks.forEach(function(b){
+      f=folio();
+      if(b.k==='text'){
+        var ph=b.ps.map(function(p,i){return mjParaHTML(p,firstText&&i===0,qa);}).join('');firstText=false;
+        html+='<section class="mj-sp mj-two mj-txt"><div class="mj-pg mj-tx" style="grid-column:1/-1">'+rh()+'<div class="mj-cols">'+ph+'</div></div>'+f.l+f.r+'</section>';
+      }else if(b.k==='quote'){
+        html+='<section class="mj-sp mj-one mj-qt"><div class="mj-pg mj-in">'+rh()+'<blockquote>“'+e(b.text)+'”</blockquote></div>'+f.l+f.r+'</section>';
+      }else if(b.k==='photos'){
+        if(b.list.length>=2){
+          html+='<section class="mj-sp mj-two mj-on-img"><div class="mj-pg mj-ph"><img loading="lazy" src="'+e(b.list[0])+'" alt=""></div><div class="mj-pg mj-ph"><img loading="lazy" src="'+e(b.list[1])+'" alt=""></div>'+f.l+f.r+'</section>';
+        }else{
+          var v=photoIdx++%3;
+          if(v===0)html+='<section class="mj-sp mj-one mj-on-img"><div class="mj-pg mj-ph mj-bleed"><img loading="lazy" src="'+e(b.list[0])+'" alt=""></div>'+f.l+f.r+'</section>';
+          else html+='<section class="mj-sp mj-one mj-inset '+(v===1?'mj-left':'mj-right')+'"><figure><img loading="lazy" src="'+e(b.list[0])+'" alt=""></figure>'+rh()+f.l+f.r+'</section>';
+        }
+      }else if(b.k==='video'){
+        var ve=mjVideo(n);
+        if(ve)html+='<section class="mj-sp mj-one mj-vid">'+(ve.embed?'<iframe src="'+e(ve.embed)+'" title="영상 재생" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>':'')+'<a href="'+e(ve.url)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a></section>';
+      }
+    });
+    var sorted=JOURNAL.slice().sort(newestPostFirst),idx=sorted.findIndex(function(x){return x.id===n.id;}),newer=sorted[idx-1],older=sorted[idx+1];
+    function nav(x,label){return x?'<a href="'+mjHref(x.id)+'"><span><small>'+label+'</small>'+e(x.title)+'</span><span>→</span></a>':'';}
+    html+='<section class="mj-sp mj-two"><div class="mj-pg mj-co-l"><div class="mj-co-no">No.'+no+'</div><div class="mj-co-meta">LOWKEY RECORDZ JOURNAL<br>'+cat+'<br>'+e(fmtDate(n.date))+'</div></div>'+
+      '<div class="mj-pg mj-co-r">'+nav(older,'이전 호')+nav(newer,'다음 호')+'<button type="button" data-mj-copy><span>링크 복사</span><span>↗</span></button><a href="#/journal"><span>목록으로</span><span>←</span></a></div></section>';
+    return '<div class="mj-progress" id="mjProgress"></div><div class="mj-rbar"><a href="#/journal">← JOURNAL</a><span class="mj-t">No.'+no+'&ensp;'+e(n.title)+'</span><span style="width:74px"></span></div><article class="mj-mag">'+html+'</article>';
+  }
+  function mjRenderReader(n,box,id){
+    var view=document.getElementById('view-journal-detail');
+    if(!n){box.innerHTML='<div class="mj-rbar"><a href="#/journal">← JOURNAL</a></div><p class="muted" style="padding:40px clamp(20px,4vw,48px)">게시물을 찾을 수 없습니다.</p>';return;}
+    mjIssues();mjActiveId=n.id;
+    box.innerHTML=mjBuild(n);
+    var rect=mjRect;mjRect=null;
+    requestAnimationFrame(function(){
+      view.scrollTop=0;
+      if(rect&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+        var W=innerWidth,H=innerHeight;
+        view.style.transition='none';view.style.clipPath='inset('+rect.top+'px '+(W-rect.right)+'px '+(H-rect.bottom)+'px '+rect.left+'px)';
+        void view.offsetWidth;
+        view.style.transition='clip-path .75s cubic-bezier(.7,0,.2,1)';view.style.clipPath='inset(0px 0px 0px 0px)';
+        setTimeout(function(){view.style.clipPath='';view.style.transition='';},800);
+      }
+    });
+  }
+  document.getElementById('view-journal-detail').addEventListener('scroll',function(){
+    var p=document.getElementById('mjProgress');if(!p)return;var h=this.scrollHeight-this.clientHeight;p.style.transform='scaleX('+(h>0?this.scrollTop/h:0)+')';
+  },{passive:true});
+  document.getElementById('journalDetailContent').addEventListener('click',async function(e){
+    var btn=e.target.closest('[data-mj-copy]');if(!btn)return;
+    var url='https://lowkeyrecordz.github.io/web/'+location.hash,label=btn.firstElementChild;
+    try{await navigator.clipboard.writeText(url);label.textContent='복사됨';setTimeout(function(){label.textContent='링크 복사';},2000);}catch(err){prompt('아래 주소를 복사해 주세요.',url);}
+  });
+
+  /* ---------- ADMIN: 표지 썸네일 ---------- */
+  function mjCoverPreview(){
+    var box=document.getElementById('journalCoverPreview');if(!box)return;box.replaceChildren();
+    if(!mjCover||!validImage(mjCover))return;
+    var b=document.createElement('button');b.type='button';b.title='누르면 표지 제거';
+    var im=document.createElement('img');im.src=mjCover;im.alt='표지 썸네일';b.appendChild(im);
+    b.addEventListener('click',function(){mjCover='';mjCoverPreview();saveEditor('journal');});
+    box.appendChild(b);
+  }
+  document.getElementById('journalCover').addEventListener('change',async function(e){
+    var input=e.target,file=input.files[0];if(!file)return;
+    try{
+      if(['image/jpeg','image/png','image/webp'].indexOf(file.type)<0)throw Error('JPG, PNG, WebP 이미지를 선택해 주세요.');
+      if(file.size>20*1024*1024)throw Error('이미지는 20MB 이하로 선택해 주세요.');
+      var url=URL.createObjectURL(file);
+      try{var im=new Image();im.src=url;await im.decode();var scale=Math.min(1,1200/Math.max(im.width,im.height));var canvas=document.createElement('canvas');canvas.width=Math.round(im.width*scale);canvas.height=Math.round(im.height*scale);var ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.width,canvas.height);mjCover=canvas.toDataURL('image/jpeg',.9);}finally{URL.revokeObjectURL(url);}
+    }catch(err){alert(err.message);}
+    finally{input.value='';mjCoverPreview();saveEditor('journal');}
+  });
+
+  function renderCatalog(k){if(k==='store'){renderStoreCatalog();return;}if(k==='journal'){mjRenderShelf();return;}var all=k==='journal'?JOURNAL:STORE, list=document.getElementById(k+'List');list.replaceChildren();var items=all.filter(function(n){return k!=='journal'||journalCategory==='ALL'||categoryText(n)===journalCategory;}).sort(newestPostFirst);document.getElementById(k+'Empty').hidden=items.length>0;items.forEach(function(n){var a=document.createElement('a');a.className='catalog-card';a.href='#/'+k+'/'+encodeURIComponent(n.id);var src=(n.images||[])[0];a.innerHTML=(validImage(src)?'<img src="'+escapeText(src)+'" alt="'+escapeText(n.title)+'" loading="lazy">':'<div class="catalog-placeholder">LOWKEY RECORDZ</div>')+'<h3>'+escapeText(n.title)+'</h3><div class="catalog-meta"><span>'+escapeText(k==='journal'?categoryText(n):priceText(n))+'</span><span>'+escapeText(k==='journal'?fmtDate(n.date):saleText(n))+'</span></div>';list.appendChild(a);});}
+  function renderCatalogDetail(k,id){try{id=decodeURIComponent(id);}catch(e){}var n=(k==='journal'?JOURNAL:STORE).find(function(n){return n.id===id;});var box=document.getElementById(k+'DetailContent');if(k==='journal'){mjRenderReader(n,box,id);return;}if(!n){box.innerHTML='<p class="muted">게시물을 찾을 수 없습니다.</p>';return;}box.innerHTML='<div class="notice-detail-meta">'+escapeText(k==='journal'?categoryText(n)+' · '+fmtDate(n.date):'LOWKEY RECORDZ STORE')+'</div><h1 class="notice-detail-title">'+escapeText(n.title)+'</h1><div class="notice-detail-body">'+renderPost(n)+'</div>';if(k==='store'){var buy=document.createElement('div');buy.className='shop-buy';buy.innerHTML='<p>'+escapeText(priceText(n))+'</p><button type="button" disabled>'+ (n.status==='soldout'?'품절':'판매 준비 중')+'</button><p class="muted">'+(n.status==='soldout'?'다음 판매 소식은 이곳에서 안내합니다.':'구매가 가능해지면 이곳에서 안내합니다.')+'</p>';box.appendChild(buy);}}
+  document.getElementById('journalFilters').addEventListener('click',function(e){var b=e.target.closest('[data-category]');if(!b)return;journalCategory=b.dataset.category;mjActiveId=null;this.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===b);});renderCatalog('journal');});
 
   var attached = {notice:[],news:[],journal:[],store:[]};
   /* ---------- ROUTER ---------- */
@@ -1722,7 +2130,7 @@ body.lk-playing{overflow:hidden}body.lk-playing>.site-header,body.lk-playing>hea
 
   function journalResetForm(){
     localStorage.removeItem('lk_editor_journal'); document.getElementById('journalAutosave').textContent='';
-    attached.journal=[]; previewPhotos('journal');
+    attached.journal=[]; previewPhotos('journal');mjCover='';mjCoverPreview();
     document.getElementById('journalForm').reset(); localStorage.removeItem('lk_editor_journal');
     document.getElementById('journalEditId').value = '';
     document.getElementById('journalSubmitBtn').textContent = '등록';
