@@ -1013,7 +1013,17 @@ body:has(#view-journal-detail.active){overflow:hidden}
 #postPreview:has(.bk-reader){width:96vw;max-width:96vw}#postPreview .bk-reader{width:100%;--book-height:calc(100dvh - 180px)}
 @media(max-width:760px){.bk-reader{width:calc(100vw - 16px);--book-height:calc(100dvh - 120px)}.bk-page{padding:42px 26px 38px}.bk-photo{padding:0}.bk-cover{padding:26px}.bk-copy p{font-size:19px!important;line-height:1.75!important}.bk-cover h1{font-size:40px}.bk-running{left:26px}.bk-nav{font-size:12px}}
 </style>
-</head>
+<style>
+/* Fixed 3:4 page proportions; fit a spread inside the viewport. */
+.bk-reader{--page-w:min(43vw,calc((100dvh - 145px)*.75),600px);width:calc(var(--page-w)*2);max-width:100%;margin:16px auto;--book-height:calc(var(--page-w)*4/3);padding:0}
+.bk-spread,.bk-double .bk-spread{grid-template-columns:repeat(2,var(--page-w))}
+.bk-spread.bk-single,.bk-double .bk-spread.bk-single{grid-template-columns:var(--page-w)}
+.bk-page{width:var(--page-w);height:var(--book-height);min-height:0;aspect-ratio:3/4;padding:44px 32px 38px}
+.bk-photo{padding:0}.bk-cover{padding:28px}.bk-running{left:32px;right:32px}
+.bk-copy p{font-size:20px!important;line-height:1.75!important}.bk-cover h1{font-size:clamp(30px,3.3vw,54px)}
+#postPreview .bk-reader{--page-w:min(40vw,calc((100dvh - 200px)*.75),560px);width:calc(var(--page-w)*2);--book-height:calc(var(--page-w)*4/3)}
+@media(max-width:799px){.bk-reader{--page-w:min(94vw,calc((100dvh - 135px)*.75));width:var(--page-w)}.bk-spread{grid-template-columns:var(--page-w)}.bk-page{padding:38px 24px 34px}.bk-photo{padding:0}.bk-cover{padding:24px}.bk-running{left:24px;right:24px}.bk-copy p{font-size:18px!important;line-height:1.7!important}.bk-cover h1{font-size:32px}#postPreview .bk-reader{--page-w:min(86vw,calc((100dvh - 190px)*.75));width:var(--page-w)}}
+</style></head>
 <body>
 
 <header class="nav">
@@ -1748,7 +1758,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
     function page(type){var el=document.createElement('section');el.className='bk-page bk-'+type;return el;}
     function rebuild(){
       if(!root.isConnected||!root.clientWidth)return;
-      var fraction=pages.length?index/pages.length:0;per=root.clientWidth>=740?2:1;root.classList.toggle('bk-double',per===2);pages=[];spread.replaceChildren();
+      var fraction=pages.length?index/pages.length:0;per=innerWidth>=800?2:1;root.classList.toggle('bk-double',per===2);pages=[];spread.replaceChildren();
       var c=mjCompose(n),src=validImage(n.cover)?n.cover:c.hero,cover=page('cover');
       cover.innerHTML=(src?'<img src="'+escapeText(src)+'" alt="'+escapeText(n.title)+' 표지">':'')+'<div class="bk-cover-top">LOWKEY JOURNAL <span>No.'+mjPad(mjNo[n.id]||1)+'</span></div><div class="bk-cover-title"><small>'+escapeText(categoryText(n))+' · '+escapeText(fmtDate(n.date))+'</small><h1>'+escapeText(n.title)+'</h1></div>';pages.push(cover);
       var current=null,content=null;
