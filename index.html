@@ -993,7 +993,14 @@ body:has(#view-journal-detail.active){overflow:hidden}
 }
 
 </style>
-</head>
+<style>.semi-arcade{height:100%;overflow:auto;box-sizing:border-box;padding:14px;background:repeating-conic-gradient(#fff0fa 0% 25%,#f5e7fb 0% 50%) 0/24px 24px;color:#493750;font:12px Tahoma,sans-serif;text-align:center}.sg-head{display:flex;justify-content:space-between;gap:8px;background:#654383;color:white;padding:9px;font-weight:bold;letter-spacing:1px;border:2px outset #c3a7e0}.sg-head span{color:#fff59c;font-variant-numeric:tabular-nums}.sg-arena{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:12px 0}.sg-arena>div{display:grid;justify-items:center;gap:4px;background:#ffffffb8;border:2px ridge #ddc5e9;padding:6px}.sg-arena svg{height:175px;width:100%;max-width:160px}.sg-arena progress{width:100%;accent-color:#bd73bb}.sg-plate{font-size:24px;background:#fff;border-radius:50%;padding:4px;margin:0 auto 12px;width:75%;border:2px solid #ccb7d8}.sg-meter{position:relative;height:23px;background:#e3c0d2;border:2px inset white;overflow:hidden;margin:10px 0}.sg-zone{position:absolute;left:34%;width:32%;height:100%;background:#a6dda4}.sg-meter i{position:absolute;left:0;width:4%;height:100%;background:#443455}.sg-actions{display:flex;gap:12px;justify-content:center;margin:10px 0}.semi-arcade .xbtn{min-height:36px;color:#382540;touch-action:manipulation}.sg-brief{padding:10px;background:#fffddd;border:1px solid #c0aa77;margin:10px 0;line-height:1.7;min-height:25px}.sg-dress{display:grid;grid-template-columns:42% 1fr;gap:12px;text-align:left}.sg-mirror{background:linear-gradient(125deg,#d9f3ff,#fff3fb);border:7px ridge #c8aed8;display:grid;place-items:center;min-height:240px}.sg-mirror svg{width:100%;max-width:200px}.sg-steps{display:grid;gap:5px}.sg-steps span{padding:5px;border:1px solid #d2bcdd;background:#ffffffad}.sg-steps .active{background:#714c8e;color:#fff}.sg-options{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.sg-options .sg-meter{width:100%}@media(max-width:420px){.semi-arcade{padding:8px}.sg-arena svg{height:135px}.sg-dress{grid-template-columns:39% 1fr;gap:6px}.sg-mirror{min-height:200px;border-width:4px}}
+</style><style>
+/* Journal editorial layout */
+.mj-stage{flex:0 0 auto;justify-content:flex-start;padding-top:8px}.mj-page{min-height:0!important}
+#journalList{min-height:0!important;height:auto!important;padding-top:32px!important;padding-bottom:24px!important;align-items:center!important;--bh:390px;--cw:292px}
+.mj-gc{box-sizing:border-box}.mj-gc-title{font-size:30px!important;line-height:1.2!important;text-shadow:0 2px 15px #0009}.mj-gc-top{letter-spacing:.06em}.mj-shelf-tools{max-width:1000px;margin:0 auto;min-height:0;padding-bottom:40px}.mj-info h3,.mj-info p{display:none}
+.ed-mag{background:#eeede7;color:#222;max-width:1040px;margin:24px auto 60px;font-family:var(--font-sans),sans-serif}.ed-cover{position:relative;min-height:560px;display:flex;flex-direction:column;justify-content:space-between;background:#272429;color:white;padding:36px;box-sizing:border-box;isolation:isolate}.ed-cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}.ed-cover:after{content:'';position:absolute;inset:0;background:linear-gradient(#0005,transparent 30%,#000c);z-index:-1}.ed-brand{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em}.ed-cover-title{max-width:780px}.ed-cover-title small{font-size:11px;letter-spacing:.1em}.ed-cover h1{font-size:clamp(32px,5vw,66px);line-height:1.15;letter-spacing:-.045em;word-break:keep-all;margin:14px 0 0;color:white}.ed-stand{font-size:20px;line-height:1.7;padding:40px 8%;margin:0;border-bottom:1px solid #ccc}.ed-section{padding:36px 8%}.ed-copy{max-width:690px;margin:0 auto;columns:auto;column-count:1}.ed-copy p{font-size:14px;line-height:1.8;margin:0 0 20px;word-break:normal;overflow-wrap:anywhere;text-align:left;float:none}.ed-copy p::first-letter{float:none!important;font:inherit!important;padding:0!important}.ed-copy .mj-q{font-weight:700;margin-top:26px;color:#222}.ed-copy .mj-q:first-child{margin-top:0}.ed-pair{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:36px;align-items:start}.ed-mag figure{margin:0}.ed-mag figure img{display:block;width:100%;height:auto}.ed-photos{display:flex;gap:20px;padding:8px 8% 32px}.ed-photos figure{flex:1;min-width:0}.ed-video{padding:24px 8%;font-size:13px}.ed-video iframe{width:100%;aspect-ratio:16/9;border:0;display:block;margin-bottom:12px}.ed-footer{padding:28px 8%;border-top:1px solid #ccc;display:flex;justify-content:space-between;font-size:10px;letter-spacing:.07em}#postPreview:has(.ed-mag){width:min(1120px,96vw);max-width:96vw}#postPreview .ed-mag{margin:0}#postPreview .mj-rbar{display:none}@media(max-width:640px){#journalList{--bh:340px;--cw:255px}.ed-mag{margin:0 0 25px}.ed-cover{min-height:460px;padding:24px}.ed-pair{display:block}.ed-pair figure{margin-top:24px}.ed-section{padding:26px 7%}.ed-stand{font-size:17px;padding:25px 7%}.ed-photos{padding:0 7% 24px}.ed-copy p{font-size:14px}}
+</style></head>
 <body>
 
 <header class="nav">
@@ -1265,8 +1272,8 @@ body:has(#view-journal-detail.active){overflow:hidden}
 <div class="form-row"><label>본문 서체<select id="journalFont"><option value="sans">산세리프 · 기본</option><option value="serif">명조 · 에세이</option><option value="mono">고정폭 · 크레딧</option></select></label><label>글자 크기<select id="journalSize"><option value="13">13px · 기본</option><option value="12">12px · 작게</option><option value="14">14px</option><option value="16">16px</option></select></label></div>
 <div class="form-row"><label>사진 기본 위치<select id="journalPlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="journalWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="journalAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
 <label>영상 주소<input type="url" id="journalVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="journalVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="journal">커서 위치에 영상 삽입</button></div>
-<p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="journalBody" rows="5" required></textarea></label>
-        <label>사진 추가 (최대 6장)<input type="file" id="journalImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="journalPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p><label>표지 썸네일 (선택 · 3:4 세로 비율 권장)<input type="file" id="journalCover" accept="image/jpeg,image/png,image/webp"></label><div class="photo-preview" id="journalCoverPreview"></div><p class="muted">디자인한 표지 이미지를 올리면 저널 책장에 그대로 표시됩니다. 비워 두면 제목과 첫 사진으로 표지가 자동 생성됩니다. 표지를 누르면 제거됩니다.</p>
+<p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="journalBody" rows="14" placeholder="소개 문단을 적어주세요.&#10;&#10;Q. 질문을 적어주세요.&#10;&#10;A. 답변을 적어주세요.&#10;&#10;사진은 첨부 순서대로 자동 배치됩니다." required></textarea></label>
+        <label>사진 추가 (최대 6장)<input type="file" id="journalImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="journalPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p><label>표지 썸네일 (선택 · 3:4 세로 비율 권장)<input type="file" id="journalCover" accept="image/jpeg,image/png,image/webp"></label><div class="photo-preview" id="journalCoverPreview"></div><p class="muted">표지 사진 위에 제목과 발행 정보가 자동으로 배치됩니다. 본문은 빈 줄로 문단을 나누고 사진을 첨부하면 자동 편집됩니다. Q. / A.로 인터뷰를 작성할 수 있습니다. 미리보기에서 실제 매거진 배치를 확인하세요.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="journalSubmitBtn">등록</button>
           <button type="button" id="journalPreviewPost">미리보기</button><button type="button" id="journalDiscardDraft">작성 내용 비우기</button><button type="button" id="journalCancelEdit" hidden>취소</button><span id="journalAutosave" class="autosave-status" role="status"></span>
@@ -1577,8 +1584,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
   /* ---------- SHELF ---------- */
   function mjPadEl(){var d=document.createElement('i');d.className='mj-pad';return d;}
   function mjCoverHTML(n){
-    if(validImage(n.cover))return '<img class="mj-thumb" src="'+escapeText(n.cover)+'" alt="'+escapeText(n.title)+' 표지">';
-    var img=(n.images||[]).filter(validImage)[0];
+    var img=validImage(n.cover)?n.cover:(n.images||[]).filter(validImage)[0];
     return '<div class="mj-gc'+(img?' mj-has-img':'')+'">'+(img?'<img class="mj-gc-img" src="'+escapeText(img)+'" alt="">':'')+
       '<div class="mj-gc-top"><span>LOWKEY JOURNAL</span><span>No.'+mjPad(mjNo[n.id])+'</span></div>'+
       '<div><h3 class="mj-gc-title">'+escapeText(n.title)+'</h3><div class="mj-gc-foot">'+categoryText(n)+'&ensp;'+escapeText(fmtDate(n.date))+'</div></div></div>';
@@ -1720,42 +1726,27 @@ body:has(#view-journal-detail.active){overflow:hidden}
     return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
   }
   function mjBuild(n){
-    var c=mjCompose(n),no=mjPad(mjNo[n.id]),page=2,html='',photoIdx=0,firstText=true,cat=categoryText(n),e=escapeText;
-    var qa=/^\s*Q[.:)]/m.test(n.body||'');
-    var heroSrc=c.hero||mjArt(mjHash(n.title));
-    function folio(){var l=mjPad(page),r=mjPad(page+1);page+=2;return {l:'<span class="mj-fo mj-l">'+l+'</span>',r:'<span class="mj-fo mj-r">'+r+'</span>'};}
-    function rh(){return '<div class="mj-rh"><span>LOWKEY JOURNAL&ensp;'+e(n.title)+'</span><span>'+cat+'</span></div>';}
-    var f=folio();
-    html+='<section class="mj-sp mj-two">'+
-      '<div class="mj-pg mj-op-l"><div class="mj-op-top"><span>LOWKEY JOURNAL</span><span>No.'+no+'</span></div>'+
-      '<div><div class="mj-op-cat">'+cat+'</div><h1 class="mj-op-title">'+e(n.title)+'</h1><div class="mj-op-date">'+e(fmtDate(n.date))+'</div></div>'+
-      '<div>'+(c.stand?'<p class="mj-op-stand">'+linkedText(c.stand)+'</p>':'')+'</div>'+f.l+'</div>'+
-      '<div class="mj-pg mj-op-r mj-on-img"><img src="'+e(heroSrc)+'" alt="">'+f.r+'</div></section>';
-    c.blocks.forEach(function(b){
-      f=folio();
+    var c=mjCompose(n),e=escapeText,no=mjPad(mjNo[n.id]||1),cat=categoryText(n);
+    var cover=validImage(n.cover)?n.cover:c.hero;
+    var html='<header class="ed-cover">'+(cover?'<img src="'+e(cover)+'" alt="">':'')+'<div class="ed-brand">LOWKEY JOURNAL <span>No.'+no+'</span></div><div class="ed-cover-title"><small>'+e(cat)+' · '+e(fmtDate(n.date))+'</small><h1>'+e(n.title)+'</h1></div></header>';
+    if(c.stand)html+='<p class="ed-stand">'+linkedText(c.stand)+'</p>';
+    c.blocks.forEach(function(b,i){
+      if(b.k==='quote')return;
       if(b.k==='text'){
-        var ph=b.ps.map(function(p,i){return mjParaHTML(p,firstText&&i===0,qa);}).join('');firstText=false;
-        html+='<section class="mj-sp mj-two mj-txt"><div class="mj-pg mj-tx" style="grid-column:1/-1">'+rh()+'<div class="mj-cols">'+ph+'</div></div>'+f.l+f.r+'</section>';
-      }else if(b.k==='quote'){
-        html+='<section class="mj-sp mj-one mj-qt"><div class="mj-pg mj-in">'+rh()+'<blockquote>“'+e(b.text)+'”</blockquote></div>'+f.l+f.r+'</section>';
+        var next=c.blocks[i+1],paired=next&&next.k==='photos'&&next.auto;
+        html+='<section class="ed-section'+(paired?' ed-pair':'')+'"><div class="ed-copy">'+b.ps.map(function(t){return mjParaHTML(t,false,false);}).join('')+'</div>';
+        if(paired)html+='<figure><img loading="lazy" src="'+e(next.list[0])+'" alt="저널 사진"></figure>';
+        html+='</section>';
       }else if(b.k==='photos'){
-        if(b.list.length>=2){
-          html+='<section class="mj-sp mj-two mj-on-img"><div class="mj-pg mj-ph"><img loading="lazy" src="'+e(b.list[0])+'" alt=""></div><div class="mj-pg mj-ph"><img loading="lazy" src="'+e(b.list[1])+'" alt=""></div>'+f.l+f.r+'</section>';
-        }else{
-          var v=photoIdx++%3;
-          if(v===0)html+='<section class="mj-sp mj-one mj-on-img"><div class="mj-pg mj-ph mj-bleed"><img loading="lazy" src="'+e(b.list[0])+'" alt=""></div>'+f.l+f.r+'</section>';
-          else html+='<section class="mj-sp mj-one mj-inset '+(v===1?'mj-left':'mj-right')+'"><figure><img loading="lazy" src="'+e(b.list[0])+'" alt=""></figure>'+rh()+f.l+f.r+'</section>';
-        }
+        var prev=c.blocks[i-1],paired=b.auto&&prev&&prev.k==='text';
+        var photos=paired?b.list.slice(1):b.list;
+        if(photos.length)html+='<div class="ed-photos">'+photos.map(function(src){return '<figure><img loading="lazy" src="'+e(src)+'" alt="저널 사진"></figure>';}).join('')+'</div>';
       }else if(b.k==='video'){
-        var ve=mjVideo(n);
-        if(ve)html+='<section class="mj-sp mj-one mj-vid">'+(ve.embed?'<iframe src="'+e(ve.embed)+'" title="영상 재생" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>':'')+'<a href="'+e(ve.url)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a></section>';
+        var v=mjVideo(n);if(v)html+='<div class="ed-video">'+(v.embed?'<iframe src="'+e(v.embed)+'" title="저널 영상" loading="lazy" allowfullscreen></iframe>':'')+'<a href="'+e(v.url)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a></div>';
       }
     });
-    var sorted=JOURNAL.slice().sort(newestPostFirst),idx=sorted.findIndex(function(x){return x.id===n.id;}),newer=sorted[idx-1],older=sorted[idx+1];
-    function nav(x,label){return x?'<a href="'+mjHref(x.id)+'"><span><small>'+label+'</small>'+e(x.title)+'</span><span>→</span></a>':'';}
-    html+='<section class="mj-sp mj-two"><div class="mj-pg mj-co-l"><div class="mj-co-no">No.'+no+'</div><div class="mj-co-meta">LOWKEY RECORDZ JOURNAL<br>'+cat+'<br>'+e(fmtDate(n.date))+'</div></div>'+
-      '<div class="mj-pg mj-co-r">'+nav(older,'이전 호')+nav(newer,'다음 호')+'<button type="button" data-mj-copy><span>링크 복사</span><span>↗</span></button><a href="#/journal"><span>목록으로</span><span>←</span></a></div></section>';
-    return '<div class="mj-progress" id="mjProgress"></div><div class="mj-rbar"><a href="#/journal">← JOURNAL</a><span class="mj-t">No.'+no+'&ensp;'+e(n.title)+'</span><span style="width:74px"></span></div><article class="mj-mag">'+html+'</article>';
+    html+='<footer class="ed-footer">LOWKEY RECORDZ · JOURNAL <a href="#/journal">목록으로 ↗</a></footer>';
+    return '<div class="mj-progress" id="mjProgress"></div><div class="mj-rbar"><a href="#/journal">← JOURNAL</a><span class="mj-t">'+e(n.title)+'</span></div><article class="ed-mag">'+html+'</article>';
   }
   function mjRenderReader(n,box,id){
     var view=document.getElementById('view-journal-detail');
@@ -2328,6 +2319,10 @@ body:has(#view-journal-detail.active){overflow:hidden}
     document.getElementById(kind+'PreviewPost').addEventListener('click',function(){
       var n={body:document.getElementById(kind+'Body').value,images:attached[kind],presentation:readPresentation(kind)};
       document.getElementById('postPreviewBody').innerHTML='<h1>'+escapeText(document.getElementById(kind+'Title').value||'제목 없음')+'</h1><p class="muted">'+escapeText(document.getElementById(kind+'Date').value)+'</p><div class="notice-detail-body">'+renderPost(n)+'</div>';
+      if(kind==='journal'){
+        Object.assign(n,readExtra('journal'),{id:document.getElementById('journalEditId').value||'preview',title:document.getElementById('journalTitle').value||'제목 없음',date:document.getElementById('journalDate').value,cover:mjCover});
+        mjIssues();document.getElementById('postPreviewBody').innerHTML=mjBuild(n);
+      }
       document.getElementById('postPreview').showModal();
     });
     document.getElementById(kind+'DiscardDraft').addEventListener('click',function(){if(confirm('작성 중인 내용과 첨부 사진을 비울까요? 등록된 게시물은 유지됩니다.')){if(kind==='notice')noticeResetForm();else if(kind==='news')newsResetForm();else if(kind==='journal')journalResetForm();else storeResetForm();}});
@@ -2940,6 +2935,8 @@ function openChat(want){
 let exitHash='#/';
 
 const APPS={
+ semieat:{t:'SEMI SNACK RACE',ic:IC.exe,run:()=>openSemiEat()},
+ semilive:{t:'SEMI LIVE READY',ic:IC.exe,run:()=>openSemiLive()},
  games:{t:'GAMES',ic:IC.folder,run:()=>openGames()},
  beat:{t:'BEAT MAKER',ic:IC.exe,run:()=>openBeat()},
  chat:{t:'LOWKEY 메신저',ic:IC.chat,run:()=>openChat()},
@@ -2952,12 +2949,44 @@ const APPS={
 };
 function openApp(k){const a=APPS[k];if(a)a.run();}
 
+/* SEMI's pocket arcade */
+function semiDoll(cat=false,look={}){
+return cat?`<svg viewBox="0 0 160 190" role="img" aria-label="흰색 페르시안 고양이"><path d="M34 79 25 19 62 44 100 44 139 19 128 84" fill="#fff" stroke="#a59ab8" stroke-width="3"/><path d="m32 31 7 31 16-13m76-18-7 31-16-13" fill="#ffcbdc"/><path d="M32 115Q3 174 37 179L130 179Q155 150 129 115" fill="#fff" stroke="#a59ab8" stroke-width="3"/><path d="M25 54 17 68 22 80 12 94 23 104 20 119 37 122Q80 157 125 123L140 118 136 105 147 92 138 80 144 65 126 54Q80 32 25 54" fill="#fff" stroke="#a59ab8" stroke-width="3"/><ellipse cx="55" cy="88" rx="11" ry="13" fill="#8dcad5"/><ellipse cx="107" cy="88" rx="11" ry="13" fill="#8dcad5"/><path d="M55 81v14m52-14v14" stroke="#373347" stroke-width="5"/><path d="m73 105 8 6 8-6" fill="#e799b2"/><path d="M81 111v6m0 0-10 4m10-4 10 4M29 104l23 3m-23 7 23-2m60-5 23-3m-23 8 23 2" stroke="#a59ab8" stroke-width="2"/><path d="M48 153v24m64-24v24" stroke="#d8d0e3" stroke-width="3"/></svg>`:`<svg viewBox="0 0 160 190" role="img" aria-label="세미 옷입히기 캐릭터"><path d="M32 136V67Q27 13 79 15Q137 13 131 73V148" fill="#e9cc91" stroke="#776677" stroke-width="3"/><path d="m62 123-26 13-12 49h113l-15-49-25-13" fill="${look.outfit||'#282334'}" stroke="#776677" stroke-width="3"/><path d="M65 111v22q15 12 30 0v-22" fill="#f7d7cd"/><ellipse cx="80" cy="77" rx="38" ry="48" fill="#f7d7cd"/><path d="M42 66Q43 26 86 26Q62 51 42 66m41-40q34 1 37 41" fill="#e9cc91"/><path d="M53 77h16m23 0h15" stroke="${look.eye||'#67545f'}" stroke-width="${look.eye?6:3}"/><circle cx="61" cy="80" r="3" fill="#454052"/><circle cx="100" cy="80" r="3" fill="#454052"/><path d="M72 104q8 5 16 0" stroke="${look.lip||'#c48a91'}" stroke-width="${look.lip?6:2}" fill="none"/><path d="M37 118 31 61m94 58 3-57" stroke="#d5b676" stroke-width="9"/>${look.acc?'<path d="m110 36 17 0m-9-8v17M59 141q21 15 43 0" stroke="#eeeaff" stroke-width="5"/>':''}</svg>`;
+}
+function semiShell(id,title,html){return mkWin({id,title,icon:IC.exe,w:600,h:560,html:`<div class="semi-arcade">${html}</div>`});}
+function openSemiEat(){
+ if(wins.has('semieat')){focusWin('semieat');return;}
+ const w=semiShell('semieat','SEMI · snack race.exe',`<div class="sg-head">SEMI vs. PERSIAN <span data-clock>30.0</span></div><div class="sg-arena"><div>${semiDoll()}<b>SEMI</b><progress data-you max="20" value="0"></progress><span data-ys>0 / 20</span></div><div>${semiDoll(true)}<b>흰 페르시안</b><progress data-cat max="20" value="0"></progress><span data-cs>0 / 20</span></div></div><div class="sg-plate">🍪 🍓 🍮 🍪 🍓</div><div class="sg-meter"><div class="sg-zone"></div><i></i></div><p data-msg aria-live="polite">초록 구간에 맞춰 한 입! 먼저 20개를 먹으면 승리.</p><div class="sg-actions"><button class="xbtn" data-start>▶ 시작</button><button class="xbtn" data-bite disabled>한 입! · SPACE</button></div><small>고양이는 전용 간식, 세미는 디저트 ♥ 연타하면 잠깐 쉬어요.</small><p data-best></p>`);
+ const q=s=>w.body.querySelector(s);let running=false,start=0,you=0,cat=0,iv=0,next=0,lock=0,combo=0;
+ function best(){q('[data-best]').textContent='BEST · '+(store.get('lk_semi_eat_best',0)||'—')+'초 남기고 승리';}best();
+ function phase(){return ((performance.now()-start)%1300)/1300;}
+ function finish(win){running=false;clearInterval(iv);q('[data-bite]').disabled=true;q('[data-start]').disabled=false;q('[data-start]').textContent='↻ 다시';const left=Math.max(0,(30000-performance.now()+start)/1000);q('[data-msg]').textContent=win?'★ SEMI WIN! 간식 챔피언!':'고양이 승리! 다음 판엔 박자를 맞춰봐.';if(win){store.set('lk_semi_eat_best',Math.max(store.get('lk_semi_eat_best',0),+left.toFixed(1)));best();}}
+ function update(){const now=performance.now(),left=Math.max(0,30-(now-start)/1000);q('[data-clock]').textContent=left.toFixed(1);q('.sg-meter i').style.left=(phase()*96)+'%';if(now>=next){cat++;next=now+1050+Math.random()*650;q('[data-cat]').value=cat;q('[data-cs]').textContent=cat+' / 20';}if(cat>=20||!left)finish(false);}
+ q('[data-start]').onclick=()=>{clearInterval(iv);you=cat=combo=0;start=performance.now();next=start+1500;lock=0;running=true;q('[data-you]').value=q('[data-cat]').value=0;q('[data-ys]').textContent=q('[data-cs]').textContent='0 / 20';q('[data-msg]').textContent='초록 구간에서 한 입!';q('[data-start]').disabled=true;q('[data-bite]').disabled=false;iv=setInterval(update,40);q('[data-bite]').focus();};
+ function bite(){if(!running)return;const now=performance.now();if(now<lock)return;const p=phase();if(p>=.34&&p<=.66){combo++;you=Math.min(20,you+(combo%3===0?2:1));lock=now+450;q('[data-msg]').textContent=combo%3===0?'♥ 3 COMBO! 두 입 성공!':'냠! '+combo+' COMBO';tick(850,.05);}else{combo=0;lock=now+750;q('[data-msg]').textContent='앗, 천천히 씹자! 잠깐 쉬기.';}q('[data-you]').value=you;q('[data-ys]').textContent=you+' / 20';if(you>=20)finish(true);}
+ q('[data-bite]').onclick=bite;w.body.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target!==q('[data-start]')){e.preventDefault();if(!e.repeat)bite();}});w.onclose=()=>clearInterval(iv);
+}
+function openSemiLive(){
+ if(wins.has('semilive')){focusWin('semilive');return;}
+ const w=semiShell('semilive','SEMI · late for LIVE.exe',`<div class="sg-head">GET READY WITH SEMI <span data-clock>60.0</span></div><div class="sg-brief" data-brief></div><div class="sg-dress"><div class="sg-mirror" data-doll>${semiDoll()}</div><div><div class="sg-steps" data-steps></div><div class="sg-options" data-options></div></div></div><p data-msg aria-live="polite">오늘의 스타일을 기억하고, 순서대로 준비해!</p><div class="sg-actions"><button class="xbtn" data-start>▶ 준비 시작</button><button class="xbtn" data-live disabled>● GO LIVE</button></div><p data-best></p>`);
+ const q=s=>w.body.querySelector(s),steps=['아이 메이크업','립 메이크업','의상','액세서리','카메라 초점'];
+ const colors=[['라벤더','#aa8ad9'],['로즈','#d9719e'],['스카이','#7eafdc']];let look={},target=[],stage=0,running=false,end=0,iv=0,focusStart=0,penalties=0;
+ function best(){q('[data-best]').textContent='BEST · '+(store.get('lk_semi_live_best',0)||'—');}best();
+ function paint(){q('[data-doll]').innerHTML=semiDoll(false,look);q('[data-steps]').innerHTML=steps.map((s,i)=>`<span class="${i===stage?'active':''}">${i<stage?'✓':i+1} ${s}</span>`).join('');}
+ function finish(success){running=false;clearInterval(iv);q('[data-start]').disabled=false;q('[data-start]').textContent='↻ 다시 준비';q('[data-live]').disabled=true;q('[data-options]').innerHTML='';const score=Math.max(0,Math.round((end-performance.now())/1000)*10+500-penalties*20);q('[data-msg]').textContent=success?'● LIVE ON · '+score+'점! 오늘도 만나서 반가워 ♡':'시간 초과! 다시 준비해서 만나자.';if(success){store.set('lk_semi_live_best',Math.max(store.get('lk_semi_live_best',0),score));best();}}
+ function options(){paint();if(stage<3){q('[data-options]').innerHTML=colors.map(([name,c],i)=>`<button class="xbtn" data-choice="${i}"><span style="display:inline-block;background:${c};width:18px;height:18px;border:1px solid #555"></span> ${name}</button>`).join('');}else if(stage===3){q('[data-options]').innerHTML=['실버 별 세트','리본 세트','진주 세트'].map((n,i)=>`<button class="xbtn" data-choice="${i}">${['✦','🎀','○'][i]} ${n}</button>`).join('');}else if(stage===4){focusStart=performance.now();q('[data-options]').innerHTML='<div class="sg-meter"><div class="sg-zone"></div><i></i></div><button class="xbtn" data-focus>◎ 초점 맞추기</button>';q('[data-focus]').onclick=()=>{const p=((performance.now()-focusStart)%1500)/1500;if(p>=.34&&p<=.66){stage++;q('[data-options]').innerHTML='✓ CAMERA READY';paint();q('[data-live]').disabled=false;q('[data-msg]').textContent='준비 완료! GO LIVE를 눌러 방송 시작.';}else{end-=2000;penalties++;q('[data-msg]').textContent='초점이 흐려! 초록 구간을 노려봐. −2초';}};} }
+ q('[data-options]').onclick=e=>{const b=e.target.closest('[data-choice]');if(!b||!running)return;if(+b.dataset.choice!==target[stage]){end-=3000;penalties++;q('[data-msg]').textContent='오늘의 스타일을 다시 봐! −3초';return;}if(stage<3)look[['eye','lip','outfit'][stage]]=colors[target[stage]][1];else look.acc=target[stage]+1;stage++;q('[data-msg]').textContent='✓ 좋아! 다음 준비로.';tick(1000,.04);options();};
+ q('[data-start]').onclick=()=>{clearInterval(iv);look={};stage=penalties=0;target=Array.from({length:4},()=>Math.random()*3|0);running=true;end=performance.now()+60000;q('[data-start]').disabled=true;q('[data-live]').disabled=true;q('[data-msg]').textContent='스타일 카드대로 하나씩 골라줘.';q('[data-brief]').textContent=`TODAY'S LOOK · 눈 ${colors[target[0]][0]} / 립 ${colors[target[1]][0]} / 옷 ${colors[target[2]][0]} / ${['실버 별 세트','리본 세트','진주 세트'][target[3]]}`;options();iv=setInterval(()=>{const left=Math.max(0,(end-performance.now())/1000);q('[data-clock]').textContent=left.toFixed(1);const needle=q('.sg-meter i');if(needle)needle.style.left=(((performance.now()-focusStart)%1500)/1500*96)+'%';if(!left)finish(false);},40);};
+ q('[data-live]').onclick=()=>{if(running&&stage===5)finish(true);};paint();w.onclose=()=>clearInterval(iv);
+}
+
+
 /* ---- GAMES folder ---- */
 function openGames(){
   const items=[['fish','NEON TETRA.exe',FISH],['candle','STAY A LITTLE.exe',px(['................','.......y........','......yyy.......','......ywy.......','.....yywyy......','......yyy.......','.......x........','.....wwwww......','.....wwwsw......','.....wwwsw......','.....wwwww......','.....wwwww......','...sssssssss....','..sssssssssss...'],PAL)],
    ['denim','UNDER THE DENIM.exe',px(['................','..ssssssssssss..','..sbbbbbbbbbbs..','..sbyyyyyyyybs..','..sbybbbbbybbs..','..sbybbbbbbybs..','..sbybbbbbbybs..','..sbyybbbbyybs..','..sbyyyyyyyybs..','..sbbbbbbbbbbs..','..ssssssssssss..'],PAL)],
    ['lotus','LET IT OPEN.exe',px(['................','.......pp.......','......pppp......','..p...pwwp...p..','..pp..pwwp..pp..','..pppppwwppppp..','...ppppwwpppp...','....pppppppp....','..gggggyyggggg..','...gggggggggg...','.....gggggg.....'],PAL)],
-   ['beat','BEAT MAKER.exe',IC.exe]];
+   ['beat','BEAT MAKER.exe',IC.exe],['semieat','SEMI SNACK RACE.exe',IC.exe],['semilive','SEMI LIVE READY.exe',IC.exe]];
   const w=mkWin({id:'games',title:'GAMES',icon:IC.folder,w:480,h:330,html:`<div class="xw-col"><div class="xw-menu"><span>파일(F)</span><span>편집(E)</span><span>보기(V)</span><span>도움말(H)</span></div><div class="addr"><span>주소</span><input class="xfield" value="C:\\LOWKEY\\GAMES" readonly aria-label="주소"></div><div class="grow"><div class="fold">${items.map(([k,l,i])=>`<button class="xi" data-run="${k}" type="button"><span class="ic">${i}</span><span>${l}</span></button>`).join('')}</div></div><div class="xw-status"><span>개체 ${items.length}개 · 두 번 누르면 실행됩니다</span></div></div>`});
   bindIcons(w.body);
 }
