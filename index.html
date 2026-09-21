@@ -2999,12 +2999,24 @@ function localReply(k,t){
 let AIERR='';
 async function artistReply(k,hist,t){
   if(RX.crisis.test(t))return CRI[k];if(RX.bad.test(t))return REF[k];
-  if(CHAT_ENDPOINT){try{const c=new AbortController(),to=setTimeout(()=>c.abort(),20000);
-    const r=await fetch(CHAT_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},signal:c.signal,body:JSON.stringify({persona:k,system:PERSONA[k].sys,messages:hist.slice(-12)})});clearTimeout(to);
-    const d=await r.json().catch(()=>({}));
-    if(r.ok&&d&&d.reply){AIERR='';return String(d.reply).slice(0,300);}
-    AIERR='서버 응답 '+r.status+' '+(d.detail||d.error||'(빈 답변: API 키 확인)');console.warn('chat worker',r.status,d);
-  }catch(e){AIERR='워커에 닿지 못함 · 현재 사이트 주소: '+location.origin+' · 워커 주소나 ORIGIN 값을 확인';console.warn('chat worker',e);}}
+  AIERR='';
+  if(CHAT_ENDPOINT){
+    const c=new AbortController(),started=Date.now(),to=setTimeout(()=>c.abort(),45000);
+    try{
+      const r=await fetch(CHAT_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},signal:c.signal,body:JSON.stringify({persona:k,system:PERSONA[k].sys,messages:hist.slice(-12)})});
+      const raw=await r.text();let d={};try{d=JSON.parse(raw);}catch(_){}
+      if(r.ok&&typeof d.reply==='string'&&d.reply.trim()){return d.reply.trim().slice(0,300);}
+      if(r.status===429)AIERR='요청 한도 초과 (429) · 잠시 후 다시 시도해 주세요';
+      else if(r.status===403)AIERR='접근 거부 (403) · '+String(d.detail||d.error||'워커의 허용 도메인 설정을 확인해 주세요').slice(0,220);
+      else AIERR='서버 응답 '+r.status+' · '+String(d.detail||d.error||(r.ok?'답변이 비어 있습니다':'서버가 정상적인 JSON 응답을 보내지 않았습니다')).slice(0,240);
+      console.warn('chat worker',{status:r.status,elapsedMs:Date.now()-started,error:d.error,detail:d.detail});
+    }catch(e){
+      if(e.name==='AbortError')AIERR='AI 응답 대기시간 초과 (45초) · 잠시 후 다시 시도해 주세요';
+      else if(navigator.onLine===false)AIERR='인터넷 연결이 끊겼습니다 · 연결 후 다시 시도해 주세요';
+      else AIERR='네트워크 요청 실패 · 워커 장애, CORS 또는 브라우저 차단 여부 확인 필요 · 사이트: '+location.origin;
+      console.warn('chat worker',{name:e.name,message:e.message,elapsedMs:Date.now()-started,endpoint:CHAT_ENDPOINT});
+    }finally{clearTimeout(to);}
+  }else AIERR='채팅 서버 주소가 설정되지 않았습니다';
   return localReply(k,t);}
 
 /* presence: someone is online only now and then */
