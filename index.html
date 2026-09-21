@@ -1043,6 +1043,30 @@ body:has(#view-journal-detail.active){overflow:hidden}
 </style><style>
 @media(max-width:799px){.bk-reader .bk-copy p{font-size:16px!important;line-height:1.75!important}}
 </style>
+
+<style id="journal-type-and-touch">
+/* Local licensed Yoon Gothic takes priority; fallback remains portable. */
+@font-face{font-family:"Lowkey Yoon 300";src:local("윤고딕 300"),local("윤고딕300"),local("Yoon Gothic 300"),local("YoonGothic300");font-weight:100 900;font-display:swap}
+.bk-reader .bk-copy,.bk-reader .bk-copy p,.bk-reader .bk-copy p *{font-family:"Lowkey Yoon 300","Pretendard Variable",Pretendard,sans-serif!important}
+.bk-reader .bk-copy p{font-size:14px!important;line-height:1.8!important;letter-spacing:-.035em!important;font-weight:400}
+.bk-copy-inner{width:102.040816%;transform:scaleX(.98);transform-origin:left center}
+#journalList{height:calc(var(--bh) + 100px);padding-top:38px;padding-bottom:32px;box-sizing:content-box;border:0!important;background:none!important;box-shadow:none!important;perspective:1200px}
+#journalList::before,#journalList::after{content:none!important;display:none!important}
+#journalList .mj-book{transform-style:preserve-3d;outline-offset:8px;transition:flex-basis .6s cubic-bezier(.3,.7,.2,1),margin .6s cubic-bezier(.3,.7,.2,1),transform .22s ease,filter .22s ease}
+#journalList .mj-cover{transition:opacity .35s .2s,box-shadow .25s;transform:translateZ(1px)}
+#journalList .mj-cover::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--light-x,50%) var(--light-y,35%),#fff4,transparent 65%);opacity:0;transition:opacity .25s}
+@media(hover:hover) and (pointer:fine){
+#journalList .mj-book:hover{transform:translateY(-20px) rotateX(var(--tilt-x,3deg)) rotateY(var(--tilt-y,-7deg)) scale(1.035);filter:brightness(1.12);z-index:3}
+#journalList .mj-book:hover .mj-cover{box-shadow:8px 30px 45px -12px #000c,0 0 0 1px #ffffff55}
+#journalList .mj-book:hover .mj-cover::after{opacity:1}
+}
+#journalList .mj-book:focus-visible{transform:translateY(-16px);outline:2px solid #dedbd3}
+#journalList .mj-book:active{transform:translateY(-8px) scale(.98)}
+@media(prefers-reduced-motion:reduce){
+#journalList .mj-book,#journalList .mj-cover{transition:none!important}
+#journalList .mj-book:hover,#journalList .mj-book:focus-visible{transform:none;filter:brightness(1.15)}
+}
+</style>
 </head>
 <body>
 
@@ -1671,6 +1695,21 @@ body:has(#view-journal-detail.active){overflow:hidden}
     box.scrollTo({left:Math.max(0,left+cov.offsetWidth/2-box.clientWidth/2)});
   }
   function mjOpen(id,el){var c=el&&el.querySelector('.mj-cover');mjRect=c?c.getBoundingClientRect():null;location.hash=mjHref(id);}
+  // Surface tilt does not change selection until a book is clicked.
+  var journalSurface=document.getElementById('journalList');
+  journalSurface.addEventListener('pointermove',function(e){
+    if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    var b=e.target.closest('.mj-book');if(!b)return;
+    var r=b.getBoundingClientRect(),x=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y=Math.max(0,Math.min(1,(e.clientY-r.top)/r.height));
+    b.style.setProperty('--tilt-x',((.5-y)*10)+'deg');
+    b.style.setProperty('--tilt-y',((x-.5)*16)+'deg');
+    b.style.setProperty('--light-x',(x*100)+'%');
+    b.style.setProperty('--light-y',(y*100)+'%');
+  });
+  journalSurface.addEventListener('pointerout',function(e){
+    var b=e.target.closest('.mj-book');if(!b||b.contains(e.relatedTarget))return;
+    ['--tilt-x','--tilt-y','--light-x','--light-y'].forEach(function(k){b.style.removeProperty(k);});
+  });
   document.getElementById('journalList').addEventListener('click',function(e){
     var b=e.target.closest('.mj-book');if(!b)return;var i=+b.dataset.i;
     if(mjList[i]&&mjList[i].id===mjActiveId)mjOpen(mjActiveId,b);else mjSetActive(i);
@@ -1820,7 +1859,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
     var touch=null;spread.addEventListener('touchstart',function(e){touch={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});spread.addEventListener('touchend',function(e){if(!touch)return;var dx=e.changedTouches[0].clientX-touch.x,dy=e.changedTouches[0].clientY-touch.y;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5)turn(dx<0?1:-1);touch=null;},{passive:true});
     requestAnimationFrame(function(){rebuild();});
     var ro=new ResizeObserver(function(entries){if(!root.isConnected){ro.disconnect();return;}var w=Math.round(entries[0].contentRect.width),h=innerHeight;if(w===oldWidth&&h===oldHeight)return;oldWidth=w;oldHeight=h;clearTimeout(resizeTimer);resizeTimer=setTimeout(rebuild,120);});ro.observe(root);
-    if(document.fonts){document.fonts.load('20px "Pretendard Variable"','카라신 주니어 저널').then(function(){return document.fonts.ready;}).then(function(){if(root.isConnected)rebuild();}).catch(function(){});}
+    if(document.fonts){document.fonts.load('14px "Lowkey Yoon 300", "Pretendard Variable"','카라신 주니어 저널').then(function(){return document.fonts.ready;}).then(function(){if(root.isConnected)rebuild();}).catch(function(){});}
   }
   function mjRenderReader(n,box,id){
     var view=document.getElementById('view-journal-detail');
