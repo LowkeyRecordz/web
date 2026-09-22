@@ -1305,7 +1305,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
 <p>GitHub 인증 연결됨 · 로그인한 계정의 권한으로 게시합니다.</p>
 <p>로그아웃하거나 새로고침하면 다시 인증해야 합니다. 페이지를 열어둔 동안에는 반복 입력 없이 게시할 수 있습니다.</p>
 </details>
-<div class="publish-actions"><button id="publishAll">전체 게시</button><span id="publishStatus" role="status" aria-live="polite">공개 상태 확인 중…</span></div>
+<div class="publish-actions"><button id="publishAll">전체 게시</button><button type="button" id="downloadContentBackup">백업 다운로드</button><span id="publishStatus" role="status" aria-live="polite">공개 상태 확인 중…</span></div>
 <div class="admin-tabs">
       <button data-admin-tab="notice" class="active">공지 관리</button>
       <button data-admin-tab="news">뉴스 관리</button><button data-admin-tab="journal">저널 관리</button><button data-admin-tab="store">스토어 관리</button>
@@ -1324,7 +1324,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
 <div class="form-row"><label>사진 기본 위치<select id="noticePlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="noticeWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="noticeAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
 <label>영상 주소<input type="url" id="noticeVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="noticeVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="notice">커서 위치에 영상 삽입</button></div>
 <p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="noticeBody" rows="5" required></textarea></label>
-        <label>사진 추가 (최대 6장)<input type="file" id="noticeImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="noticePreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
+        <label>사진 추가 (최대 12장)<input type="file" id="noticeImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="noticePreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="noticeSubmitBtn">등록</button>
           <button type="button" id="noticePreviewPost">미리보기</button><button type="button" id="noticeDiscardDraft">작성 내용 비우기</button><button type="button" id="noticeCancelEdit" hidden>취소</button><span id="noticeAutosave" class="autosave-status" role="status"></span>
@@ -1343,7 +1343,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
 <div class="form-row"><label>사진 기본 위치<select id="newsPlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="newsWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="newsAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
 <label>영상 주소<input type="url" id="newsVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="newsVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="news">커서 위치에 영상 삽입</button></div>
 <p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>본문<textarea id="newsBody" rows="5" required></textarea></label>
-        <label>사진 추가 (최대 6장)<input type="file" id="newsImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="newsPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
+        <label>사진 추가 (최대 12장)<input type="file" id="newsImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="newsPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="newsSubmitBtn">등록</button>
           <button type="button" id="newsPreviewPost">미리보기</button><button type="button" id="newsDiscardDraft">작성 내용 비우기</button><button type="button" id="newsCancelEdit" hidden>취소</button><span id="newsAutosave" class="autosave-status" role="status"></span>
@@ -1364,7 +1364,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
 <button type="button" data-jpage="title">부제목 전용 지면</button>
 <button type="button" data-jpage="photo">사진 전용 지면</button>
 </div><p class="editor-help">커서를 놓고 버튼을 누르세요. [[page]]는 다음 지면, [[title:부제목]]은 부제목만 담는 한 장입니다. 지면 지정 후 사진은 ‘본문에 삽입’한 위치에만 표시됩니다. 긴 글은 다음 장으로 이어집니다. 미리보기로 확인하세요.</p><label>본문<textarea id="journalBody" rows="14" placeholder="소개 문단을 적어주세요.&#10;&#10;Q. 질문을 적어주세요.&#10;&#10;A. 답변을 적어주세요.&#10;&#10;사진은 첨부 순서대로 자동 배치됩니다." required></textarea></label>
-        <label>사진 추가 (최대 6장)<input type="file" id="journalImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="journalPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p><label>표지 썸네일 (선택 · 3:4 세로 비율 권장)<input type="file" id="journalCover" accept="image/jpeg,image/png,image/webp"></label><div class="photo-preview" id="journalCoverPreview"></div><p class="muted">표지 사진 위에 제목과 발행 정보가 자동으로 배치됩니다. 본문은 빈 줄로 문단을 나누고 사진을 첨부하면 자동 편집됩니다. Q. / A.로 인터뷰를 작성할 수 있습니다. 사진은 한 페이지 전체에, 글은 지면 분량에 맞춰 자동으로 나뉩니다. 미리보기에서 책장을 넘겨 확인하세요.</p>
+        <label>사진 추가 (최대 12장)<input type="file" id="journalImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="journalPreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p><label>표지 썸네일 (선택 · 3:4 세로 비율 권장)<input type="file" id="journalCover" accept="image/jpeg,image/png,image/webp"></label><div class="photo-preview" id="journalCoverPreview"></div><p class="muted">표지 사진 위에 제목과 발행 정보가 자동으로 배치됩니다. 본문은 빈 줄로 문단을 나누고 사진을 첨부하면 자동 편집됩니다. Q. / A.로 인터뷰를 작성할 수 있습니다. 사진은 한 페이지 전체에, 글은 지면 분량에 맞춰 자동으로 나뉩니다. 미리보기에서 책장을 넘겨 확인하세요.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="journalSubmitBtn">등록</button>
           <button type="button" id="journalPreviewPost">미리보기</button><button type="button" id="journalDiscardDraft">작성 내용 비우기</button><button type="button" id="journalCancelEdit" hidden>취소</button><span id="journalAutosave" class="autosave-status" role="status"></span>
@@ -1381,7 +1381,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
 <div class="form-row"><label>사진 기본 위치<select id="storePlacement"><option value="after">본문 아래</option><option value="before">본문 위</option><option value="inline">본문 중간 · 삽입 버튼 사용</option></select></label><label>사진 너비<select id="storeWidth"><option value="100">전체 너비</option><option value="75">75%</option><option value="50">50%</option></select></label><label>사진 정렬<select id="storeAlign"><option value="center">가운데</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label></div>
 <label>영상 주소<input type="url" id="storeVideo" placeholder="YouTube 또는 Vimeo 링크"></label><div class="form-row"><label>영상 표시<select id="storeVideoMode"><option value="embed">플레이어</option><option value="link">링크 버튼</option></select></label><button type="button" class="editor-insert" data-insert-video="store">커서 위치에 영상 삽입</button></div>
 <p class="editor-help">Enter는 줄바꿈, 빈 줄은 문단 구분입니다. 사진의 ‘본문에 삽입’ 버튼으로 위치를 지정하세요. 영상은 삽입 위치를 지정하지 않으면 맨 아래 표시됩니다.</p></div><label>상품 설명<textarea id="storeBody" rows="5" required></textarea></label>
-        <label>상품 사진 (최대 6장)<input type="file" id="storeImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="storePreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
+        <label>상품 사진 (최대 12장)<input type="file" id="storeImages" accept="image/jpeg,image/png,image/webp" multiple></label><div class="photo-preview" id="storePreview"></div><p class="muted">사진을 누르면 첨부에서 제외됩니다.</p>
         <div class="form-actions">
           <button type="submit" class="primary" id="storeSubmitBtn">등록</button>
           <button type="button" id="storePreviewPost">미리보기</button><button type="button" id="storeDiscardDraft">작성 내용 비우기</button><button type="button" id="storeCancelEdit" hidden>취소</button><span id="storeAutosave" class="autosave-status" role="status"></span>
@@ -1466,15 +1466,61 @@ body:has(#view-journal-detail.active){overflow:hidden}
   var NOTICE_KEY = 'lk_notice_draft_v3';
   var NEWS_KEY = 'lk_news_draft_v3';
 
-  function loadData(key, fallback){
-    try{
-      var raw = localStorage.getItem(key);
-      if(raw) return JSON.parse(raw);
-    }catch(e){}
-    return fallback.slice();
+
+  var contentCache=Object.create(null),contentDB=null,storageError=null,storagePending=0;
+  var storageFailures=new Set(),storageQueue=Promise.resolve(),editorTimers={},editorRevision={},resettingEditors=new Set(),savingForms=new Set();
+  var contentKeys=['lk_notice_draft_v3','lk_news_draft_v3','lk_journal_draft_v1','lk_store_draft_v1',
+    'lk_editor_notice','lk_editor_news','lk_editor_journal','lk_editor_store'];
+  function contentTransaction(action){
+    return new Promise(function(resolve,reject){
+      if(!contentDB){reject(storageError||Error('브라우저 저장소를 열 수 없습니다.'));return;}
+      var tx=contentDB.transaction('content','readwrite');
+      tx.oncomplete=function(){resolve();};tx.onerror=tx.onabort=function(){reject(tx.error||Error('저장 실패'));};
+      try{action(tx.objectStore('content'));}catch(e){tx.abort();reject(e);}
+    });
   }
-  function saveData(key, arr){
-    try{ localStorage.setItem(key, JSON.stringify(arr)); updateStatus(); }catch(e){ autosaveFailed=true; alert('브라우저 저장 공간이 부족합니다. 현재 창을 닫기 전에 전체 게시를 눌러 주세요.'); }
+  var storageReady=(async function(){
+    var legacy={};
+    contentKeys.forEach(function(k){try{var raw=localStorage.getItem(k);if(raw){legacy[k]=raw;contentCache[k]=JSON.parse(raw);}}catch(e){}});
+    try{
+      contentDB=await new Promise(function(resolve,reject){
+        var req=indexedDB.open('lowkey-content-v1',1);
+        req.onupgradeneeded=function(){req.result.createObjectStore('content');};
+        req.onsuccess=function(){resolve(req.result);};
+        req.onerror=function(){reject(req.error);};
+        req.onblocked=function(){reject(Error('다른 로우키 탭을 닫고 다시 시도해 주세요.'));};
+      });
+      contentDB.onversionchange=function(){contentDB.close();};
+      await new Promise(function(resolve,reject){
+        var tx=contentDB.transaction('content','readonly'),req=tx.objectStore('content').openCursor();
+        req.onsuccess=function(){var cursor=req.result;if(cursor){if(!Object.prototype.hasOwnProperty.call(legacy,cursor.key))contentCache[cursor.key]=cursor.value;cursor.continue();}};
+        tx.oncomplete=resolve;tx.onerror=function(){reject(tx.error);};
+      });
+      var keys=Object.keys(legacy);
+      if(keys.length){
+        await contentTransaction(function(store){keys.forEach(function(k){store.put(contentCache[k],k);});});
+        keys.forEach(function(k){try{if(localStorage.getItem(k)===legacy[k])localStorage.removeItem(k);}catch(e){}});
+      }
+    }catch(e){storageError=e;storageFailures.add('init');autosaveFailed=true;console.warn('content storage',e);}
+  })();
+  function queueContent(key,value,remove){
+    var snapshot=remove?null:structuredClone(value);
+    if(remove)delete contentCache[key];else contentCache[key]=snapshot;
+    storagePending++;
+    var operation=storageQueue.then(async function(){
+      await storageReady;
+      await contentTransaction(function(store){if(remove)store.delete(key);else store.put(snapshot,key);});
+      try{localStorage.removeItem(key);}catch(e){}
+      storageFailures.delete(key);storageFailures.delete('init');autosaveFailed=storageFailures.size>0;
+    });
+    storageQueue=operation.catch(function(e){storageFailures.add(key);autosaveFailed=true;console.warn('content write',e);}).finally(function(){storagePending--;});
+    return operation;
+  }
+  function removeContent(key){return queueContent(key,null,true).catch(function(){return false;});}
+  function loadData(key,fallback){return Object.prototype.hasOwnProperty.call(contentCache,key)?structuredClone(contentCache[key]):fallback.slice();}
+  async function saveData(key,arr){
+    try{await queueContent(key,arr,false);updateStatus();return true;}
+    catch(e){alert('게시물 저장에 실패했습니다. 작성 내용은 유지됩니다. 백업 다운로드 후 다시 시도해 주세요.');return false;}
   }
 
   var NOTICES = DEFAULT_NOTICES.slice();
@@ -2160,7 +2206,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
       var r=await fetch('https://api.github.com/repos/lowkeyrecordz/web',{headers:{Authorization:'Bearer '+candidate,Accept:'application/vnd.github+json'},cache:'no-store'});
       if(!r.ok)throw Error('GitHub 인증 실패. 토큰과 저장소 접근 권한을 확인해 주세요.');
       var repo=await r.json();if(!repo.permissions || !repo.permissions.push)throw Error('이 저장소에 쓰기 권한이 있는 GitHub 계정으로 로그인해 주세요.');
-      await publicReady;if(publicLoadFailed)throw Error('공개 게시글을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.');
+      await Promise.all([publicReady,storageReady]);if(publicLoadFailed)throw Error('공개 게시글을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.');
       authToken=candidate;authVerified=true;input.value='';
       enterAdminDashboard();showView('view-admin');location.hash='#/admin';restoreEditors();updateStatus();
     }catch(ex){authToken='';authVerified=false;err.textContent=ex.message;err.hidden=false;input.value='';}
@@ -2229,17 +2275,18 @@ body:has(#view-journal-detail.active){overflow:hidden}
   }
 
   function noticeResetForm(){
-    localStorage.removeItem('lk_editor_notice'); document.getElementById('noticeAutosave').textContent='';
+    clearTimeout(editorTimers['notice']);delete editorTimers['notice'];editorRevision['notice']=(editorRevision['notice']||0)+1;resettingEditors.add('notice');
+    removeContent('lk_editor_notice'); document.getElementById('noticeAutosave').textContent='';
     attached.notice=[]; previewPhotos('notice');
-    document.getElementById('noticeForm').reset(); localStorage.removeItem('lk_editor_notice');
+    document.getElementById('noticeForm').reset();
     document.getElementById('noticeEditId').value = '';
     document.getElementById('noticeSubmitBtn').textContent = '등록';
-    document.getElementById('noticeCancelEdit').hidden = true;
+    document.getElementById('noticeCancelEdit').hidden = true;resettingEditors.delete('notice');
   }
 
-  document.getElementById('noticeForm').addEventListener('submit', function(e){
+  document.getElementById('noticeForm').addEventListener('submit', async function(e){
     e.preventDefault();
-    if(!isAdminAuthed())return;
+    if(!isAdminAuthed()||savingForms.has('notice'))return;
     var id = document.getElementById('noticeEditId').value;
     var data = {
       id: id || uid('notice'),
@@ -2255,7 +2302,13 @@ body:has(#view-journal-detail.active){overflow:hidden}
     }else{
       NOTICES.push(data);
     }
-    saveData(NOTICE_KEY, NOTICES);
+    document.getElementById('noticeEditId').value=data.id;
+    var rev=editorRevision['notice']||0,submit=document.getElementById('noticeSubmitBtn');
+    savingForms.add('notice');submit.disabled=true;
+    var saved=await saveData(NOTICE_KEY, NOTICES);
+    savingForms.delete('notice');submit.disabled=false;
+    if(!saved)return;
+    if((editorRevision['notice']||0)!==rev){adminRenderNoticeList();return;}
     noticeResetForm();
     adminRenderNoticeList();
   });
@@ -2301,17 +2354,18 @@ body:has(#view-journal-detail.active){overflow:hidden}
   }
 
   function newsResetForm(){
-    localStorage.removeItem('lk_editor_news'); document.getElementById('newsAutosave').textContent='';
+    clearTimeout(editorTimers['news']);delete editorTimers['news'];editorRevision['news']=(editorRevision['news']||0)+1;resettingEditors.add('news');
+    removeContent('lk_editor_news'); document.getElementById('newsAutosave').textContent='';
     attached.news=[]; previewPhotos('news');
-    document.getElementById('newsForm').reset(); localStorage.removeItem('lk_editor_news');
+    document.getElementById('newsForm').reset();
     document.getElementById('newsEditId').value = '';
     document.getElementById('newsSubmitBtn').textContent = '등록';
-    document.getElementById('newsCancelEdit').hidden = true;
+    document.getElementById('newsCancelEdit').hidden = true;resettingEditors.delete('news');
   }
 
-  document.getElementById('newsForm').addEventListener('submit', function(e){
+  document.getElementById('newsForm').addEventListener('submit', async function(e){
     e.preventDefault();
-    if(!isAdminAuthed())return;
+    if(!isAdminAuthed()||savingForms.has('news'))return;
     var id = document.getElementById('newsEditId').value;
     var data = {
       id: id || uid('news'),
@@ -2326,7 +2380,13 @@ body:has(#view-journal-detail.active){overflow:hidden}
     }else{
       NEWS.push(data);
     }
-    saveData(NEWS_KEY, NEWS);
+    document.getElementById('newsEditId').value=data.id;
+    var rev=editorRevision['news']||0,submit=document.getElementById('newsSubmitBtn');
+    savingForms.add('news');submit.disabled=true;
+    var saved=await saveData(NEWS_KEY, NEWS);
+    savingForms.delete('news');submit.disabled=false;
+    if(!saved)return;
+    if((editorRevision['news']||0)!==rev){adminRenderNewsList();return;}
     newsResetForm();
     adminRenderNewsList();
   });
@@ -2371,17 +2431,18 @@ body:has(#view-journal-detail.active){overflow:hidden}
   }
 
   function journalResetForm(){
-    localStorage.removeItem('lk_editor_journal'); document.getElementById('journalAutosave').textContent='';
+    clearTimeout(editorTimers['journal']);delete editorTimers['journal'];editorRevision['journal']=(editorRevision['journal']||0)+1;resettingEditors.add('journal');
+    removeContent('lk_editor_journal'); document.getElementById('journalAutosave').textContent='';
     attached.journal=[]; previewPhotos('journal');mjCover='';mjCoverPreview();
-    document.getElementById('journalForm').reset(); localStorage.removeItem('lk_editor_journal');
+    document.getElementById('journalForm').reset();
     document.getElementById('journalEditId').value = '';
     document.getElementById('journalSubmitBtn').textContent = '등록';
-    document.getElementById('journalCancelEdit').hidden = true;
+    document.getElementById('journalCancelEdit').hidden = true;resettingEditors.delete('journal');
   }
 
-  document.getElementById('journalForm').addEventListener('submit', function(e){
+  document.getElementById('journalForm').addEventListener('submit', async function(e){
     e.preventDefault();
-    if(!isAdminAuthed())return;
+    if(!isAdminAuthed()||savingForms.has('journal'))return;
     var id = document.getElementById('journalEditId').value;
     var data = {
       id: id || uid('journal'),
@@ -2397,7 +2458,13 @@ body:has(#view-journal-detail.active){overflow:hidden}
     }else{
       JOURNAL.push(data);
     }
-    saveData(JOURNAL_KEY, JOURNAL);
+    document.getElementById('journalEditId').value=data.id;
+    var rev=editorRevision['journal']||0,submit=document.getElementById('journalSubmitBtn');
+    savingForms.add('journal');submit.disabled=true;
+    var saved=await saveData(JOURNAL_KEY, JOURNAL);
+    savingForms.delete('journal');submit.disabled=false;
+    if(!saved)return;
+    if((editorRevision['journal']||0)!==rev){adminRenderJournalList();return;}
     journalResetForm();
     adminRenderJournalList();
   });
@@ -2442,17 +2509,18 @@ body:has(#view-journal-detail.active){overflow:hidden}
   }
 
   function storeResetForm(){
-    localStorage.removeItem('lk_editor_store'); document.getElementById('storeAutosave').textContent='';
+    clearTimeout(editorTimers['store']);delete editorTimers['store'];editorRevision['store']=(editorRevision['store']||0)+1;resettingEditors.add('store');
+    removeContent('lk_editor_store'); document.getElementById('storeAutosave').textContent='';
     attached.store=[]; previewPhotos('store');
-    document.getElementById('storeForm').reset(); localStorage.removeItem('lk_editor_store');
+    document.getElementById('storeForm').reset();
     document.getElementById('storeEditId').value = '';
     document.getElementById('storeSubmitBtn').textContent = '등록';
-    document.getElementById('storeCancelEdit').hidden = true;
+    document.getElementById('storeCancelEdit').hidden = true;resettingEditors.delete('store');
   }
 
-  document.getElementById('storeForm').addEventListener('submit', function(e){
+  document.getElementById('storeForm').addEventListener('submit', async function(e){
     e.preventDefault();
-    if(!isAdminAuthed())return;
+    if(!isAdminAuthed()||savingForms.has('store'))return;
     var id = document.getElementById('storeEditId').value;
     var data = {
       id: id || uid('store'),
@@ -2468,7 +2536,13 @@ body:has(#view-journal-detail.active){overflow:hidden}
     }else{
       STORE.push(data);
     }
-    saveData(STORE_KEY, STORE);
+    document.getElementById('storeEditId').value=data.id;
+    var rev=editorRevision['store']||0,submit=document.getElementById('storeSubmitBtn');
+    savingForms.add('store');submit.disabled=true;
+    var saved=await saveData(STORE_KEY, STORE);
+    savingForms.delete('store');submit.disabled=false;
+    if(!saved)return;
+    if((editorRevision['store']||0)!==rev){adminRenderStoreList();return;}
     storeResetForm();
     adminRenderStoreList();
   });
@@ -2488,14 +2562,22 @@ body:has(#view-journal-detail.active){overflow:hidden}
       var input=e.target, button=document.getElementById(kind+'SubmitBtn');button.disabled=true;
       try{
         for(var file of input.files){
-          if(attached[kind].length>=6) throw Error('사진은 최대 6장까지 첨부할 수 있습니다.');
+          if(attached[kind].length>=12) throw Error('사진은 최대 12장까지 첨부할 수 있습니다.');
           if(!['image/jpeg','image/png','image/webp'].includes(file.type)) throw Error('JPG, PNG, WebP 사진을 선택해 주세요.');
           if(file.size>20*1024*1024) throw Error('사진 한 장은 20MB 이하로 선택해 주세요.');
           var url=URL.createObjectURL(file);
-          try{var im=new Image();im.src=url;await im.decode();var scale=Math.min(1,1600/Math.max(im.width,im.height));var canvas=document.createElement('canvas');canvas.width=Math.round(im.width*scale);canvas.height=Math.round(im.height*scale);var ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.width,canvas.height);attached[kind].push(canvas.toDataURL('image/jpeg',.85));}finally{URL.revokeObjectURL(url);}
+          try{var im=new Image();im.src=url;await im.decode();var scale=Math.min(1,1600/Math.max(im.width,im.height));var canvas=document.createElement('canvas');canvas.width=Math.round(im.width*scale);canvas.height=Math.round(im.height*scale);var ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.width,canvas.height);var encoded=canvas.toDataURL('image/webp',.84);for(var quality=.76;encoded.length>560000&&quality>=.60;quality-=.08)encoded=canvas.toDataURL('image/webp',quality);attached[kind].push(encoded);}finally{URL.revokeObjectURL(url);}
         }
       }catch(err){alert(err.message);}finally{input.value='';button.disabled=false;previewPhotos(kind);}
     });
+  });
+
+  document.getElementById('downloadContentBackup').addEventListener('click',function(){
+    if(!isAdminAuthed())return;
+    var drafts={};['notice','news','journal','store'].forEach(function(k){drafts[k]=editorSnapshot(k);});
+    var data={format:'lowkey-backup-v1',savedAt:new Date().toISOString(),notices:NOTICES,news:NEWS,journal:JOURNAL,store:STORE,drafts:drafts};
+    var url=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'})),a=document.createElement('a');
+    a.href=url;a.download='lowkey-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(function(){URL.revokeObjectURL(url);},30000);
   });
   async function blobSha(text){var bytes=new TextEncoder().encode(text);var header=new TextEncoder().encode('blob '+bytes.length+'\0');var all=new Uint8Array(header.length+bytes.length);all.set(header);all.set(bytes,header.length);return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-1',all))).map(function(b){return b.toString(16).padStart(2,'0');}).join('');}
   var publicLoadFailed=false;
@@ -2509,7 +2591,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
       if(!Array.isArray(data.notices)||!Array.isArray(data.news))throw Error('게시판 파일 형식이 올바르지 않습니다.');
       data.journal=Array.isArray(data.journal)?data.journal:[];data.store=Array.isArray(data.store)?data.store:[];
       publicSha=await blobSha(raw); publishedState=JSON.stringify({notices:data.notices,news:data.news,journal:data.journal,store:data.store});
-      if(!draftLoaded || (!localStorage.getItem(NOTICE_KEY) && !localStorage.getItem(NEWS_KEY) && !localStorage.getItem(JOURNAL_KEY) && !localStorage.getItem(STORE_KEY))){NOTICES=data.notices;NEWS=data.news;JOURNAL=data.journal;STORE=data.store;route();} updateStatus();
+      if(!draftLoaded || (!contentCache[NOTICE_KEY] && !contentCache[NEWS_KEY] && !contentCache[JOURNAL_KEY] && !contentCache[STORE_KEY])){NOTICES=data.notices;NEWS=data.news;JOURNAL=data.journal;STORE=data.store;route();} updateStatus();
     }catch(err){publicLoadFailed=true;document.getElementById('publishStatus').textContent='게시글 읽기 실패. 새로고침 후 다시 시도해 주세요.';}
   })();
   document.getElementById('publishAll').addEventListener('click',async function(){
@@ -2535,24 +2617,33 @@ body:has(#view-journal-detail.active){overflow:hidden}
       var body={message:'Update LOWKEY RECORDZ posts',content:btoa(binary),branch:branch};if(meta)body.sha=meta.sha;
       response=await fetch(base,{method:'PUT',headers:Object.assign({},headers,{'Content-Type':'application/json'}),body:JSON.stringify(body)});
       var result=await response.json();if(!response.ok)throw Error('게시 실패 ('+response.status+'). 토큰의 Contents 쓰기 권한과 브랜치 설정을 확인해 주세요.');
-      publicSha=result.content.sha; var sent=JSON.parse(payload);publishedState=JSON.stringify({notices:sent.notices,news:sent.news,journal:sent.journal,store:sent.store}); if(boardState()===publishedState){localStorage.removeItem(NOTICE_KEY);localStorage.removeItem(NEWS_KEY);localStorage.removeItem(JOURNAL_KEY);localStorage.removeItem(STORE_KEY);} publicationPending=true; watchPublication(publicSha);
+      publicSha=result.content.sha; var sent=JSON.parse(payload);publishedState=JSON.stringify({notices:sent.notices,news:sent.news,journal:sent.journal,store:sent.store}); if(boardState()===publishedState){await Promise.all([removeContent(NOTICE_KEY),removeContent(NEWS_KEY),removeContent(JOURNAL_KEY),removeContent(STORE_KEY)]);} publicationPending=true; watchPublication(publicSha);
       status.textContent='GitHub 저장 완료. Pages 배포가 끝나면 방문자에게 공개됩니다.';
     }catch(err){status.textContent=err.message;}finally{button.disabled=false;token='';}
   });
 
 
+
+  function editorSnapshot(kind){
+    var draft={id:document.getElementById(kind+'EditId').value,date:document.getElementById(kind+'Date').value,title:document.getElementById(kind+'Title').value,body:document.getElementById(kind+'Body').value,images:attached[kind].slice(),presentation:readPresentation(kind)};
+    Object.assign(draft,readExtra(kind));return draft;
+  }
   function saveEditor(kind){
-    if(!isAdminAuthed())return;
-    var draft={id:document.getElementById(kind+'EditId').value,date:document.getElementById(kind+'Date').value,title:document.getElementById(kind+'Title').value,body:document.getElementById(kind+'Body').value,images:attached[kind],presentation:readPresentation(kind)};
-    Object.assign(draft,readExtra(kind));
-    var label=document.getElementById(kind+'Autosave');
-    try{localStorage.setItem('lk_editor_'+kind,JSON.stringify(draft));autosaveFailed=false;label.textContent='초안 자동 저장됨 · 미공개';}
-    catch(e){autosaveFailed=true;label.textContent='자동 저장 실패 · 창을 닫기 전에 등록·게시해 주세요';}
+    if(!isAdminAuthed()||resettingEditors.has(kind))return;
+    clearTimeout(editorTimers[kind]);
+    var rev=editorRevision[kind]=(editorRevision[kind]||0)+1,label=document.getElementById(kind+'Autosave');
+    label.textContent='초안 저장 중…';
+    editorTimers[kind]=setTimeout(function(){
+      delete editorTimers[kind];
+      queueContent('lk_editor_'+kind,editorSnapshot(kind),false).then(function(){
+        if(editorRevision[kind]===rev)label.textContent='초안 자동 저장됨 · 미공개';
+      }).catch(function(){if(editorRevision[kind]===rev)label.textContent='자동 저장 실패 · 백업 다운로드로 보관해 주세요';});
+    },400);
   }
   function restoreEditors(){
     if(!isAdminAuthed())return;
     ['notice','news','journal','store'].forEach(function(kind){
-      try{var raw=localStorage.getItem('lk_editor_'+kind);if(!raw)return;var draft=JSON.parse(raw);
+      try{var stored=contentCache['lk_editor_'+kind];if(!stored)return;var draft=structuredClone(stored);
         document.getElementById(kind+'EditId').value=draft.id||'';
         document.getElementById(kind+'Date').value=draft.date||'';
         document.getElementById(kind+'Title').value=draft.title||'';
@@ -2584,7 +2675,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
     try{await navigator.clipboard.writeText(url);btn.textContent='복사됨';setTimeout(function(){btn.textContent='링크 복사';},2000);}catch(e){prompt('아래 주소를 복사해 주세요.',url);}
   });});
   restoreEditors();
-  window.addEventListener('beforeunload',function(e){if(autosaveFailed){e.preventDefault();e.returnValue='';}});
+  window.addEventListener('beforeunload',function(e){if(autosaveFailed||storagePending||Object.keys(editorTimers).some(function(k){return !!editorTimers[k];})){e.preventDefault();e.returnValue='';}});
   async function watchPublication(expectedSha,attempt){
     attempt=attempt||0;clearTimeout(pendingTimer);
     try{var response=await fetch('./posts.json?t='+Date.now(),{cache:'no-store'});if(response.ok&&await blobSha(await response.text())===expectedSha){publicationPending=false;updateStatus();if(boardState()===publishedState)document.getElementById('publishStatus').textContent='공개 반영 확인 완료';return;}}catch(e){}
