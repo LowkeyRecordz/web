@@ -992,6 +992,12 @@ body:has(#view-journal-detail.active){overflow:hidden}
   #view-journal *,#view-journal-detail *{transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 
+
+/* Inline credits work inside chapter headings as well as body copy. */
+.inline-small{font-size:.75em}
+.inline-muted{opacity:.62;font-weight:400}
+.inline-byline{font-size:.55em;font-weight:400;opacity:.62;letter-spacing:0;line-height:1.5}
+.bk-copy .inline-byline,.post-typography p .inline-byline{font-size:.8em}
 </style>
 <style>.semi-arcade{height:100%;overflow:auto;box-sizing:border-box;padding:14px;background:repeating-conic-gradient(#fff0fa 0% 25%,#f5e7fb 0% 50%) 0/24px 24px;color:#493750;font:12px Tahoma,sans-serif;text-align:center}.sg-head{display:flex;justify-content:space-between;gap:8px;background:#654383;color:white;padding:9px;font-weight:bold;letter-spacing:1px;border:2px outset #c3a7e0}.sg-head span{color:#fff59c;font-variant-numeric:tabular-nums}.sg-arena{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:12px 0}.sg-arena>div{display:grid;justify-items:center;gap:4px;background:#ffffffb8;border:2px ridge #ddc5e9;padding:6px}.sg-arena svg{height:175px;width:100%;max-width:160px}.sg-arena progress{width:100%;accent-color:#bd73bb}.sg-plate{font-size:24px;background:#fff;border-radius:50%;padding:4px;margin:0 auto 12px;width:75%;border:2px solid #ccb7d8}.sg-meter{position:relative;height:23px;background:#e3c0d2;border:2px inset white;overflow:hidden;margin:10px 0}.sg-zone{position:absolute;left:34%;width:32%;height:100%;background:#a6dda4}.sg-meter i{position:absolute;left:0;width:4%;height:100%;background:#443455}.sg-actions{display:flex;gap:12px;justify-content:center;margin:10px 0}.semi-arcade .xbtn{min-height:36px;color:#382540;touch-action:manipulation}.sg-brief{padding:10px;background:#fffddd;border:1px solid #c0aa77;margin:10px 0;line-height:1.7;min-height:25px}.sg-dress{display:grid;grid-template-columns:42% 1fr;gap:12px;text-align:left}.sg-mirror{background:linear-gradient(125deg,#d9f3ff,#fff3fb);border:7px ridge #c8aed8;display:grid;place-items:center;min-height:240px}.sg-mirror svg{width:100%;max-width:200px}.sg-steps{display:grid;gap:5px}.sg-steps span{padding:5px;border:1px solid #d2bcdd;background:#ffffffad}.sg-steps .active{background:#714c8e;color:#fff}.sg-options{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.sg-options .sg-meter{width:100%}@media(max-width:420px){.semi-arcade{padding:8px}.sg-arena svg{height:135px}.sg-dress{grid-template-columns:39% 1fr;gap:6px}.sg-mirror{min-height:200px;border-width:4px}}
 </style><style>
@@ -1551,7 +1557,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
   function plainLinkedText(text){return String(text||'').split(/(https?:\/\/[^\s<>]+)/g).map(function(part){var u=/^https?:\/\//.test(part)?safeUrl(part):'';return u?'<a target="_blank" rel="noopener noreferrer" href="'+escapeText(u)+'">'+escapeText(part)+'</a>':escapeText(part);}).join('');}
 
   function formatUnits(text){
-    var out=[],stack=[],rx=/\[\[(\/?(?:b|i|u)|color:#[0-9a-fA-F]{6}|\/color)\]\]/g,at=0,m;
+    var out=[],stack=[],rx=/\[\[(\/?(?:b|i|u|small|muted|byline)|color:#[0-9a-fA-F]{6}|\/color)\]\]/g,at=0,m;
     function add(t){Array.from(t).forEach(function(ch){out.push({ch:ch,marks:stack.slice()});});}
     text=String(text||'');
     while((m=rx.exec(text))){
@@ -1571,6 +1577,9 @@ body:has(#view-journal-detail.active){overflow:hidden}
       marks.forEach(function(tag){
         if(tag==='b')body='<strong class="inline-bold">'+body+'</strong>';
         else if(tag==='i')body='<em class="inline-italic">'+body+'</em>';
+        else if(tag==='small')body='<span class="inline-small">'+body+'</span>';
+        else if(tag==='muted')body='<span class="inline-muted">'+body+'</span>';
+        else if(tag==='byline')body='<span class="inline-byline">'+body+'</span>';
         else if(tag==='u')body='<u class="inline-underline">'+body+'</u>';
         else if(/^color:#[0-9a-fA-F]{6}$/.test(tag))body='<span style="color:'+tag.slice(6)+'">'+body+'</span>';
       });
@@ -1595,9 +1604,9 @@ body:has(#view-journal-detail.active){overflow:hidden}
     return '<p><a class="video-link" href="'+escapeText(p.video)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a></p>';
   }
   function renderPost(n){var p=normalizedPresentation(n.presentation),images=Array.isArray(n.images)?n.images:[],used=new Set(),videoUsed=false;
-    var parts=String(n.body||'').split(/(\[\[photo:\d+\]\]|\[\[video\]\]|\[\[page\]\]|\[\[title:[^\]]+\]\])/g),content=parts.map(function(t){
+    var parts=String(n.body||'').split(/(\[\[photo:\d+\]\]|\[\[video\]\]|\[\[page\]\]|\[\[title:(?:\[\[(?:\/?(?:b|i|u|small|muted|byline)|color:#[0-9a-fA-F]{6}|\/color)\]\]|[^\]])+\]\])/g),content=parts.map(function(t){
       if(t==='[[page]]')return '<hr class="post-section-break">';
-      var heading=t.match(/^\[\[title:([^\]]+)\]\]$/);
+      var heading=t.match(/^\[\[title:((?:\[\[(?:\/?(?:b|i|u|small|muted|byline)|color:#[0-9a-fA-F]{6}|\/color)\]\]|[^\]])+)\]\]$/);
       if(heading)return '<h2>'+linkedText(heading[1].trim())+'</h2>';
       var m=t.match(/^\[\[photo:(\d+)\]\]$/);if(m){var i=Number(m[1])-1;used.add(i);return imageMarkup(images[i],p);}
       if(t==='[[video]]'){videoUsed=true;return videoMarkup(p);}return bodyToParagraphs(t);
@@ -1855,9 +1864,9 @@ body:has(#view-journal-detail.active){overflow:hidden}
   ['notice','news','journal','store'].forEach(function(kind){
     var area=document.getElementById(kind+'Body');if(!area)return;
     var bar=document.createElement('div');bar.className='inline-format-tools';bar.setAttribute('role','toolbar');bar.setAttribute('aria-label','본문 글자 서식');
-    bar.innerHTML='<button type="button" data-mark="b" title="굵게"><strong>B</strong> 굵게</button><button type="button" data-mark="i" title="기울임"><em>I</em> 기울임</button><button type="button" data-mark="u" title="밑줄"><u>U</u> 밑줄</button><label class="format-color-label">글자색 <input type="color" value="#bd3038" aria-label="글자색 선택"></label><button type="button" data-mark="color">색상 적용</button><button type="button" data-mark="clear">서식 지우기</button>';
+    bar.innerHTML='<button type="button" data-mark="b" title="굵게"><strong>B</strong> 굵게</button><button type="button" data-mark="i" title="기울임"><em>I</em> 기울임</button><button type="button" data-mark="u" title="밑줄"><u>U</u> 밑줄</button><label class="format-color-label">글자색 <input type="color" value="#bd3038" aria-label="글자색 선택"></label><button type="button" data-mark="color">색상 적용</button><button type="button" data-mark="small">작게</button><button type="button" data-mark="muted">연하게</button><button type="button" data-mark="byline">by · 작고 연하게</button><button type="button" data-mark="clear">서식 지우기</button>';
     area.parentElement.insertBefore(bar,area);
-    var help=document.createElement('small');help.className='format-help';help.textContent='글자를 드래그해 선택한 뒤 서식을 적용하세요. 본문에는 서식 표시가 들어가며 실제 모양은 미리보기에서 확인할 수 있습니다.';
+    var help=document.createElement('small');help.className='format-help';help.textContent='글자를 드래그해 선택한 뒤 서식을 적용하세요. 부제목 안의 by 이름도 선택해 ‘by · 작고 연하게’를 누를 수 있습니다. 서식 표시는 미리보기에서 실제 모양으로 보입니다.';
     area.after(help);
     bar.addEventListener('mousedown',function(e){if(e.target.closest('button'))e.preventDefault();});
     bar.addEventListener('click',function(e){
@@ -1867,7 +1876,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
       var selected=area.value.slice(a,z),tag=b.dataset.mark;
       if(/\[\[(?:photo:|title:|page\]\]|video\]\])/.test(selected)){help.textContent='지면·사진 표시를 제외한 글자만 선택해 주세요.';return;}
       var result;
-      if(tag==='clear')result=selected.replace(/\[\[(\/?(?:b|i|u)|color:#[0-9a-fA-F]{6}|\/color)\]\]/g,'');
+      if(tag==='clear')result=selected.replace(/\[\[(\/?(?:b|i|u|small|muted|byline)|color:#[0-9a-fA-F]{6}|\/color)\]\]/g,'');
       else{
         var open=tag==='color'?'color:'+bar.querySelector('input').value:tag;
         result=selected.split('\n').map(function(line){return line.trim()?'[['+open+']]'+line+'[[/'+tag+']]':line;}).join('\n');
@@ -1879,9 +1888,9 @@ body:has(#view-journal-detail.active){overflow:hidden}
   /* ---------- MAGAZINE COMPOSER ---------- */
   function mjTokens(n){
     var imgs=Array.isArray(n.images)?n.images:[],used=new Set(),out=[];
-    String(n.body||'').replace(/\r\n?/g,'\n').split(/(\[\[photo:\d+\]\]|\[\[video\]\]|\[\[page\]\]|\[\[title:[^\]]+\]\])/g).forEach(function(t){
+    String(n.body||'').replace(/\r\n?/g,'\n').split(/(\[\[photo:\d+\]\]|\[\[video\]\]|\[\[page\]\]|\[\[title:(?:\[\[(?:\/?(?:b|i|u|small|muted|byline)|color:#[0-9a-fA-F]{6}|\/color)\]\]|[^\]])+\]\])/g).forEach(function(t){
       if(t==='[[page]]'){out.push({t:'break'});return;}
-      var heading=t.match(/^\[\[title:([^\]]+)\]\]$/);
+      var heading=t.match(/^\[\[title:((?:\[\[(?:\/?(?:b|i|u|small|muted|byline)|color:#[0-9a-fA-F]{6}|\/color)\]\]|[^\]])+)\]\]$/);
       if(heading){out.push({t:'title',text:heading[1].trim()});return;}
       var m=t.match(/^\[\[photo:(\d+)\]\]$/);
       if(m){var i=Number(m[1])-1;if(validImage(imgs[i])){used.add(i);out.push({t:'photo',src:imgs[i]});}return;}
@@ -1999,7 +2008,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
       if(c.hero)photo(c.hero);
       c.blocks.forEach(function(b){
         if(b.k==='break'){current=null;return;}
-        if(b.k==='title'){current=null;var titlePage=page('chapter');titlePage.innerHTML='<div class="bk-running">LOWKEY JOURNAL</div><h2>'+escapeText(b.text).replace(/\n/g,'<br>')+'</h2>';pages.push(titlePage);return;}
+        if(b.k==='title'){current=null;var titlePage=page('chapter');titlePage.innerHTML='<div class="bk-running">LOWKEY JOURNAL</div><h2>'+linkedText(b.text).replace(/\n/g,'<br>')+'</h2>';pages.push(titlePage);return;}
         if(b.k==='text')b.ps.forEach(addText);else if(b.k==='photos')b.list.forEach(photo);else if(b.k==='video'){var v=mjVideo(n);if(v){current=null;var el=page('video');el.innerHTML='<div class="bk-running">SCREENING ROOM</div>'+(v.embed?'<iframe src="'+escapeText(v.embed)+'" title="저널 영상" allowfullscreen></iframe>':'')+'<a href="'+escapeText(v.url)+'" target="_blank" rel="noopener noreferrer">영상 보기 ↗</a>';pages.push(el);}}});
       var end=page('end');end.innerHTML='<small>LOWKEY RECORDZ JOURNAL</small><h2>'+escapeText(n.title)+'</h2><a href="#/journal">목록으로 ↗</a>';pages.push(end);
       pages.forEach(function(el,i){var f=document.createElement('span');f.className='bk-folio';f.textContent=String(i+1).padStart(2,'0');el.appendChild(f);});
