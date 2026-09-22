@@ -1009,6 +1009,17 @@ body:has(#view-journal-detail.active){overflow:hidden}
 .bk-zoom-tools button:disabled{opacity:.3;cursor:default}
 .bk-zoom-tools button:focus-visible,.bk-zoom-tools select:focus-visible{outline:2px solid #ddd;outline-offset:3px}
 #journalDetailContent .bk-nav{margin-top:12px}
+
+/* The whole book grows; only the outer reader window scrolls. */
+#view-journal-detail.active{overflow:auto}
+#journalDetailContent{align-items:stretch}
+.bk-reader .bk-viewport{overflow:visible;overscroll-behavior:auto;max-width:none}
+.bk-reader .bk-nav{position:absolute!important;width:1px;height:1px;margin:0!important;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.bk-reader .bk-nav:focus-within{position:relative!important;width:auto;height:auto;clip-path:none;overflow:visible;margin:12px!important}
+.bk-reader .bk-zoom-tools{position:sticky;top:8px;left:8px;z-index:12;width:max-content;max-width:calc(100vw - 24px);margin:0 auto 18px;padding:6px 10px;border-radius:24px;background:#101010ed;flex-wrap:wrap}
+.bk-zoom-tools [data-bk-count]{font-size:11px;min-width:48px;text-align:center;margin-left:8px;color:#999}
+@media(hover:hover){.bk-spread .bk-page{cursor:pointer}.bk-viewport.is-zoomed .bk-page{cursor:grab}.bk-viewport.is-dragging .bk-page{cursor:grabbing}}
+.bk-viewport.is-zoomed{user-select:none}
 </style>
 <style>.semi-arcade{height:100%;overflow:auto;box-sizing:border-box;padding:14px;background:repeating-conic-gradient(#fff0fa 0% 25%,#f5e7fb 0% 50%) 0/24px 24px;color:#493750;font:12px Tahoma,sans-serif;text-align:center}.sg-head{display:flex;justify-content:space-between;gap:8px;background:#654383;color:white;padding:9px;font-weight:bold;letter-spacing:1px;border:2px outset #c3a7e0}.sg-head span{color:#fff59c;font-variant-numeric:tabular-nums}.sg-arena{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:12px 0}.sg-arena>div{display:grid;justify-items:center;gap:4px;background:#ffffffb8;border:2px ridge #ddc5e9;padding:6px}.sg-arena svg{height:175px;width:100%;max-width:160px}.sg-arena progress{width:100%;accent-color:#bd73bb}.sg-plate{font-size:24px;background:#fff;border-radius:50%;padding:4px;margin:0 auto 12px;width:75%;border:2px solid #ccb7d8}.sg-meter{position:relative;height:23px;background:#e3c0d2;border:2px inset white;overflow:hidden;margin:10px 0}.sg-zone{position:absolute;left:34%;width:32%;height:100%;background:#a6dda4}.sg-meter i{position:absolute;left:0;width:4%;height:100%;background:#443455}.sg-actions{display:flex;gap:12px;justify-content:center;margin:10px 0}.semi-arcade .xbtn{min-height:36px;color:#382540;touch-action:manipulation}.sg-brief{padding:10px;background:#fffddd;border:1px solid #c0aa77;margin:10px 0;line-height:1.7;min-height:25px}.sg-dress{display:grid;grid-template-columns:42% 1fr;gap:12px;text-align:left}.sg-mirror{background:linear-gradient(125deg,#d9f3ff,#fff3fb);border:7px ridge #c8aed8;display:grid;place-items:center;min-height:240px}.sg-mirror svg{width:100%;max-width:200px}.sg-steps{display:grid;gap:5px}.sg-steps span{padding:5px;border:1px solid #d2bcdd;background:#ffffffad}.sg-steps .active{background:#714c8e;color:#fff}.sg-options{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.sg-options .sg-meter{width:100%}@media(max-width:420px){.semi-arcade{padding:8px}.sg-arena svg{height:135px}.sg-dress{grid-template-columns:39% 1fr;gap:6px}.sg-mirror{min-height:200px;border-width:4px}}
 </style><style>
@@ -1991,32 +2002,53 @@ body:has(#view-journal-detail.active){overflow:hidden}
     var pages=[],index=0,per=1,resizeTimer,oldWidth=0,oldHeight=0;
     var viewport=root.querySelector('.bk-viewport'),canvas=root.querySelector('.bk-zoom-canvas'),zoomSelect=root.querySelector('[data-bk-zoom]');
     var zoom=1,levels=[1,1.25,1.5,1.75,2],drag=null;
+    var scroller=root.closest('#view-journal-detail')||root.closest('dialog')||box;
+    var toolsBar=root.querySelector('.bk-zoom-tools');
+    toolsBar.appendChild(count);root.insertBefore(toolsBar,viewport);
     function applyZoom(center){
       var leaf=spread.firstElementChild;if(!leaf)return;
-      var w=leaf.offsetWidth*spread.children.length,h=leaf.offsetHeight,vw=root.clientWidth;
-      var oldW=canvas.offsetWidth||vw,oldH=canvas.offsetHeight||h;
-      var cx=(viewport.scrollLeft+viewport.clientWidth/2)/oldW,cy=(viewport.scrollTop+viewport.clientHeight/2)/oldH;
-      var cw=Math.max(vw,w*zoom),ch=h*zoom;
-      viewport.style.height=(h+20)+'px';canvas.style.width=cw+'px';canvas.style.height=(ch+20)+'px';
-      spread.style.width=w+'px';spread.style.position='absolute';spread.style.left=((cw-w*zoom)/2)+'px';spread.style.top='10px';
+      var w=leaf.offsetWidth*spread.children.length,h=leaf.offsetHeight;
+      var cw=w*zoom,ch=h*zoom;
+      root.style.width=cw+'px';root.style.maxWidth='none';
+      viewport.style.width=cw+'px';viewport.style.height=(ch+20)+'px';
+      canvas.style.width=cw+'px';canvas.style.height=(ch+20)+'px';
+      spread.style.width=w+'px';spread.style.position='absolute';spread.style.left='0';spread.style.top='10px';
       spread.style.transformOrigin='top left';spread.style.transform='scale('+zoom+')';
       viewport.classList.toggle('is-zoomed',zoom>1);zoomSelect.value=String(zoom);
       root.querySelector('[data-bk-zoom-out]').disabled=zoom===1;root.querySelector('[data-bk-zoom-in]').disabled=zoom===2;
-      viewport.scrollLeft=center?Math.max(0,cx*cw-viewport.clientWidth/2):Math.max(0,(cw-viewport.clientWidth)/2);
-      viewport.scrollTop=center?Math.max(0,cy*(ch+20)-viewport.clientHeight/2):0;
+      viewport.scrollLeft=0;viewport.scrollTop=0;
+      if(center){scroller.scrollLeft=Math.max(0,(scroller.scrollWidth-scroller.clientWidth)/2);}
     }
     function setZoom(value){zoom=Math.max(1,Math.min(2,value));applyZoom(true);}
     zoomSelect.onchange=function(){setZoom(Number(this.value));};
     root.querySelector('[data-bk-zoom-in]').onclick=function(){setZoom(levels[Math.min(4,levels.indexOf(zoom)+1)]);};
     root.querySelector('[data-bk-zoom-out]').onclick=function(){setZoom(levels[Math.max(0,levels.indexOf(zoom)-1)]);};
-    root.querySelector('[data-bk-zoom-reset]').onclick=function(){zoom=1;applyZoom(false);};
+    root.querySelector('[data-bk-zoom-reset]').onclick=function(){zoom=1;applyZoom(true);scroller.scrollTop=0;};
+    viewport.addEventListener('dragstart',function(e){if(e.target.closest('img'))e.preventDefault();});
     viewport.addEventListener('pointerdown',function(e){
-      if(zoom<=1||e.pointerType!=='mouse'||e.button!==0||e.target.closest('a,button,iframe'))return;
-      drag={x:e.clientX,y:e.clientY,left:viewport.scrollLeft,top:viewport.scrollTop};viewport.setPointerCapture(e.pointerId);viewport.classList.add('is-dragging');e.preventDefault();
+      if(e.pointerType!=='mouse'||e.button!==0||e.target.closest('a,button,iframe'))return;
+      var leaf=e.target.closest('.bk-page');if(!leaf)return;
+      drag={x:e.clientX,y:e.clientY,left:scroller.scrollLeft,top:scroller.scrollTop,leaf:leaf,moved:false};
     });
-    viewport.addEventListener('pointermove',function(e){if(!drag)return;viewport.scrollLeft=drag.left+drag.x-e.clientX;viewport.scrollTop=drag.top+drag.y-e.clientY;});
+    viewport.addEventListener('pointermove',function(e){
+      if(!drag)return;
+      if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>6)drag.moved=true;
+      if(zoom>1&&drag.moved){
+        if(!viewport.hasPointerCapture(e.pointerId))viewport.setPointerCapture(e.pointerId);
+        viewport.classList.add('is-dragging');scroller.scrollLeft=drag.left+drag.x-e.clientX;scroller.scrollTop=drag.top+drag.y-e.clientY;
+      }
+    });
+    viewport.addEventListener('pointerup',function(e){
+      var d=drag;drag=null;viewport.classList.remove('is-dragging');
+      if(!d||d.moved||e.target.closest('a,button,iframe'))return;
+      if(window.getSelection()&&!window.getSelection().isCollapsed)return;
+      var rect=d.leaf.getBoundingClientRect();
+      var dir=spread.children.length>1?(d.leaf===spread.firstElementChild?-1:1):(index===0?1:(e.clientX<rect.left+rect.width/2?-1:1));
+      turn(dir);
+    });
     function stopDrag(){drag=null;viewport.classList.remove('is-dragging');}
-    viewport.addEventListener('pointerup',stopDrag);viewport.addEventListener('pointercancel',stopDrag);viewport.addEventListener('lostpointercapture',stopDrag);
+    viewport.addEventListener('pointercancel',stopDrag);viewport.addEventListener('lostpointercapture',stopDrag);
+    viewport.addEventListener('pointerleave',function(e){if(!viewport.hasPointerCapture(e.pointerId))stopDrag();});
 
     function page(type){var el=document.createElement('section');el.className='bk-page bk-'+type;return el;}
     function rebuild(){
@@ -2093,7 +2125,7 @@ body:has(#view-journal-detail.active){overflow:hidden}
     prev.onclick=function(){turn(-1);};next.onclick=function(){turn(1);};root.onkeydown=function(e){if(e.target.closest('input,textarea,select,iframe'))return;if(zoom>1&&e.target===viewport)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();e.stopPropagation();turn(e.key==='ArrowRight'?1:-1);}};
     var touch=null;spread.addEventListener('touchstart',function(e){touch=zoom>1?null:{x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});spread.addEventListener('touchend',function(e){if(!touch)return;var dx=e.changedTouches[0].clientX-touch.x,dy=e.changedTouches[0].clientY-touch.y;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5)turn(dx<0?1:-1);touch=null;},{passive:true});
     requestAnimationFrame(function(){rebuild();});
-    var ro=new ResizeObserver(function(entries){if(!root.isConnected){ro.disconnect();return;}var w=Math.round(entries[0].contentRect.width),h=innerHeight;if(w===oldWidth&&h===oldHeight)return;oldWidth=w;oldHeight=h;clearTimeout(resizeTimer);resizeTimer=setTimeout(rebuild,120);});ro.observe(root);
+    var ro=new ResizeObserver(function(entries){if(!root.isConnected){ro.disconnect();return;}var w=innerWidth,h=innerHeight;if(w===oldWidth&&h===oldHeight)return;oldWidth=w;oldHeight=h;clearTimeout(resizeTimer);resizeTimer=setTimeout(rebuild,120);});ro.observe(box);
     if(document.fonts){document.fonts.load('14px "Lowkey Yoon 300", "Pretendard Variable"','카라신 주니어 저널').then(function(){return document.fonts.ready;}).then(function(){if(root.isConnected)rebuild();}).catch(function(){});}
   }
   function mjRenderReader(n,box,id){
